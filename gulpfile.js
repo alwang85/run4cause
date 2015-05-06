@@ -17,6 +17,14 @@ var jshint = require('gulp-jshint');
 var mocha = require('gulp-mocha');
 var karma = require('karma').server;
 
+// browserify
+var browserify = require('browserify');
+var babelify = require('babelify');
+
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+
+
 // Development tasks
 // --------------------------------------------------------------
 

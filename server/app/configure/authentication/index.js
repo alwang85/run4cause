@@ -9,7 +9,11 @@ var UserModel = mongoose.model('User');
 
 var ENABLED_AUTH_STRATEGIES = [
     'local',
+<<<<<<< Updated upstream
     //'twitter',
+=======
+    'fitbit',
+>>>>>>> Stashed changes
     //'facebook',
     //'google',
     'jawbone'
