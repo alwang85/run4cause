@@ -9,7 +9,7 @@ var UserModel = mongoose.model('User');
 
 var ENABLED_AUTH_STRATEGIES = [
     'local',
-    'fitbit'
+    'fitbit',
     //'facebook',
     //'google',
     'jawbone'

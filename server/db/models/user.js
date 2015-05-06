@@ -15,7 +15,12 @@ var schema = new mongoose.Schema({
     jawbone: {
         id : String,
         token : String
-    }
+    },
+    fitbit: {
+        id: String,
+        token: String
+    },
+    name: String
 });
 
 // generateSalt, encryptPassword and the pre 'save' and 'correctPassword' operations
