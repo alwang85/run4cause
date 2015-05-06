@@ -36,7 +36,9 @@ module.exports = function(app) {
                 if (user) {
                     done(null, user);
                 } else {
+
                     UserModel.create({
+                        name: body.data.first + " " + body.data.last,
                         jawbone: {
                             id: body.meta.user_xid,
                             token : token

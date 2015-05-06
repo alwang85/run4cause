@@ -12,6 +12,8 @@ var ENABLED_AUTH_STRATEGIES = [
     'fitbit',
     //'facebook',
     //'google',
+    //'twitter',
+    'fitbit',
     'jawbone'
 ];
 
