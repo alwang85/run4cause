@@ -15,6 +15,9 @@ var schema = new mongoose.Schema({
     jawbone: {
         id : String,
         token : String
+    },
+    name: {
+        type:String
     }
 });
 
