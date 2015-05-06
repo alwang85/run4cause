@@ -15,5 +15,12 @@ module.exports = {
     "clientID": "INSERT_GOOGLE_CLIENTID_HERE",
     "clientSecret": "INSERT_GOOGLE_CLIENT_SECRET_HERE",
     "callbackURL": "INSERT_GOOGLE_CALLBACK_HERE"
+  },
+  "JAWBONE" : {
+    "clientID": 'jiASw9I4DB0',
+    "clientSecret": '8bff16cc6e7f6ed2669aa6a846808007afa3d934',
+    "authorizationURL": 'https://jawbone.com/auth/oauth2/auth',
+    "tokenURL": 'https://jawbone.com/auth/oauth2/token',
+    "callbackURL": 'http://localhost:1337/auth/jawbone/callback'
   }
 };
