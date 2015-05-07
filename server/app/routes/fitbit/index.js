@@ -10,44 +10,48 @@ var FitbitApiClient = require("fitbit-node");
 module.exports = function(app) {
     var fitbitConfig = app.getValue('env').FITBIT;
 
-
-
-
-
     router.get('/getUserSteps', function (req, res, next) {
         var tokenSecret = req.user.fitbit.tokenSecret;
         var token = req.user.fitbit.token;
         var id = req.user.fitbit.id;
-         //potentially better solution
-        var client = new FitbitApiClient(fitbitConfig.consumerKey,fitbitConfig.consumerSecret);
-        client.requestResource("/activities/steps/date/today/1m.json", "GET", token, tokenSecret)
-            .then(function(response){
-                console.log(response[0]);
-            }).catch(function(err){
-                console.log(err)
-            });
-    });
 
-    //    var client = new Fitbit(
-    //        fitbitConfig.consumerKey
-    //        , fitbitConfig.consumerSecret
-    //        , { // Now set with access tokens
-    //            accessToken: token
-    //            , accessTokenSecret: tokenSecret
-    //            , unitMeasure: 'en_GB'
-    //    }
-    //    );
-    //    client.getActivities({date: '2015-04-15'}, function (err, activities) {
-    //        if (err) {
-    //            // Take action
-    //            return;
-    //        }
-    //
-    //        // `activities` is a Resource model
-    //        console.log('Total steps today: ', activities);
-    //    });
-    //
-    //});
+        // promise all
+        var client = new FitbitApiClient(fitbitConfig.consumerKey,fitbitConfig.consumerSecret);
+
+        var promises = [
+            client.requestResource("/activities/tracker/calories/date/today/7d.json", "GET", token, tokenSecret),
+            client.requestResource("/activities/tracker/steps/date/today/7d.json", "GET", token, tokenSecret),
+            client.requestResource("/activities/tracker/distance/date/today/7d.json", "GET", token, tokenSecret),
+            client.requestResource("/sleep/minutesAsleep/date/today/7d.json", "GET", token, tokenSecret)
+        ];
+
+        Promise.all(promises)
+            .spread(function(calories, steps, distance, sleep) {
+                sleep = JSON.parse(sleep[0])["sleep-minutesAsleep"];
+                console.log(sleep);
+                calories = JSON.parse(calories[0])["activities-tracker-calories"];
+                steps = JSON.parse(steps[0])["activities-tracker-steps"];
+                distance = JSON.parse(distance[0])["activities-tracker-distance"];
+                var result = [];
+
+                _.forEach(calories, function(item, index){
+                    var tempObj = {
+                        date: item.dateTime,
+                        metrics: [{measurement: 'calories', qty:item.value},
+                                  {measurement: 'steps', qty:steps[index].value},
+                                  {measurement: 'distance', qty:distance[index].value},
+                                  {measurement:'sleep', qty:sleep[index].value}]
+                    };
+                   result.push(tempObj);
+                });
+                res.json(result);
+            })
+            .catch(function(err) {
+                next(err);
+            });
+
+
+    });
 
     return router;
 };
