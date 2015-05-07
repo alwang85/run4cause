@@ -22,6 +22,7 @@ Refer to the q documentation for why and how q.invoke is used.
 var mongoose = require('mongoose');
 var connectToDb = require('./server/db');
 var User = mongoose.model('User');
+var Nonprofit = mongoose.model('Nonprofit');
 var q = require('q');
 var chalk = require('chalk');
 
@@ -34,16 +35,203 @@ var seedUsers = function () {
     var users = [
         {
             email: 'testing@fsa.com',
-            password: 'password'
+            password: 'password',
+            log: [
+              {
+                date: new Date('2015-05-04'),
+                metrics: [{
+                  measurement: "distance",
+                  qty: 1660
+                },{
+                  measurement: "sleep",
+                  qty: 16000
+                }
+                ]
+              },{
+                date: new Date('2015-05-05') ,
+                metrics: [{
+                  measurement: "distance",
+                  qty: 2600
+                },{
+                  measurement: "sleep",
+                  qty: 18000
+                }
+                ]
+              },{
+                date: new Date('2015-05-03'),
+                metrics: [{
+                  measurement: "distance",
+                  qty: 1660
+                },{
+                  measurement: "sleep",
+                  qty: 15000
+                }
+                ]
+              },{
+                date: new Date('2015-05-02') ,
+                metrics: [{
+                  measurement: "distance",
+                  qty: 2600
+                },{
+                  measurement: "sleep",
+                  qty: 14000
+                }
+                ]
+              },{
+                date: new Date('2015-05-01'),
+                metrics: [{
+                  measurement: "distance",
+                  qty: 1660
+                },{
+                  measurement: "sleep",
+                  qty: 13000
+                }
+                ]
+              },{
+                date: new Date('2015-04-30') ,
+                metrics: [{
+                  measurement: "distance",
+                  qty: 2600
+                },{
+                  measurement: "sleep",
+                  qty: 18000
+                }
+                ]
+              },{
+                date: new Date('2015-04-29'),
+                metrics: [{
+                  measurement: "distance",
+                  qty: 2560
+                },{
+                  measurement: "sleep",
+                  qty: 17000
+                }
+                ]
+              },{
+                date: new Date('2015-04-28') ,
+                metrics: [{
+                  measurement: "distance",
+                  qty: 1600
+                },{
+                  measurement: "sleep",
+                  qty: 11000
+                }
+                ]
+              }
+            ]
         },
         {
             email: 'obama@gmail.com',
-            password: 'potus'
+            password: 'potus',log: [
+          {
+            date: new Date('2015-05-04'),
+            metrics: [{
+              measurement: "distance",
+              qty: 1660
+            },{
+              measurement: "sleep",
+              qty: 16000
+            }
+            ]
+          },{
+            date: new Date('2015-05-05') ,
+            metrics: [{
+              measurement: "distance",
+              qty: 2600
+            },{
+              measurement: "sleep",
+              qty: 18000
+            }
+            ]
+          },{
+            date: new Date('2015-05-03'),
+            metrics: [{
+              measurement: "distance",
+              qty: 1660
+            },{
+              measurement: "sleep",
+              qty: 15000
+            }
+            ]
+          },{
+            date: new Date('2015-05-02') ,
+            metrics: [{
+              measurement: "distance",
+              qty: 2600
+            },{
+              measurement: "sleep",
+              qty: 14000
+            }
+            ]
+          },{
+            date: new Date('2015-05-01'),
+            metrics: [{
+              measurement: "distance",
+              qty: 1660
+            },{
+              measurement: "sleep",
+              qty: 13000
+            }
+            ]
+          },{
+            date: new Date('2015-04-30') ,
+            metrics: [{
+              measurement: "distance",
+              qty: 2600
+            },{
+              measurement: "sleep",
+              qty: 18000
+            }
+            ]
+          },{
+            date: new Date('2015-04-29'),
+            metrics: [{
+              measurement: "distance",
+              qty: 2560
+            },{
+              measurement: "sleep",
+              qty: 17000
+            }
+            ]
+          },{
+            date: new Date('2015-04-28') ,
+            metrics: [{
+              measurement: "distance",
+              qty: 1600
+            },{
+              measurement: "sleep",
+              qty: 11000
+            }
+            ]
+          }
+        ]
         }
     ];
 
     return q.invoke(User, 'create', users);
 
+};
+
+var seedNonProfit = function() {
+    return User.find({}).exec()
+    .then(function(users) {
+        var nonprofits = [{
+            creator     : users[0]._id,
+            name        : "Non Profit 1",
+            description : "Non Profit Description",
+            url         : "http://nonprofit1.com",
+            followers   : users
+        },
+        {
+            creator     : users[1]._id,
+            name        : "Non Profit 2",
+            description : "Non Profit Description",
+            url         : "http://nonprofit1.com",
+            followers   : []
+        }];
+
+        return q.invoke(Nonprofit, 'create', nonprofits);
+    });
 };
 
 connectToDb.then(function () {
@@ -54,6 +242,9 @@ connectToDb.then(function () {
             console.log(chalk.magenta('Seems to already be user data, exiting!'));
             process.kill(0);
         }
+    }).then(function() {
+        //console.log(users);
+        return seedNonProfit();
     }).then(function () {
         console.log(chalk.green('Seed successful!'));
         process.kill(0);
