@@ -8,7 +8,9 @@ app.config(function ($stateProvider) {
 });
 
 app.controller('DashboardController', function($http, $scope){
-    $scope.Grid = {
-        dimensions: [6, 2]
+    $scope.myGridLayoutOptions = {
+        dimensions: [2, 2]
     };
+
+    $scope.grids = [{bgColor: "orange"}, {bgColor: "red"}, {bgColor: "green"}, {bgColor: "yellow"}]
 });

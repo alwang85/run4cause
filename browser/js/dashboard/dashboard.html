@@ -1,13 +1,8 @@
 <fa-app id="dashBoard">
-    hello
-    <fa-modifier>
-        <fa-grid-layout fa-options="Grid">
-            <fa-surface fa-background-color="'#b58900'" fa-size="[undefined, 200]">3</fa-surface>
-            <fa-surface fa-background-color="'#cb4b16'">2</fa-surface>
-            <fa-surface fa-background-color="'#dc322f'" fa-size="[undefined, 200]">3</fa-surface>
-            <fa-surface fa-background-color="'#d33682'" fa-size="[undefined, 200]">4</fa-surface>
-            <fa-surface fa-background-color="'#6c71c4'" fa-size="[undefined, 200]">5</fa-surface>
-            <fa-surface fa-background-color="'#268bd2'" fa-size="[undefined, 200]">6</fa-surface>
-        </fa-grid-layout>
-    </fa-modifier>
+    <fa-grid-layout fa-options="myGridLayoutOptions">
+        <fa-modifier ng-repeat="grid in grids"
+                     fa-size="[undefined, undefined]">
+            <fa-surface fa-background-color="grid.bgColor"></fa-surface>
+        </fa-modifier>
+    </fa-grid-layout>
 </fa-app>
