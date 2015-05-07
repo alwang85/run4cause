@@ -2,6 +2,7 @@
 var router = require('express').Router();
 var _ = require('lodash');
 var Promise = require('bluebird');
+var User = require('mongoose').model('User');
 
 module.exports = function(app){
     var jawboneConfig = app.getValue('env').JAWBONE;
@@ -17,7 +18,7 @@ module.exports = function(app){
 
     router.use(jawboneOptions);
 
-    router.get("/moves", function(req, res, next){
+    router.get("/getUserData", function(req, res, next){
 
         var getMoves = new Promise(function(resolve, reject) {
             req.up.moves.get(req.query, function (err, data) {
@@ -89,8 +90,13 @@ module.exports = function(app){
                     metrics : dateLog[date]
                 })
             });
-
-            res.json(log);
+            User.findOne({_id: req.user._id}, function(err, foundUser){
+              foundUser.log = foundUser.log.concat(log);
+              foundUser.save(function(err, savedUser){
+                console.log('saved the log!');
+                res.json(log);
+              });
+            })
         });
     });
 

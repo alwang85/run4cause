@@ -6,11 +6,12 @@ var Promise = require('bluebird');
 var request = Promise.promisify(require('request'));
 var Fitbit = require('fitbit');
 var FitbitApiClient = require("fitbit-node");
+var User = require('mongoose').model('User');
 
 module.exports = function(app) {
     var fitbitConfig = app.getValue('env').FITBIT;
 
-    router.get('/getUserSteps', function (req, res, next) {
+    router.get('/getUserData', function (req, res, next) {
         var tokenSecret = req.user.fitbit.tokenSecret;
         var token = req.user.fitbit.token;
         var id = req.user.fitbit.id;
@@ -44,7 +45,13 @@ module.exports = function(app) {
                     };
                    result.push(tempObj);
                 });
-                res.json(result);
+                User.findOne({_id: req.user._id}, function(err, foundUser){
+                  foundUser.log = foundUser.log.concat(result);
+                  foundUser.save(function(err, savedUser){
+                    console.log('saved the log!');
+                    res.json(result);
+                  });
+                })
             })
             .catch(function(err) {
                 next(err);

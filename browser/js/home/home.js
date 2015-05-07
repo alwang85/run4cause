@@ -7,7 +7,7 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('HomeController', function($http, $scope, JawboneFactory){
+app.controller('HomeController', function($http, $scope, JawboneFactory, FitbitFactory, Users){
     $scope.getFitbitData = function(){
         $http.get('/api/fitbit/getUserSteps').then(function(response){
             console.log(response.data);
@@ -21,5 +21,22 @@ app.controller('HomeController', function($http, $scope, JawboneFactory){
         }).then(function(data) {
             console.log(data);
         });
+    };
+    $scope.getData = function(){
+      Users.getCurrentUser().then(function(user){
+        if (user.fitbit.id){
+          FitbitFactory.getFitbitData.then(function(data){
+            console.log('fitbit', data);
+          })
+        }
+        else if (user.jawbone.id){
+          JawboneFactory.getJawboneData.then(function(data){
+            console.log('jawbone', data);
+          })
+        }
+        else {
+          console.log('no sports data');
+        }
+      });
     };
 });
