@@ -4,11 +4,13 @@ var passport = require('passport');
 var JawboneStrategy = require('passport-oauth').OAuth2Strategy;
 var Promise = require('bluebird');
 var mongoose = require('mongoose');
+var OAuth2 = require('oauth').OAuth2;
 var UserModel = mongoose.model('User');
 
 module.exports = function(app) {
     var jawboneConfig = app.getValue('env').JAWBONE;
 
+    // specifying credentials
     var jawboneCredentials = {
         clientID         : jawboneConfig.clientID,
         clientSecret     : jawboneConfig.clientSecret,
@@ -16,6 +18,9 @@ module.exports = function(app) {
         tokenURL         : jawboneConfig.tokenURL,
         callbackURL      : jawboneConfig.callbackURL
     };
+
+    // defining oauth2 for ajax jawbone authentication
+    var jawboneOauth = new OAuth2(jawboneCredentials.clientID, jawboneCredentials.clientSecret, '', jawboneCredentials.authorizationURL, jawboneCredentials.tokenURL);
 
     var jawboneStrategy = function(token, refreshToken, profile, done) {
         var options = {
@@ -51,7 +56,7 @@ module.exports = function(app) {
                     });
                 }
             });
-        })
+        });
     };
 
     // creating jawbone authentication
@@ -67,5 +72,24 @@ module.exports = function(app) {
         function (req, res) {
             res.redirect('/');
         });
+
+
+    // Ajax
+    app.post('/auth/ajax/jawbone', function(req, res, next) {
+        var code = req.body.code;
+        var params = {
+            clientID         : jawboneConfig.clientID,
+            clientSecret     : jawboneConfig.clientSecret,
+            grant_type       : 'authorization_code',
+            redirect_uri     : req.body.redirectUri,
+            tokenURL         : jawboneConfig.tokenURL
+        };
+
+        jawboneOauth.getOAuthAccessToken(code, params, function(err, accessToken, refreshToken, params) {
+            if (err) return next(err);
+            console.log(accessToken);
+            res.send(accessToken);
+        });
+    });
 };
 

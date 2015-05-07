@@ -1,11 +1,34 @@
 'use strict';
-var app = angular.module('FullstackGeneratedApp', ['ui.router', 'fsaPreBuilt']);
+var app = angular.module('FullstackGeneratedApp', ['ui.router', 'fsaPreBuilt', 'satellizer']);
 
+// base url provider
 app.config(function ($urlRouterProvider, $locationProvider) {
     // This turns off hashbang urls (/#about) and changes it to something normal (/about)
     $locationProvider.html5Mode(true);
     // If we go to a URL that ui-router doesn't have registered, go to the "/" url.
     $urlRouterProvider.otherwise('/');
+});
+
+app.constant("Client", {
+   "jawbone" : {
+       "client_id" : "jiASw9I4DB0",
+       "authorizationURL": 'https://jawbone.com/auth/oauth2/auth',
+       "scope" : ['basic_read', 'sleep_read', 'move_read']
+   }
+});
+
+// base auth provider
+app.config(function($authProvider, Client) {
+    $authProvider.oauth2({
+        name : 'jawbone',
+        clientId: Client.jawbone.client_id,
+        url  : '/auth/ajax/jawbone',
+        authorizationEndpoint : Client.jawbone.authorizationURL,
+        redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
+        scope: Client.jawbone.scope,
+        requiredUrlParams: ['scope'],
+        scopeDelimiter: ' '
+    });
 });
 
 // This app.run is for controlling access to specific states.
