@@ -276,7 +276,14 @@ var seedEvents = function() {
                 type: 'goal',
                 creator: foundUsers[0]._id,
                 strategy: foundStrategies[0]._id,
-                challengers: foundUsers,
+                challengers: [{
+                    user: foundUsers[0],
+                    join: new Date('2015-05-01')
+                },
+                {
+                    user: foundUsers[1],
+                    join: new Date('2015-05-02')
+                }],
                 startDate: new Date('2015-05-01'),
                 endDate: new Date('2015-05-03'),
                 nonProfit: foundNonprofits[0]._id
@@ -285,17 +292,24 @@ var seedEvents = function() {
                 type: 'lifeStyle',
                 creator: foundUsers[1]._id,
                 strategy: foundStrategies[1]._id,
-                challengers: foundUsers,
+                challengers: [{
+                    user: foundUsers[0],
+                    join: new Date('2015-05-02')
+                },
+                {
+                    user: foundUsers[1],
+                    join: new Date('2015-05-02')
+                }],
                 startDate: new Date('2015-05-02'),
                 endDate: new Date('2015-05-02'),
                 nonProfit: foundNonprofits[1]._id
             }];
 
-            return q.invoke(Events, 'create', events).then(function(event){
-                foundNonprofits[0].events.push(event);
-                foundNonprofits[0].save();
-
-            });
+            return q.invoke(Events, 'create', events)
+                .then(function(event){
+                    foundNonprofits[0].events.push(event);
+                    foundNonprofits[0].save();
+                });
         });
 };
 
