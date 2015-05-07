@@ -4,6 +4,7 @@ module.exports = function(app){
     router.use('/tutorial', require('./tutorial'));
     router.use('/members', require('./members'));
     router.use('/jawbone', require('./jawbone')(app));
+    router.use('/fitbit', require('./fitbit')(app));
 
     // Make sure this is after all of
     // the registered routes!
