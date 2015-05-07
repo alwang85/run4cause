@@ -7,10 +7,19 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('HomeController', function($http, $scope){
+app.controller('HomeController', function($http, $scope, JawboneFactory){
     $scope.getFitbitData = function(){
         $http.get('/api/fitbit/getUserSteps').then(function(response){
             console.log(response.data);
         })
-    }
+    };
+
+    $scope.getJawboneData = function() {
+        JawboneFactory.getJawboneData({
+            start_time : 0,
+            end_time   : 1431030511
+        }).then(function(data) {
+            console.log(data);
+        });
+    };
 });
