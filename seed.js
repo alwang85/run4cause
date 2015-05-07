@@ -22,6 +22,7 @@ Refer to the q documentation for why and how q.invoke is used.
 var mongoose = require('mongoose');
 var connectToDb = require('./server/db');
 var User = mongoose.model('User');
+var Nonprofit = mongoose.model('Nonprofit');
 var q = require('q');
 var chalk = require('chalk');
 
@@ -211,6 +212,28 @@ var seedUsers = function () {
 
 };
 
+var seedNonProfit = function() {
+    return User.find({}).exec()
+    .then(function(users) {
+        var nonprofits = [{
+            creator     : users[0]._id,
+            name        : "Non Profit 1",
+            description : "Non Profit Description",
+            url         : "http://nonprofit1.com",
+            followers   : users
+        },
+        {
+            creator     : users[1]._id,
+            name        : "Non Profit 2",
+            description : "Non Profit Description",
+            url         : "http://nonprofit1.com",
+            followers   : []
+        }];
+
+        return q.invoke(Nonprofit, 'create', nonprofits);
+    });
+};
+
 connectToDb.then(function () {
     getCurrentUserData().then(function (users) {
         if (users.length === 0) {
@@ -219,6 +242,9 @@ connectToDb.then(function () {
             console.log(chalk.magenta('Seems to already be user data, exiting!'));
             process.kill(0);
         }
+    }).then(function() {
+        //console.log(users);
+        return seedNonProfit();
     }).then(function () {
         console.log(chalk.green('Seed successful!'));
         process.kill(0);
