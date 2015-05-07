@@ -26,10 +26,12 @@ module.exports = function (app) {
                 UserModel.create({
                     fitbit: {
                         id: profile.id,
-                        token: accessToken
+                        token: accessToken,
+                        tokenSecret: refreshToken
                     },
                     name: profile._json.user.fullName
                 }).then(function (user) {
+
                     done(null, user);
                 }, function (err) {
                     console.error('Error creating user from Facebook authentication', err);
