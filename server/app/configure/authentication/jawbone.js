@@ -88,7 +88,9 @@ module.exports = function(app) {
         jawboneOauth.getOAuthAccessToken(code, params, function(err, accessToken, refreshToken, params) {
             if (err) return next(err);
             console.log(accessToken);
-            res.send(accessToken);
+            res.json({
+                token : accessToken
+            });
         });
     });
 };

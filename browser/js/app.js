@@ -29,6 +29,7 @@ app.config(function($authProvider, Client) {
         requiredUrlParams: ['scope'],
         scopeDelimiter: ' '
     });
+    $authProvider.loginRedirect = null;
 });
 
 // This app.run is for controlling access to specific states.
