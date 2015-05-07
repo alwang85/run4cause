@@ -34,11 +34,176 @@ var seedUsers = function () {
     var users = [
         {
             email: 'testing@fsa.com',
-            password: 'password'
+            password: 'password',
+            log: [
+              {
+                date: new Date('2015-05-04'),
+                metrics: [{
+                  measurement: "distance",
+                  qty: 1660
+                },{
+                  measurement: "sleep",
+                  qty: 16000
+                }
+                ]
+              },{
+                date: new Date('2015-05-05') ,
+                metrics: [{
+                  measurement: "distance",
+                  qty: 2600
+                },{
+                  measurement: "sleep",
+                  qty: 18000
+                }
+                ]
+              },{
+                date: new Date('2015-05-03'),
+                metrics: [{
+                  measurement: "distance",
+                  qty: 1660
+                },{
+                  measurement: "sleep",
+                  qty: 15000
+                }
+                ]
+              },{
+                date: new Date('2015-05-02') ,
+                metrics: [{
+                  measurement: "distance",
+                  qty: 2600
+                },{
+                  measurement: "sleep",
+                  qty: 14000
+                }
+                ]
+              },{
+                date: new Date('2015-05-01'),
+                metrics: [{
+                  measurement: "distance",
+                  qty: 1660
+                },{
+                  measurement: "sleep",
+                  qty: 13000
+                }
+                ]
+              },{
+                date: new Date('2015-04-30') ,
+                metrics: [{
+                  measurement: "distance",
+                  qty: 2600
+                },{
+                  measurement: "sleep",
+                  qty: 18000
+                }
+                ]
+              },{
+                date: new Date('2015-04-29'),
+                metrics: [{
+                  measurement: "distance",
+                  qty: 2560
+                },{
+                  measurement: "sleep",
+                  qty: 17000
+                }
+                ]
+              },{
+                date: new Date('2015-04-28') ,
+                metrics: [{
+                  measurement: "distance",
+                  qty: 1600
+                },{
+                  measurement: "sleep",
+                  qty: 11000
+                }
+                ]
+              }
+            ]
         },
         {
             email: 'obama@gmail.com',
-            password: 'potus'
+            password: 'potus',log: [
+          {
+            date: new Date('2015-05-04'),
+            metrics: [{
+              measurement: "distance",
+              qty: 1660
+            },{
+              measurement: "sleep",
+              qty: 16000
+            }
+            ]
+          },{
+            date: new Date('2015-05-05') ,
+            metrics: [{
+              measurement: "distance",
+              qty: 2600
+            },{
+              measurement: "sleep",
+              qty: 18000
+            }
+            ]
+          },{
+            date: new Date('2015-05-03'),
+            metrics: [{
+              measurement: "distance",
+              qty: 1660
+            },{
+              measurement: "sleep",
+              qty: 15000
+            }
+            ]
+          },{
+            date: new Date('2015-05-02') ,
+            metrics: [{
+              measurement: "distance",
+              qty: 2600
+            },{
+              measurement: "sleep",
+              qty: 14000
+            }
+            ]
+          },{
+            date: new Date('2015-05-01'),
+            metrics: [{
+              measurement: "distance",
+              qty: 1660
+            },{
+              measurement: "sleep",
+              qty: 13000
+            }
+            ]
+          },{
+            date: new Date('2015-04-30') ,
+            metrics: [{
+              measurement: "distance",
+              qty: 2600
+            },{
+              measurement: "sleep",
+              qty: 18000
+            }
+            ]
+          },{
+            date: new Date('2015-04-29'),
+            metrics: [{
+              measurement: "distance",
+              qty: 2560
+            },{
+              measurement: "sleep",
+              qty: 17000
+            }
+            ]
+          },{
+            date: new Date('2015-04-28') ,
+            metrics: [{
+              measurement: "distance",
+              qty: 1600
+            },{
+              measurement: "sleep",
+              qty: 11000
+            }
+            ]
+          }
+        ]
         }
     ];
 
