@@ -1,5 +1,8 @@
 'use strict';
 var router = require('express').Router();
+var _ = require('lodash');
+var Promise = require('bluebird');
+
 module.exports = function(app){
     var jawboneConfig = app.getValue('env').JAWBONE;
 
@@ -15,10 +18,79 @@ module.exports = function(app){
     router.use(jawboneOptions);
 
     router.get("/moves", function(req, res, next){
-        console.log(req.up);
-        req.up.moves.get(req.query, function(err, data){
-            if(err) return next(err);
-            res.json(JSON.parse(data)).status(200);
+
+        var getMoves = new Promise(function(resolve, reject) {
+            req.up.moves.get(req.query, function (err, data) {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+
+                data = JSON.parse(data);
+
+                resolve(data);
+            });
+        });
+
+        var getSleeps = new Promise(function(resolve, reject) {
+            req.up.sleeps.get(req.query, function (err, data) {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+
+                data = JSON.parse(data);
+
+                resolve(data);
+            });
+        });
+
+        Promise.all([
+            getMoves,
+            getSleeps
+        ]).spread(function(moves, sleeps) {
+            var items = moves.data.items.concat(sleeps.data.items);
+            var dateLog = {};
+
+            _.forEach(items, function(item) {
+                var date = item.date.toString();
+
+                dateLog[date] = dateLog[date] || [];
+
+                if (item.type === 'move') {
+                    dateLog[date].push(
+                        {
+                            measurement: 'calories',
+                            qty: Math.round(item.details.calories)
+                        },
+                        {
+                            measurement: 'steps',
+                            qty: item.details.steps
+                        },
+                        {
+                            measurement: 'distance',
+                            qty: item.details.distance // in meters
+                        }
+                    );
+                } else {
+                    dateLog[date].push(
+                        {
+                            measurement: 'sleep',
+                            qty: item.details.duration
+                        }
+                    );
+                }
+            });
+
+            var log = [];
+            _.forEach(_.keys(dateLog).sort(), function(date) {
+                log.push({
+                    date : new Date(date.slice(0, 4), date.slice(4, 6), date.slice(6)),
+                    metrics : dateLog[date]
+                })
+            });
+
+            res.json(log);
         });
     });
 
