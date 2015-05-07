@@ -47,26 +47,8 @@ app.factory('Users', function ($http) {
   //  });
   //};
 
-  var getData = function(){
-    getCurrentUser().then(function(user){
-      if (user.fitbit.id){
-        return $http.get('/api/fitbit/getUserData').then(function(res){
-          return res.data;
-        });
-      }
-      else if (user.jawbone.id){
-        return $http.get('/api/jawbone/getUserData').then(function(res){
-          return res.data;
-        });
-      }
-      else {
-        console.log('no sports data');
-      }
-    });
-  };
-
   return {
-
+    getCurrentUser
   };
 
 });
