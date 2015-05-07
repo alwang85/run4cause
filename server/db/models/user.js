@@ -18,7 +18,8 @@ var schema = new mongoose.Schema({
     },
     fitbit: {
         id: String,
-        token: String
+        token: String,
+        tokenSecret: String
     },
     name: {
         type:String
