@@ -291,7 +291,11 @@ var seedEvents = function() {
                 nonProfit: foundNonprofits[1]._id
             }];
 
-            return q.invoke(Events, 'create', events);
+            return q.invoke(Events, 'create', events).then(function(event){
+                foundNonprofits[0].events.push(event);
+                foundNonprofits[0].save();
+
+            });
         });
 };
 
@@ -304,7 +308,6 @@ connectToDb.then(function () {
             process.kill(0);
         }
     }).then(function() {
-        //console.log(users);
         return seedNonProfit();
     }).then(function() {
         return seedStrategies();
