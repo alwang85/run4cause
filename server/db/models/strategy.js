@@ -8,7 +8,7 @@ var schema = new mongoose.Schema({
     calories: {
         type: Number
     },
-    miles: {
+    distance: {
         type: Number
     },
     sleep: {

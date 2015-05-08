@@ -7,50 +7,120 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('DashboardController', function($http, $scope, User){
+app.controller('DashboardController', function($modal, $http, $scope, User, Event){
     $scope.myGridLayoutOptions = {
         dimensions: [2, 2]
     };
-    $scope.currentUserLog;
-    $scope.userChallenges = ['1','2'];
+
+    $scope.modalOpen = function(){
+        //$state.go('home');
+        var modalInstance = $modal.open({
+            templateUrl: '/js/createEvent/createEvent.html',
+            controller: 'CreateEventController',
+            size: 'lg'
+        });
+    };
     User.getCurrentUser().then(function(user){
         console.log(user);
         $scope.currentUserLog = user.log;
-    });
+        return user;
+        }).then(function(user){
+        Event.getEvent(user._id).then(function(events){
+            console.log(events);
+            $scope.userChallenges = events;
+            })
+        });
+    //$scope.showBackTrigger = function(){
+    //    if(!$scope.showBack) {
+    //        $scope.showBack = true;
+    //    }
+    //    else $scope.showBack = false;
+    //}
 
-    $scope.grids = [{bgColor: "orange"}, {bgColor: "red"}, {bgColor: "green"}, {bgColor: "yellow"}]
-
-    var options = {
-        bezierCurve: false,
-        animationEasing : "easeOutBounce"
-    };
     // Get context with jQuery - using jQuery's .get() method.
     // had to setTimeout since ng-repeat loads before jquery functions load
     // Let Steve know if you find better solutions
     setTimeout (function(){
-        $scope.userChallenges.forEach(function(each, index){
+        $scope.userChallenges.forEach(function(eachChallenge, index){
+            var progress = {
+                calories: {
+                    amount: 0,
+                    percentage: 0
+                },
+                steps: {
+                    amount: 0,
+                    percentage: 0
+                },
+                distance: {
+                    amount: 0,
+                    percentage: 0
+                },
+                sleep: {
+                    amount: 0,
+                    percentage: 0
+                }
+            };
+
+
+            var dateFilteredLog = $scope.currentUserLog.filter(function(eachLog){
+                return eachLog.date>=eachChallenge.startDate && eachLog.date<=eachChallenge.endDate;
+            });
+            dateFilteredLog.forEach(function(eachLog){
+                eachLog.metrics.forEach(function(eachMetric){
+                    progress[eachMetric.measurement].amount+=eachMetric.qty
+                })
+            });
+            for(var eachProgress in progress){
+                for(var eachMetric in eachChallenge.strategy){
+                    if(eachMetric===eachProgress){
+                        progress[eachProgress].percentage = parseInt(progress[eachProgress].amount)/parseInt(eachChallenge.strategy[eachMetric]);
+                    }
+                }
+            };
+            var getTotalPercentage = function(){
+                return (progress.calories.percentage +progress.steps.percentage+progress.distance.percentage+progress.sleep.percentage)/4
+            };
+
             var data = [
                 {
-                    value: 300,
+                    value: getTotalPercentage().toFixed(2),
                     color:"#F7464A",
                     highlight: "#FF5A5E",
-                    label: "Red"
+                    label: "Progress"
                 },
                 {
-                    value: 50,
+                    value: (1-getTotalPercentage()).toFixed(2),
                     color: "#46BFBD",
                     highlight: "#5AD3D1",
-                    label: "Green"
-                },
-                {
-                    value: 100,
-                    color: "#FDB45C",
-                    highlight: "#FFC870",
-                    label: "Yellow"
+                    label: "Remaining"
                 }
             ];
+
+            var option = {
+                segmentShowStroke : true,
+                showScale: true,
+                scaleShowLabels: true,
+                scaleFontSize: 20,
+                scaleLabel: "<%=value%>"
+            };
+            var data2 = {
+                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                datasets: [
+                    {
+                        label: "My First dataset",
+                        fillColor: "rgba(220,220,220,0.5)",
+                        strokeColor: "rgba(220,220,220,0.8)",
+                        highlightFill: "rgba(220,220,220,0.75)",
+                        highlightStroke: "rgba(220,220,220,1)",
+                        data: [65, 59, 80, 81, 56, 55, 40]
+                    }
+                ]
+            };
+
             var ctx = $(".myChart").get(index).getContext("2d");
-            var myDoughnutChart = new Chart(ctx).Doughnut(data,options);
+            var myDoughnutChart = new Chart(ctx).Doughnut(data,option);
+            //var ctx = $(".myChartB").get(index).getContext("2d");
+            //var myBarChart = new Chart(ctx).Bar(data2,{ barShowStroke: false});
         });
-    },100)
+    },1000)
 });

@@ -1,5 +1,5 @@
 'use strict';
-var app = angular.module('FullstackGeneratedApp', ['ui.router', 'fsaPreBuilt', 'satellizer', 'famous.angular']);
+var app = angular.module('FullstackGeneratedApp', ['ui.router', 'fsaPreBuilt', 'satellizer', 'famous.angular', 'ui.bootstrap']);
 
 // base url provider
 app.config(function ($urlRouterProvider, $locationProvider) {

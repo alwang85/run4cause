@@ -1,5 +1,7 @@
 * {
-  box-sizing: border-box;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;
 }
 
 @mixin clearfix {
@@ -23,9 +25,19 @@ body {
     @include clearfix();
     background: #FFF;
     border-radius: 5px;
-    height: 100%;
-    padding: 0;
+    height: 250px;
+    margin: 10px;
+    width: 31%;
+    padding: 20px;
     overflow: hidden;
+
+    img {
+        width: 150px;
+        height: 150px;
+        position: absolute;
+        top: 19%;
+        left: 29%;;
+    }
 
     .box-front {
         width: 100%;
@@ -64,6 +76,7 @@ body {
         }
         .box-detail {
             padding: 15px;
+            text-align: center;
 
         }
     }

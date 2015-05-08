@@ -42,81 +42,105 @@ var seedUsers = function () {
               {
                 date: new Date('2015-05-04'),
                 metrics: [{
+                    measurement: "calories",
+                    qty: 800
+                },{
                   measurement: "distance",
-                  qty: 1660
+                  qty: 2
                 },{
                   measurement: "sleep",
-                  qty: 16000
+                  qty: 8
                 }
                 ]
               },{
                 date: new Date('2015-05-05') ,
                 metrics: [{
+                    measurement: "calories",
+                    qty: 1200
+                },{
                   measurement: "distance",
-                  qty: 2600
+                  qty: 2
                 },{
                   measurement: "sleep",
-                  qty: 18000
+                  qty: 8
                 }
                 ]
               },{
                 date: new Date('2015-05-03'),
                 metrics: [{
+                    measurement: "calories",
+                    qty: 1100
+                },{
                   measurement: "distance",
-                  qty: 1660
+                  qty: 2
                 },{
                   measurement: "sleep",
-                  qty: 15000
+                  qty: 7
                 }
                 ]
               },{
                 date: new Date('2015-05-02') ,
                 metrics: [{
+                    measurement: "calories",
+                    qty: 1000
+                },{
                   measurement: "distance",
-                  qty: 2600
+                  qty: 3
                 },{
                   measurement: "sleep",
-                  qty: 14000
+                  qty: 6
                 }
                 ]
               },{
                 date: new Date('2015-05-01'),
                 metrics: [{
+                    measurement: "calories",
+                    qty: 900
+                },{
                   measurement: "distance",
-                  qty: 1660
+                  qty: 4
                 },{
                   measurement: "sleep",
-                  qty: 13000
+                  qty: 5
                 }
                 ]
               },{
                 date: new Date('2015-04-30') ,
                 metrics: [{
+                    measurement: "calories",
+                    qty: 1100
+                },{
                   measurement: "distance",
-                  qty: 2600
+                  qty: 2
                 },{
                   measurement: "sleep",
-                  qty: 18000
+                  qty: 5
                 }
                 ]
               },{
                 date: new Date('2015-04-29'),
                 metrics: [{
+                    measurement: "calories",
+                    qty: 1300
+                },{
                   measurement: "distance",
-                  qty: 2560
+                  qty: 4
                 },{
                   measurement: "sleep",
-                  qty: 17000
+                  qty: 6
                 }
                 ]
               },{
                 date: new Date('2015-04-28') ,
                 metrics: [{
+                    measurement: "calories",
+                    qty: 1100
+                },{
                   measurement: "distance",
-                  qty: 1600
+                  qty: 3
                 },{
                   measurement: "sleep",
-                  qty: 11000
+                  qty: 6
                 }
                 ]
               }
@@ -128,81 +152,105 @@ var seedUsers = function () {
           {
             date: new Date('2015-05-04'),
             metrics: [{
+                measurement: "calories",
+                qty: 800
+            },{
               measurement: "distance",
-              qty: 1660
+              qty: 3
             },{
               measurement: "sleep",
-              qty: 16000
+              qty: 6
             }
             ]
           },{
             date: new Date('2015-05-05') ,
             metrics: [{
+                measurement: "calories",
+                qty: 1200
+            },{
               measurement: "distance",
-              qty: 2600
+              qty: 5
             },{
               measurement: "sleep",
-              qty: 18000
+              qty: 7
             }
             ]
           },{
             date: new Date('2015-05-03'),
             metrics: [{
+                measurement: "calories",
+                qty: 1300
+            },{
               measurement: "distance",
-              qty: 1660
+              qty: 3
             },{
               measurement: "sleep",
-              qty: 15000
+              qty: 7
             }
             ]
           },{
             date: new Date('2015-05-02') ,
             metrics: [{
+                measurement: "calories",
+                qty: 900
+            },{
               measurement: "distance",
-              qty: 2600
+              qty: 4
             },{
               measurement: "sleep",
-              qty: 14000
+              qty: 6
             }
             ]
           },{
             date: new Date('2015-05-01'),
             metrics: [{
+                measurement: "calories",
+                qty: 1300
+            },{
               measurement: "distance",
-              qty: 1660
+              qty: 4
             },{
               measurement: "sleep",
-              qty: 13000
+              qty: 6
             }
             ]
           },{
             date: new Date('2015-04-30') ,
             metrics: [{
+                measurement: "calories",
+                qty: 1100
+            },{
               measurement: "distance",
-              qty: 2600
+              qty: 4
             },{
               measurement: "sleep",
-              qty: 18000
+              qty: 7
             }
             ]
           },{
             date: new Date('2015-04-29'),
             metrics: [{
+                measurement: "calories",
+                qty: 1200
+            },{
               measurement: "distance",
-              qty: 2560
+              qty: 5
             },{
               measurement: "sleep",
-              qty: 17000
+              qty: 6
             }
             ]
           },{
             date: new Date('2015-04-28') ,
             metrics: [{
+                measurement: "calories",
+                qty: 1100
+            },{
               measurement: "distance",
-              qty: 1600
+              qty: 5
             },{
               measurement: "sleep",
-              qty: 11000
+              qty: 7
             }
             ]
           }
@@ -241,13 +289,13 @@ var seedStrategies = function() {
             var strategies = [{
                 steps: 6000,
                 calories: 2000,
-                miles: 20,
+                distance: 20,
                 sleep: 18
             },
             {
                 steps: 2000,
                 calories: 1200,
-                miles: 6,
+                distance: 6,
                 sleep: 7
             }];
 
@@ -290,7 +338,7 @@ var seedEvents = function() {
             },
             {
                 type: 'lifeStyle',
-                creator: foundUsers[1]._id,
+                creator: foundUsers[0]._id,
                 strategy: foundStrategies[1]._id,
                 challengers: [{
                     user: foundUsers[0],
@@ -303,7 +351,56 @@ var seedEvents = function() {
                 startDate: new Date('2015-05-02'),
                 endDate: new Date('2015-05-02'),
                 nonProfit: foundNonprofits[1]._id
-            }];
+            },
+            {
+                type: 'lifeStyle',
+                creator: foundUsers[0]._id,
+                strategy: foundStrategies[1]._id,
+                challengers: [{
+                    user: foundUsers[0],
+                    join: new Date('2015-05-02')
+                },
+                    {
+                        user: foundUsers[1],
+                        join: new Date('2015-05-02')
+                    }],
+                startDate: new Date('2015-05-02'),
+                endDate: new Date('2015-05-02'),
+                nonProfit: foundNonprofits[1]._id
+            },
+            {
+                type: 'lifeStyle',
+                creator: foundUsers[0]._id,
+                strategy: foundStrategies[1]._id,
+                challengers: [{
+                    user: foundUsers[0],
+                    join: new Date('2015-05-02')
+                },
+                    {
+                        user: foundUsers[1],
+                        join: new Date('2015-05-02')
+                    }],
+                startDate: new Date('2015-05-02'),
+                endDate: new Date('2015-05-02'),
+                nonProfit: foundNonprofits[1]._id
+            },
+            {
+                type: 'lifeStyle',
+                creator: foundUsers[1]._id,
+                strategy: foundStrategies[1]._id,
+                challengers: [{
+                    user: foundUsers[0],
+                    join: new Date('2015-05-02')
+                },
+                    {
+                        user: foundUsers[1],
+                        join: new Date('2015-05-02')
+                    }],
+                startDate: new Date('2015-05-02'),
+                endDate: new Date('2015-05-02'),
+                nonProfit: foundNonprofits[1]._id
+            }
+            ];
 
             return q.invoke(Events, 'create', events)
                 .then(function(event){
