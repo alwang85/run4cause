@@ -1,8 +1,18 @@
-<fa-app id="dashBoard">
-    <fa-grid-layout fa-options="myGridLayoutOptions">
-        <fa-modifier ng-repeat="grid in grids"
-                     fa-size="[undefined, undefined]">
-            <fa-surface fa-background-color="grid.bgColor"></fa-surface>
-        </fa-modifier>
-    </fa-grid-layout>
-</fa-app>
+<div class="user-panel-container">
+    <div class="container">
+        <div class="box-container col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <div class="box-graph">
+                <img ng-click="modalOpen()" src="https://www.medable.com/images/Icon---Plus-Sign.png">
+            </div>
+            <div class="box-detail">
+            </div>
+        </div>
+        <div class="box-container col-xs-12 col-sm-12 col-md-4 col-lg-4" ng-repeat="challenge in userChallenges">
+            <canvas class="myChart box-graph">
+            </canvas>
+                <div class="box-detail">
+                    <h5>{{challenge.nonProfit.name}}</h5>
+                </div>
+        </div>
+    </div>
+</div>
