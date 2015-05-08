@@ -7,10 +7,15 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('DashboardController', function($http, $scope){
+app.controller('DashboardController', function($http, $scope, User){
     $scope.myGridLayoutOptions = {
         dimensions: [2, 2]
     };
+    $scope.currentUserLog;
+    User.getCurrentUser().then(function(user){
+        console.log(user);
+        $scope.currentUserLog = user.log;
+    });
 
     $scope.grids = [{bgColor: "orange"}, {bgColor: "red"}, {bgColor: "green"}, {bgColor: "yellow"}]
 });
