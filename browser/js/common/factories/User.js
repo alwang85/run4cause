@@ -1,5 +1,4 @@
-'use strict';
-app.factory('Users', function ($http) {
+app.factory('User', function ($http) {
 
   //var createUser = function(user) {
   //  return $http.post('/api/users', user).then(function(res) {
@@ -49,6 +48,6 @@ app.factory('Users', function ($http) {
 
   return {
     getCurrentUser
-  };
+  }
 
 });
