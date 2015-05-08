@@ -1,13 +1,11 @@
 <div class="user-panel-container">
     <div class="container">
-        <div class="box-container col-xs-12 col-sm-12 col-md-4 col-lg-4">
-            <div class="box-front">
-                <div class="box-thumbnail">
-                </div>
+        <div class="box-container col-xs-12 col-sm-12 col-md-4 col-lg-4" ng-repeat="challenge in userChallenges">
+            <canvas class="myChart" class="box-graph">
+            </canvas>
                 <div class="box-detail">
-                    Lorem Ipsum
+                    {{challenge}}
                 </div>
-            </div>
         </div>
     </div>
 </div>
