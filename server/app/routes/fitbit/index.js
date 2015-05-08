@@ -6,11 +6,12 @@ var Promise = require('bluebird');
 var request = Promise.promisify(require('request'));
 var Fitbit = require('fitbit');
 var FitbitApiClient = require("fitbit-node");
+var User = require('mongoose').model('User');
 
 module.exports = function(app) {
     var fitbitConfig = app.getValue('env').FITBIT;
 
-    router.get('/getUserSteps', function (req, res, next) {
+    router.get('/getUserData', function (req, res, next) {
         var tokenSecret = req.user.fitbit.tokenSecret;
         var token = req.user.fitbit.token;
         var id = req.user.fitbit.id;
@@ -28,7 +29,6 @@ module.exports = function(app) {
         Promise.all(promises)
             .spread(function(calories, steps, distance, sleep) {
                 sleep = JSON.parse(sleep[0])["sleep-minutesAsleep"];
-                console.log(sleep);
                 calories = JSON.parse(calories[0])["activities-tracker-calories"];
                 steps = JSON.parse(steps[0])["activities-tracker-steps"];
                 distance = JSON.parse(distance[0])["activities-tracker-distance"];
@@ -39,12 +39,19 @@ module.exports = function(app) {
                         date: item.dateTime,
                         metrics: [{measurement: 'calories', qty:item.value},
                                   {measurement: 'steps', qty:steps[index].value},
-                                  {measurement: 'distance', qty:distance[index].value},
-                                  {measurement:'sleep', qty:sleep[index].value}]
+                                  {measurement: 'distance', qty:Math.round(distance[index].value * 1609.34)},
+                                  {measurement:'sleep', qty:Math.round(sleep[index].value * 60)}]
                     };
+
                    result.push(tempObj);
                 });
-                res.json(result);
+                User.findOne({_id: req.user._id}, function(err, foundUser){
+                  foundUser.log = foundUser.log.concat(result);
+                  foundUser.save(function(err, savedUser){
+                    console.log('saved the log!');
+                    res.json(result);
+                  });
+                })
             })
             .catch(function(err) {
                 next(err);
