@@ -19,7 +19,9 @@ module.exports = function(app){
     router.use(jawboneOptions);
 
     router.get("/getUserData", function(req, res, next){
+        console.log(req.user);
 
+      //console.log(req.up);
         var getMoves = new Promise(function(resolve, reject) {
             req.up.moves.get(req.query, function (err, data) {
                 if (err) {
@@ -50,11 +52,13 @@ module.exports = function(app){
             getMoves,
             getSleeps
         ]).spread(function(moves, sleeps) {
+          console.log(moves);
             var items = moves.data.items.concat(sleeps.data.items);
             var dateLog = {};
 
             _.forEach(items, function(item) {
                 var date = item.date.toString();
+                console.log(date);
 
                 dateLog[date] = dateLog[date] || [];
 
@@ -90,6 +94,7 @@ module.exports = function(app){
                     metrics : dateLog[date]
                 })
             });
+          console.log(log);
             User.findOne({_id: req.user._id}, function(err, foundUser){
               foundUser.log = foundUser.log.concat(log);
               foundUser.save(function(err, savedUser){

@@ -9,7 +9,7 @@ app.config(function ($stateProvider) {
 
 app.controller('HomeController', function($http, $scope, JawboneFactory, FitbitFactory, Users){
     $scope.getFitbitData = function(){
-        $http.get('/api/fitbit/getUserSteps').then(function(response){
+        $http.get('/api/fitbit/getUserData').then(function(response){
             console.log(response.data);
         })
     };

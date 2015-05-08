@@ -29,7 +29,6 @@ module.exports = function(app) {
         Promise.all(promises)
             .spread(function(calories, steps, distance, sleep) {
                 sleep = JSON.parse(sleep[0])["sleep-minutesAsleep"];
-                console.log(sleep);
                 calories = JSON.parse(calories[0])["activities-tracker-calories"];
                 steps = JSON.parse(steps[0])["activities-tracker-steps"];
                 distance = JSON.parse(distance[0])["activities-tracker-distance"];
@@ -40,9 +39,10 @@ module.exports = function(app) {
                         date: item.dateTime,
                         metrics: [{measurement: 'calories', qty:item.value},
                                   {measurement: 'steps', qty:steps[index].value},
-                                  {measurement: 'distance', qty:distance[index].value},
-                                  {measurement:'sleep', qty:sleep[index].value}]
+                                  {measurement: 'distance', qty:Math.round(distance[index].value * 1609.34)},
+                                  {measurement:'sleep', qty:Math.round(sleep[index].value * 60)}]
                     };
+
                    result.push(tempObj);
                 });
                 User.findOne({_id: req.user._id}, function(err, foundUser){
