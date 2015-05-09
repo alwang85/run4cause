@@ -92,7 +92,7 @@ module.exports = function(app){
                 log.push({
                     date : new Date(date.slice(0, 4), date.slice(4, 6), date.slice(6)),
                     metrics : dateLog[date]
-                })
+                });
             });
           console.log(log);
             User.findOne({_id: req.user._id}, function(err, foundUser){
@@ -101,7 +101,7 @@ module.exports = function(app){
                 console.log('saved the log!');
                 res.json(log);
               });
-            })
+            });
         });
     });
 

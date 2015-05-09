@@ -7,6 +7,6 @@ app.factory('FitbitFactory', function($http) {
   };
 
   return {
-    getFitbitData
+    getFitbitData : getFitbitData
   };
 });

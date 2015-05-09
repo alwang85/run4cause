@@ -9,6 +9,6 @@ app.factory('JawboneFactory', function($http) {
   };
 
   return {
-    getJawboneData
+    getJawboneData : getJawboneData
   };
 });

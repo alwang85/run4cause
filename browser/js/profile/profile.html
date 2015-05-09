@@ -1,0 +1,11 @@
+<div class="profile header-padding">
+    <div class="container">
+        <pre> {{ user | json }}</pre>
+
+        <div class="inactive">
+            <a ng-repeat="device in link_devices" ng-click="linkDevice(device)" class="btn btn-default">Link To {{device}}</a>
+            <a ng-click="refreshTokens()" class="btn btn-default">Refresh Tokens</a>
+        </div>
+        <a ng-click="updateLogs()">Update Logs</a>
+    </div>
+</div>

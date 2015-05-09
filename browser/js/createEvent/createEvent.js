@@ -10,5 +10,5 @@ app.config(function ($stateProvider) {
 app.controller('CreateEventController', function($modalInstance, $http, $scope, User, Event){
     $scope.closeModal = function(){
         $modalInstance.close();
-    }
+    };
 });

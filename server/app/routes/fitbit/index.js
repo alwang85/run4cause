@@ -51,7 +51,7 @@ module.exports = function(app) {
                     console.log('saved the log!');
                     res.json(result);
                   });
-                })
+                });
             })
             .catch(function(err) {
                 next(err);
