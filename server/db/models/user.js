@@ -1,8 +1,14 @@
 'use strict';
 var crypto = require('crypto');
 var mongoose = require('mongoose');
+var Promise = require('bluebird');
+var request = Promise.promisifyAll(require('request'));
 
 var schema = new mongoose.Schema({
+    active : {type: [String], default: []},
+    firstName : String,
+    lastName  : String,
+    joinedTime : { type: Date, default : Date.now },
     email: {
         type: String
     },
@@ -19,10 +25,7 @@ var schema = new mongoose.Schema({
     fitbit: {
         id: String,
         token: String,
-        tokenSecret: String
-    },
-    name: {
-        type:String
+        expires_in : Number
     },
     friends: [{
       type: mongoose.Schema.Types.ObjectId, ref: 'User'
@@ -56,7 +59,6 @@ schema.pre('save', function (next) {
         this.salt = this.constructor.generateSalt();
         this.password = this.constructor.encryptPassword(this.password, this.salt);
     }
-
     next();
 
 });
@@ -66,6 +68,20 @@ schema.statics.encryptPassword = encryptPassword;
 
 schema.method('correctPassword', function (candidatePassword) {
     return encryptPassword(candidatePassword, this.salt) === this.password;
+});
+
+schema.method('updateLogs', function(cb) {
+    var promises = [];
+
+    var activeDevices = this.active;
+
+    promises = _.map(activeDevices, function(provider) {
+        return request({
+            method : 'GET'
+        })
+    });
+
+    return cb(this.active);
 });
 
 mongoose.model('User', schema);

@@ -29,10 +29,13 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="active"><a href="./">Default <span class="sr-only">(current)</span></a></li>
-                    <li><a href="../navbar-static-top/">Static top</a></li>
-                    <li><a href="../navbar-fixed-top/">Fixed top</a></li>
-                    <li><a ui-sref="login">Login</a></li>
+                    <li ng-repeat="item in items" ng-show="!item.auth || isLoggedIn()">
+                        <a ui-sref-active="active" ui-sref="{{ item.state }}">{{ item.label }}</a>
+                    </li>
+                    <li ng-show="!user"><a ui-sref="login">Login</a></li>
+                    <li ng-show="user">
+                        <a ng-click="logout()">Logout</a>
+                    </li>
                 </ul>
             </div><!--/.nav-collapse -->
     </div><!--/.container -->

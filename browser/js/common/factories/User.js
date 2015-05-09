@@ -1,53 +1,41 @@
-app.factory('User', function ($http) {
+app.factory('UserFactory', function($http, $q, $auth) {
+    var createNewUser = function(newUser) {
+        return $http.post('/api/user/signup', newUser)
+            .then(function(response) {
+                return response.body;
+            })
+            .catch(function(response) {
+                console.log(response);
+                return $q.reject({message : 'Unable to Sign Up'});
+            });
+    };
 
-  //var createUser = function(user) {
-  //  return $http.post('/api/users', user).then(function(res) {
-  //    console.log('res.data', res.data)
-  //    return res.data;
-  //  }, function(err) {
-  //    return 'An Account Is Already Associated With That Email';
-  //  });
-  //};
-  //
-  //var getAllUsers = function () {
-  //  return $http.get('/api/users').then(function(res){
-  //    return res.data; //should be an array of users
-  //  }, function(err){
-  //    throw new Error(err);
-  //  });
-  //};
-  //
-  //var getUser = function(userId){
-  //  return $http.get('/api/users/' + userId).then(function(res){
-  //    return res.data; //should be a user object
-  //  }, function(err){
-  //    throw new Error(err);
-  //  });
-  //};
-  var getCurrentUser = function(){
-    return $http.get('/session').then(function(res){
-      return res.data.user;
-    }, function(err){
-      throw new Error(err);
-    });
-  };
-  //
-  //var updateUser = function(user) {
-  //  //var toSendUser = {};
-  //  //angular.forEach(user, function(info,key){
-  //  //  if(info!==user[key]) {
-  //  //    toSendUser[key]=user[key]
-  //  //  }
-  //  //}); not sure on the logic of the above, commented out works
-  //  return $http.put('/api/users/' + user._id, user).then(function(res) {
-  //    return res.data;
-  //  }, function(err) {
-  //    throw new Error(err);
-  //  });
-  //};
+    var linkDevice = function(provider, user) {
+        return $auth.authenticate(provider, {
+            user : user,
+            provider : provider
+        })
+        .then(function(response) {
+            return response.data.user;
+        })
+        .catch(function(err) {
+            console.log(err);
+        });
+    };
 
-  return {
-    getCurrentUser
-  }
+    var updateLogs = function(user) {
+        $http.put('/api/user/logs/'+user).then(function(response) {
+            return response.data;
+        });
+    };
 
+    // available api to link
+    var availableDevices = ['jawbone', 'fitbit'];
+
+    return {
+        createNewUser : createNewUser,
+        availableDevices : availableDevices,
+        linkDevice : linkDevice,
+        updateLogs : updateLogs
+    };
 });

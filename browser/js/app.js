@@ -14,22 +14,41 @@ app.constant("Client", {
        "client_id" : "jiASw9I4DB0",
        "authorizationURL": 'https://jawbone.com/auth/oauth2/auth',
        "scope" : ['basic_read', 'sleep_read', 'move_read']
-   }
+    },
+    "fitbit" : {
+        "client_id" : "229P8R",
+        "authorizationURL": 'https://api.fitbit.com/oauth2/authorize',
+        "scope" : ['activity', 'sleep', 'profile']
+    }
 });
 
 // base auth provider
 app.config(function($authProvider, Client) {
     $authProvider.oauth2({
+        url  : '/api/user/device',
         name : 'jawbone',
         clientId: Client.jawbone.client_id,
-        url  : '/auth/ajax/jawbone',
         authorizationEndpoint : Client.jawbone.authorizationURL,
-        redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
+        redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host + '/auth/jawbone',
         scope: Client.jawbone.scope,
         requiredUrlParams: ['scope'],
         scopeDelimiter: ' '
     });
+
+    $authProvider.oauth2({
+        url  : '/api/user/device',
+        name : 'fitbit',
+        clientId: Client.fitbit.client_id,
+        authorizationEndpoint : Client.fitbit.authorizationURL,
+        redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host + '/auth/fitbit',
+        scope: Client.fitbit.scope,
+        requiredUrlParams: ['scope'],
+        scopeDelimiter: ' ',
+        popupOptions: { width: 527, height: 582 }
+    });
+
     $authProvider.loginRedirect = null;
+    $authProvider.tokenName = 'user';
 });
 
 // This app.run is for controlling access to specific states.

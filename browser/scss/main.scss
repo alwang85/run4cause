@@ -14,74 +14,7 @@
 
 
 @import 'variables/main';
-body {
-    font-family: 'Open Sans', sans-serif;
-    font-size: $base-font-size;
-    font-weight: 300;
-    line-height: 125%;
-}
-
-.box-container {
-    @include clearfix();
-    background: #FFF;
-    border-radius: 5px;
-    height: 250px;
-    margin: 10px;
-    width: 31%;
-    padding: 20px;
-    overflow: hidden;
-
-    img {
-        width: 150px;
-        height: 150px;
-        position: absolute;
-        top: 19%;
-        left: 29%;;
-    }
-
-    .box-front {
-        width: 100%;
-        height: 100%;
-        backface-visibility: hidden;
-        border-radius: 5px;
-        .box-thumbnail {
-            height: 235px;
-            width: 100%;
-            overflow: hidden;
-            position: relative;
-
-            &:after {
-                display: block;
-                content: '';
-                position: absolute;
-                top:0;
-                left:0;
-                width: 100%;
-                height:100%;
-                z-index: 1;
-                background: rgba(255,255,255,0.5);
-            }
-
-            .box-graph {
-                position: absolute;
-                width: 100%;
-                bottom: 0;
-                left: 0;
-                z-index: 2;
-                img {
-                    width: 90%;
-                    margin: 0 auto;
-                }
-            }
-        }
-        .box-detail {
-            padding: 15px;
-            text-align: center;
-
-        }
-    }
-}
-
+@import 'general/main';
 @import 'directives/navbar';
 @import 'home/main';
 @import 'login/main';

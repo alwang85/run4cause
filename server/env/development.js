@@ -17,15 +17,18 @@ module.exports = {
     "callbackURL": "INSERT_GOOGLE_CALLBACK_HERE"
   },
   "FITBIT": {
-    "consumerKey": "ff371f465c88938d041bd3fa32e8fca2",
-    "consumerSecret": "fcd83ddb7a22814ad7abcc95500f0c2b",
-    "callbackURL": "http://localhost:1337/auth/fitbit/callback"
+    "consumerKey" : "95343780e7c677ed8f687c8eb8e93613",
+    "clientID": '229P8R',
+    "clientSecret": '88557a229d1ed6e498744888a974eca2',
+    "authorizationURL": 'https://www.fitbit.com/oauth2/authorize',
+    "tokenURL": 'https://api.fitbit.com/oauth2/token',
+    "callbackURL": '/auth/fitbit/callback'
   },
   "JAWBONE" : {
     "clientID": 'jiASw9I4DB0',
     "clientSecret": '8bff16cc6e7f6ed2669aa6a846808007afa3d934',
     "authorizationURL": 'https://jawbone.com/auth/oauth2/auth',
     "tokenURL": 'https://jawbone.com/auth/oauth2/token',
-    "callbackURL": 'http://localhost:1337/auth/jawbone/callback'
+    "callbackURL": '/auth/jawbone/callback'
   }
 };

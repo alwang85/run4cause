@@ -150,3 +150,19 @@ gulp.task('default', function () {
     gulp.watch('tests/browser/**/*', ['testBrowserJS']);
 
 });
+
+gulp.task('rundevwatch', function () {
+
+    livereload.listen();
+    gulp.start('build');
+
+    gulp.watch('browser/js/**', function () {
+        runSeq('lintJS', 'buildJS', ['reload']);
+    });
+
+    gulp.watch('browser/scss/**', function () {
+        runSeq('buildCSS', 'reloadCSS');
+    });
+
+    gulp.watch(['browser/**/*.html', 'server/app/views/*.html'], ['reload']);
+});

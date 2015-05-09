@@ -7,7 +7,7 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('HomeController', function($http, $scope, JawboneFactory, FitbitFactory, User){
+app.controller('HomeController', function($http, $scope, JawboneFactory, FitbitFactory, AuthService){
     $scope.getFitbitData = function(){
         $http.get('/api/fitbit/getUserData').then(function(response){
             console.log(response.data);
@@ -23,7 +23,7 @@ app.controller('HomeController', function($http, $scope, JawboneFactory, FitbitF
         });
     };
     $scope.getData = function(){
-      User.getCurrentUser().then(function(user){
+        AuthService.getLoggedInUser().then(function(user){
         if (user.fitbit && user.fitbit.id){
           FitbitFactory.getFitbitData().then(function(data){
             console.log('fitbit', data);
