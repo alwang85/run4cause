@@ -18,7 +18,6 @@ app.controller('SignUpCtrl', function ($scope, UserFactory, AuthService, $state)
     };
 
     $scope.sendSignUp = function(signUp) {
-        console.log(signUp);
         UserFactory
             .createNewUser(signUp)
             .then(function() {

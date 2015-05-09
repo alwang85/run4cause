@@ -24,7 +24,13 @@ app.factory('UserFactory', function($http, $q, $auth) {
     };
 
     var updateLogs = function(user) {
-        $http.put('/api/user/logs/'+user).then(function(response) {
+        return $http.put('/api/user/logs/'+user).then(function(response) {
+            return response.data;
+        });
+    };
+
+    var refreshTokens = function(user) {
+        return $http.pu('/api/user/tokens/'+user).then(function(response) {
             return response.data;
         });
     };

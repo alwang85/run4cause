@@ -19,13 +19,23 @@ app.controller('ProfileController', function($scope, AuthService, UserFactory) {
             .linkDevice(provider, user._id)
             .then(function(user) {
                 $scope.user = user;
-                $scope.link_devices = _.difference(UserFactory.availableDevices, user.active);
+                // to filter out which devices are already linked
+                //$scope.link_devices = _.difference(UserFactory.availableDevices, user.active);
+
+                // for debugging, having the option to relink
+                $scope.link_devices = user.active;
             });
         };
 
         $scope.updateLogs = function() {
             UserFactory.updateLogs(user._id).then(function(logs) {
                 console.log(logs);
+            });
+        };
+
+        $scope.refreshTokens = function() {
+            UserFactory.refreshTokens(user._id).then(function(user) {
+                $scope.user = user;
             });
         };
     });
