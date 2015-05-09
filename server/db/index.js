@@ -15,6 +15,12 @@ require('./models/user');
 require('./models/event');
 require('./models/strategy');
 require('./models/nonprofit');
+require('./models/newEvent');
+require('./models/metric');
+require('./models/challenge');
+require('./models/API');
+
+
 
 var startDbPromise = new Q(function (resolve, reject) {
     db.on('open', resolve);
