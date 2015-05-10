@@ -1,0 +1,7 @@
+<div class="clearfix dashboard-nav header-tight-padding">
+    <ul class="nav navbar-nav">
+        <li ng-repeat="item in items">
+            <a ui-sref-active="active" ui-sref="{{ item.state }}"><font-awesome font="{{item.icon}}"></font-awesome><span>{{item.label}}</span></a>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,30 @@
+.dashboard-nav {
+    width: 100%;
+    background: #FAFAFA;
+    text-align: center;
+    margin-bottom: 12px;
+
+    .navbar-nav {
+        text-align: center;
+        width: 100%;
+        li {
+            display: inline-block;
+            float: none;
+            a {
+                color: darken(#FAFAFA, 25%);
+                &:hover, &.active {
+                    color: $panel-background;
+                    background: transparent;
+                }
+                padding: 8px 15px;
+                i {
+                    display: block;
+                    font-size: 18px;
+                }
+                span {
+                    font-size: 12px;
+                }
+            }
+        }
+    }
+}

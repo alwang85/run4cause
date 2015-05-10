@@ -7,69 +7,128 @@ body {
 
 a {
   cursor: pointer;
+
+  &:hover {
+      text-decoration: none;
+  }
 }
 
 .header-padding {
   padding-top: 76px;
 }
 
+.header-tight-padding {
+  padding-top: 50px;
+}
+
 .box-container {
-  @include clearfix();
-  background: #FFF;
-  border-radius: 5px;
-  height: 250px;
-  margin: 10px;
-  width: 31%;
-  padding: 20px;
-  overflow: hidden;
+    @include clearfix();
+    background: #FFF;
+    border-radius: 8px;
+    border: 4px solid $panel-background;
+    overflow: hidden;
+    display: table;
+    padding: 0;
 
-  img {
-    width: 150px;
-    height: 150px;
-    position: absolute;
-    top: 19%;
-    left: 29%;;
-  }
-
-  .box-front {
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    border-radius: 5px;
-    .box-thumbnail {
-      height: 235px;
-      width: 100%;
-      overflow: hidden;
-      position: relative;
-
-      &:after {
-        display: block;
-        content: '';
-        position: absolute;
-        top:0;
-        left:0;
+    & > ng-transclude {
+        @include clearfix();
+        background: inherit;
+        border-radius: inherit;
+        overflow: inherit;
+        display: inherit;
+        border-radius: inherit;
         width: 100%;
-        height:100%;
-        z-index: 1;
-        background: rgba(255,255,255,0.5);
-      }
+        min-height: inherit;
+    }
 
-      .box-graph {
-        position: absolute;
+    .box-absolute-center-container {
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
         width: 100%;
-        bottom: 0;
-        left: 0;
-        z-index: 2;
-        img {
-          width: 90%;
-          margin: 0 auto;
+
+        .create-button {
+            color: #CCC;
+            transition: color 0.2s linear;
+            i {
+                display: block;
+                font-size: 35px;
+                margin-bottom: 8px;
+            }
+
+            &:hover {
+                color: #888;
+            }
         }
-      }
     }
-    .box-detail {
-      padding: 15px;
-      text-align: center;
 
+    .box-front {
+        width: 100%;
+        padding: 15px;
+        position: relative;
+        z-index: 2;
+
+        .progress-preview {
+            display: table;
+            position: relative;
+            text-align: center;
+            width: 75%;
+            margin: 0 auto;
+
+            .chart {
+                display: block;
+                position: absolute;
+                top: 0;
+                left: 0;
+                transition: all 0.4s linear;
+                opacity: 1;
+            }
+
+            .progress-indication {
+                display: table-cell;
+                width: 100%;
+                vertical-align: middle;
+                font-size: 30px;
+            }
+        }
+
+        .event-name {
+            margin: 8px 0 0 0px;
+            font-size: 16px;
+            width: 100%;
+            text-align: center;
+        }
+
+        transition: all 0.4s linear;
     }
-  }
+
+    .box-back {
+        position: absolute;
+        padding: 15px;
+        width: 100%;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        backface-visibility: hidden;
+        transform: rotateY(180deg) translate3d(0, 0, 0);
+        transition: all 0.4s linear;
+    }
+
+    &.flip {
+        .box-front {
+            transform: rotateY(180deg) translate3d(0, 0, 0);
+            z-index: 1;
+            backface-visibility: hidden;
+
+            .chart {
+                transform: rotateY(180deg) translate3d(0, 0, 0);
+                opacity: 0;
+            }
+        }
+
+        .box-back {
+            transform: rotateY(0deg) translate3d(0, 0, 0);
+            z-index: 2;
+        }
+    }
 }
