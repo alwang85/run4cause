@@ -3,7 +3,6 @@ var router = require('express').Router();
 module.exports = router;
 var _ = require('lodash');
 var Promise = require('bluebird');
-var request = Promise.promisify(require('request'));
 var newEvent = require('mongoose').model('newEvent');
 
 router.post('/', function (req,res,next){
