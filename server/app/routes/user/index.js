@@ -91,18 +91,18 @@ module.exports = function(app) {
         });
     });
 
-    // TODO refresh user tokens
-    router.put('/logs/:user_id', function(req,res,next) {
-        var user_id = req.params.user_id;
-
-        User.findById(user_id, function(err, user) {
-            user.refreshTokens(app.getValue('env')).then(function(refreshedUser){
-                res.json(refreshedUser);
-            }).catch(function(err){
-                next(err);
-            });
-        });
-    });
+    //// TODO refresh user tokens
+    //router.put('/logs/:user_id', function(req,res,next) {
+    //    var user_id = req.params.user_id;
+    //
+    //    User.findById(user_id, function(err, user) {
+    //        user.refreshTokens().then(function(refreshedUser){
+    //            res.json(refreshedUser);
+    //        }).catch(function(err){
+    //            next(err);
+    //        });
+    //    });
+    //});
 
     // update user log
     router.put('/logs/:user_id', function(req,res,next) {
@@ -110,6 +110,7 @@ module.exports = function(app) {
 
         User.findById(user_id, function(err, user) {
             user.updateLogs().then(function(logs){
+                console.log(logs);
                 res.json(logs);
             }).catch(function(err){
                 next(err);

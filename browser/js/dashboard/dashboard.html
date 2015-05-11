@@ -1,18 +1,20 @@
 <div class="user-panel-container">
+    <dashboard-nav></dashboard-nav>
     <div class="container">
-        <div class="box-container col-xs-12 col-sm-12 col-md-4 col-lg-4">
-            <div class="box-graph">
-                <img ng-click="modalOpen()" src="https://www.medable.com/images/Icon---Plus-Sign.png">
-            </div>
-            <div class="box-detail">
-            </div>
-        </div>
-        <div class="box-container col-xs-12 col-sm-12 col-md-4 col-lg-4" ng-repeat="challenge in userChallenges">
-            <canvas class="myChart box-graph">
-            </canvas>
-                <div class="box-detail">
-                    <h5>{{challenge.nonProfit.name}}</h5>
-                </div>
-        </div>
+        <ui-view></ui-view>
+        <!--<div class="chart-box col-xs-12 col-sm-12 col-md-4 col-lg-4">-->
+            <!--<div class="box-graph">-->
+                <!--<img ng-click="modalOpen()" src="https://www.medable.com/images/Icon-&#45;&#45;Plus-Sign.png">-->
+            <!--</div>-->
+            <!--<div class="box-detail">-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="chart-box col-xs-12 col-sm-12 col-md-4 col-lg-4" ng-repeat="challenge in userChallenges">-->
+            <!--<canvas class="myChart box-graph">-->
+            <!--</canvas>-->
+                <!--<div class="box-detail">-->
+                    <!--<h5>{{challenge.nonProfit.name}}</h5>-->
+                <!--</div>-->
+        <!--</div>-->
     </div>
 </div>

@@ -12,7 +12,8 @@ app.controller('ProfileController', function($scope, AuthService, UserFactory) {
     AuthService.getLoggedInUser().then(function(user){
         $scope.user = user;
 
-        $scope.link_devices = _.difference(UserFactory.availableDevices, user.active);
+        //$scope.link_devices = _.difference(UserFactory.availableDevices, user.active);
+        $scope.link_devices = user.active;
 
         $scope.linkDevice = function(provider) {
             UserFactory
