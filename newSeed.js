@@ -281,7 +281,7 @@ var seedNonProfit = function() {
                 followers   : users
             },
                 {
-                    creator     : users[1]._id,
+                    creator     : users[0]._id,
                     name        : "Non Profit 2",
                     description : "Non Profit Description",
                     url         : "http://nonprofit1.com",
@@ -391,49 +391,52 @@ var seedChallenges = function(metrics){
     return q.invoke(Challenge, 'create', challenges);
 };
 
-var seedNewEvents = function(api, metrics, challenges, users, nonprofits){
-    var newEvents = [{
+var seedNewEvents = function(challenges, nonprofits){
+  return User.find({}).exec()
+    .then(function(users) {
+      //console.log('users inside new seed events', users);
+      var newEvents = [{
         category: 1,
         group: false,
         contest: false,
         progess: 0,
         goal: 100,
-        challenges:[challenges[0]],
+        challenges: [challenges[0]],
         creator: users[0],
         challengers: [{
-            user: users[0],
-            join: new Date('2015-05-01')
+          user: users[0],
+          join: new Date('2015-05-01')
         }],
         startDate: new Date('2015-05-11'),
         endDate: new Date('2015-05-18'),
         nonProfit: nonprofits[0],
         description: "Lets walk lots of miles.",
         name: "Walk."
-    },
-    {
-        category: 1,
-        group: true,
-        contest: true,
-        progess: 0,
-        goal: 100,
-        challenges:[challenges[0]],
-        creator: users[0],
-        challengers: [{
+      },
+        {
+          category: 1,
+          group: true,
+          contest: true,
+          progess: 0,
+          goal: 100,
+          challenges: [challenges[0]],
+          creator: users[0],
+          challengers: [{
             user: users[0],
             join: new Date('2015-05-01')
-        },
-        {
-            user: users[1],
-            join: new Date('2015-05-01')
-        }],
-        startDate: new Date('2015-05-11'),
-        endDate: new Date('2015-05-18'),
-        nonProfit: nonprofits[1],
-        description: "Lets sleep",
-        name: "Sleep."
-    }];
-
-    return q.invoke(newEvent, 'create', newEvents);
+          },
+            {
+              user: users[0],
+              join: new Date('2015-05-01')
+            }],
+          startDate: new Date('2015-05-11'),
+          endDate: new Date('2015-05-18'),
+          nonProfit: nonprofits[1],
+          description: "Lets sleep",
+          name: "Sleep."
+        }];
+      return q.invoke(newEvent, 'create', newEvents);
+    });
 };
 
 //var seedEvents = function() {
@@ -546,25 +549,25 @@ var seedNewEvents = function(api, metrics, challenges, users, nonprofits){
 
 connectToDb.then(function () {
     getCurrentUserData().then(function (users) {
-        if (users.length === 0) {
-            return seedUsers();
-        } else {
-            console.log(chalk.magenta('Seems to already be user data, exiting!'));
-            process.kill(0);
-        }
-    }).then(function() {
-        return seedNonProfit();
-    }).then(function() {
-        return seedAPI();
-    }).then(function() {
-        return seedMetrics();
-    }).then(function() {
-        return seedChallenges();
-    }).then(function() {
-        return seedNewEvents();
-    }).then(function () {
-        console.log(chalk.green('Seed successful!'));
-        process.kill(0);
+      console.log('assuming users already exist with activity data!');
+    }).then(function(users) {
+        //console.log('before seedNonProfit');
+        return seedNonProfit(users).then(function(nonprofits) {
+          //console.log('before seedAPI');
+          return seedAPI(nonprofits).then(function(api) {
+            //console.log('before seedMetrics');
+            return seedMetrics(api).then(function(metrics) {
+              //console.log('before seedChallenges');
+              return seedChallenges(metrics).then(function(challenges) {
+                //console.log('before seedNewEvents');
+                return seedNewEvents(challenges, nonprofits).then(function () {
+                  console.log(chalk.green('Seed successful!'));
+                  process.kill(0);
+                });
+              });
+            });
+          })
+        });
     }).catch(function (err) {
         console.error(err);
         process.kill(1);
