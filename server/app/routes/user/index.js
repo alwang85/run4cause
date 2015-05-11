@@ -105,16 +105,15 @@ module.exports = function(app) {
     //});
 
     // update user log
-    router.put('/logs/:user_id', function(req,res,next) {
+    router.put('/logs', function(req,res,next) {
         var user_id = req.params.user_id;
 
-        User.findById(user_id, function(err, user) {
-            user.updateLogs().then(function(logs){
-                console.log(logs);
-                res.json(logs);
-            }).catch(function(err){
-                next(err);
-            });
+        req.user.updateLogs()
+        .then(function(logs) {
+            console.log(logs);
+            res.json(logs);
+        }).catch(function(err) {
+            next(err);
         });
     });
 
