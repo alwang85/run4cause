@@ -17,6 +17,7 @@ app.controller('CreateChallengeController', function($modal, $modalInstance, $ht
       $scope.metricList = metricList;
     });
 
+
     $scope.newChallenge = new NewChallenge();
 
     function NewChallenge () {

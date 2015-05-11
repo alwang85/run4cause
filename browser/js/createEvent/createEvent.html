@@ -14,6 +14,9 @@
 
         Start date<input type="date" ng-model="newEvent.startDate"/>
         End date<input type="date" ng-model="newEvent.endDate"/>
+        <select class="form-control" ng-model="newChallenge.nonProfit">
+            <option ng-repeat="nonprofit in nonprofitList" value="{{nonprofit._id}}">{{nonprofit.name}}</option>
+        </select>
     </form>
 
     <div>

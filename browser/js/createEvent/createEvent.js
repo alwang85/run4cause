@@ -7,7 +7,7 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('CreateEventController', function($modal, $http, $scope, Event){
+app.controller('CreateEventController', function($modal, $http, $scope, Event, Nonprofit){
     $scope.openModal = function(){
         var modalInstance = $modal.open({
             templateUrl: 'js/createChallenge/createChallenge.html',
@@ -16,7 +16,9 @@ app.controller('CreateEventController', function($modal, $http, $scope, Event){
         })
     };
     $scope.categories = [];
-
+    Nonprofit.getNonprofits().then(function(nonprofitList){
+      $scope.nonprofitList = nonprofitList;
+    });
     $scope.newEvent = new NewEvent();
 
     function NewEvent () {
@@ -28,6 +30,7 @@ app.controller('CreateEventController', function($modal, $http, $scope, Event){
         this.endDate = null;
         this.name = null;
         this.description = null;
+        this.nonProfit = null;
     }
 
 });
