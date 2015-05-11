@@ -1,3 +1,28 @@
+<div id="createEvent">
+    <h1>This is event creation page</h1>
+    <br name="createNewEvent">
+        <select class="form-control" ng-model="newEvent.category">
+            <option value="{{ category._id }}" ng-model="newEvent.category" ng-repeat="category in categories">{{ category.name }}</option>
+        </select>
+        group <input name="group" value="true" type="radio" ng-model="newEvent.group" checked /> true
+        <input name="group" value="false" type="radio" /> false</br>
+        contest <input name="contest" value="true" type="radio" ng-model="newEvent.contest" checked /> true
+        <input name="contest" value="false" type="radio" /> false
 
-<h1>This is event creation page</h1>
-<button ng-click="closeModal()">close modal</button>
+        <input placeholder="event name" ng-model="newEvent.name"/>
+        <textarea rows="10" placeholder="description" ng-model="newEvent.description"></textarea>
+
+        Start date<input type="date" ng-model="newEvent.startDate"/>
+        End date<input type="date" ng-model="newEvent.endDate"/>
+    </form>
+
+    <div>
+        <div class="challengePick col-xs-3">
+            <img ng-click="openModal()" class="plusSign" src="https://hunterfreeman.files.wordpress.com/2011/04/plus-sign-22.jpg">
+        </div>
+        <div class="col-xs-3" ng-repeat="challenge in newEvent.challenges">
+            {{challenge.name}}
+        </div>
+    </div>
+    <!--<button ng-click="closeModal()">close modal</button>-->
+</div>
