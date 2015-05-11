@@ -8,8 +8,9 @@ app.config(function ($stateProvider) {
 });
 
 
-app.controller('CreateChallengeController', function($modal, $modalInstance, $http, $scope, Event, Metric){
-    $scope.closeModal = function(){
+app.controller('CreateChallengeController', function($modal, $modalInstance, $http, $scope, Event, Metric, Challenge){
+    $scope.closeModal = function(newChallenge){
+        Challenge.addChallenge(newChallenge);
         $modalInstance.close();
     };
     Metric.getMetrics().then(function(metricList){
