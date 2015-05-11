@@ -3,9 +3,7 @@ var router = require('express').Router();
 module.exports = router;
 var _ = require('lodash');
 var Promise = require('bluebird');
-var request = Promise.promisify(require('request'));
-var Fitbit = require('fitbit');
-var FitbitApiClient = require("fitbit-node");
+var request = Promise.promisifyAll(require('request'));
 var User = require('mongoose').model('User');
 
 module.exports = function(app) {
@@ -59,6 +57,8 @@ module.exports = function(app) {
 
 
     });
+
+
 
     return router;
 };

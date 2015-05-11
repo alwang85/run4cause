@@ -297,13 +297,22 @@ var seedAPI = function(){
         source     : 'fitbit',
         metrics: [{
             name: "distance",
-            route: "/api/fitbit/distance"
+            route: "/api/fitbit/distance",
+            apiRoute: 'https://api.fitbit.com/1/user/-/activities/tracker/distance/date/today/1d.json'
         },{
             name: "steps",
-            route: "/api/fitbit/steps"
+            route: "/api/fitbit/steps",
+            apiRoute: 'https://api.fitbit.com/1/user/-/activities/tracker/steps/date/today/1d.json'
         },{
             name: "sleep",
-            route: "/api/fitbit/sleep"
+            route: "/api/fitbit/sleep",
+            apiRoute: 'https://api.fitbit.com/1/user/-/sleep/minutesAsleep/date/today/1d.json'
+
+        },{
+            name: "calories",
+            route: "/api/fitbit/sleep",
+            apiRoute: 'https://api.fitbit.com/1/user/-/activities/tracker/calories/date/today/1d.json'
+
         }]
     },{
         source     : 'jawbone',

@@ -5,7 +5,8 @@ var schema = new mongoose.Schema({
     source: String,
     metrics: [{
         name: String,
-        route: String
+        route: String,
+        apiRoute: String
     }]
 });
 
