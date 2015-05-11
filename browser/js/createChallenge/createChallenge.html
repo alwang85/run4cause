@@ -1,13 +1,10 @@
 <select class="form-control" ng-model="newChallenge.metric">
-    <option value="Distance">Distance</option>
-    <option value="Calories">Calories</option>
-    <option value="Steps">Steps</option>
-    <option value="Sleep">Sleep</option>
+    <option ng-repeat="metric in metricList" value="{{metric._id}}">{{metric.name}}</option>
 </select>
 <select class="form-control" ng-model="newChallenge.category">
     <option value="avg">Average</option>
     <option value="total">Total</option>
-    <option value="frequency">Frequency</option>
+    <option value="frq">Frequency</option>
 </select>
 <input type="number" placeholder="challenge goal" ng-model="newChallenge.goal"/>
 <button ng-click="closeModal()">add challenge</button>
