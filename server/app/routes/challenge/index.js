@@ -15,7 +15,8 @@ router.post('/', function (req,res,next){
 });
 
 router.get('/', function (req,res,next){
-  Challenge.find({}).populate('metric category').exec(function(err, challenges){
+  var user = req.query.user;
+  Challenge.find({creator: user._id }).populate('metric category').exec(function(err, challenges){
     console.log(challenges);
     if (err) return next(err);
     res.send(challenges);

@@ -8,7 +8,10 @@ var schema = new mongoose.Schema({
     category: {type: String, enum:['avg', 'total','frq']},
     goal: Number,
     description: String,
-    name: String
+    name: String,
+    creator: {
+      type: mongoose.Schema.Types.ObjectId, ref: 'User'
+    }
 });
 
 
