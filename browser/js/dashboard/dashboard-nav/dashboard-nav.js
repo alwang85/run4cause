@@ -12,7 +12,7 @@ app.directive('dashboardNav', function ($rootScope, $state) {
             ];
 
             scope.isCurrentState = function(current) {
-                console.log($state.includes(current))
+                console.log($state.includes(current));
                 return $state.includes(current);
             };
         }

@@ -1,0 +1,26 @@
+<div id="createChallenge">
+    <label>Challenge name</label>
+    <input type="text" class="form-control" placeholder="challenge name" ng-model="newChallenge.name"/>
+    <label>Challenge description</label>
+    <textarea rows="5" class="form-control" placeholder="challenge description" ng-model="newChallenge.description"></textarea>
+    <label>Choose your metric</label>
+    <select class="form-control" ng-model="newChallenge.metric">
+        <option ng-repeat="metric in metricList" value="{{metric.name}}">{{metric.name}}</option>
+    </select>
+    <label>Choose challenge type</label>
+    <select class="form-control" ng-model="newChallenge.category">
+        <option value="avg">Average</option>
+        <option value="total">Total</option>
+        <option value="frq">Frequency</option>
+    </select>
+    <label class="setGoal">Set your goal</label>
+    <input type="number" class="goal form-control" placeholder="challenge goal" ng-model="newChallenge.goal"/>
+    <h6 ng-if="newChallenge.metric==='distance'" class="milesLabel">miles</h6>
+    <h6 ng-if="newChallenge.metric==='sleep'" class="hoursLabel">hours</h6>
+    <h6 ng-if="newChallenge.metric==='steps'" class="stepsLabel">steps</h6>
+    <h6 ng-if="newChallenge.metric==='calories'" class="caloriesLabel">calories</h6>
+    <button class="addChallengeBtn btn btn-default" ng-click="closeModal(newChallenge)">add challenge</button>
+</div>
+
+
+
