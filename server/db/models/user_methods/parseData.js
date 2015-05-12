@@ -37,7 +37,7 @@ var resultsMapper = function(provider, logItem) {
     }
 
     if (provider === 'jawbone') {
-        var jawboneItems = logItem[provider].data.items;
+        var jawboneItems = logItem[provider].items;
 
         var date, value;
         _.forEach(jawboneItems, function(item) {
@@ -48,25 +48,33 @@ var resultsMapper = function(provider, logItem) {
 
             dateObj[date] = dateObj[date] ? dateObj[date] : { metrics : []};
 
-            dateObj[date].metrics.push({
-                measurement : "distance",
-                qty         : item.details.distance
-            });
+            if(item.details.distance){
+                dateObj[date].metrics.push({
+                    measurement : "distance",
+                    qty         : item.details.distance
+                });
+            }
 
-            dateObj[date].metrics.push({
-                measurement : "steps",
-                qty         : item.details.steps
-            });
+            if(item.details.steps){
+                dateObj[date].metrics.push({
+                    measurement : "steps",
+                    qty         : item.details.steps
+                });
+            }
 
-            dateObj[date].metrics.push({
-                measurement : "sleep",
-                qty         : item.details.duration
-            });
+            if(item.details.duration){
+                dateObj[date].metrics.push({
+                    measurement : "sleep",
+                    qty         : item.details.duration
+                });
+            }
 
-            dateObj[date].metrics.push({
-                measurement : "calories",
-                qty         : Math.round(item.details.calories + item.details.bmr)
-            });
+            if(item.details.calories){
+                dateObj[date].metrics.push({
+                    measurement : "calories",
+                    qty         : Math.round(item.details.calories + item.details.bmr)
+                });
+            }
         });
     }
 };
