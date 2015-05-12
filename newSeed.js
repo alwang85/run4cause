@@ -296,27 +296,34 @@ var seedAPI = function(){
     var api = [{
         source     : 'fitbit',
         metrics: [{
-            name: "distance",
-            route: "/api/fitbit/distance"
+            //name: "distance",
+            //route: "/api/fitbit/distance",
+            apiRoute: 'https://api.fitbit.com/1/user/-/activities/tracker/distance/date'
         },{
-            name: "steps",
-            route: "/api/fitbit/steps"
+            //name: "steps",
+            //route: "/api/fitbit/steps",
+            apiRoute: 'https://api.fitbit.com/1/user/-/activities/tracker/steps/date'
         },{
-            name: "sleep",
-            route: "/api/fitbit/sleep"
+            //name: "sleep",
+            //route: "/api/fitbit/sleep",
+            apiRoute: 'https://api.fitbit.com/1/user/-/sleep/minutesAsleep/date'
+
+        },{
+            name: "calories",
+            route: "/api/fitbit/sleep",
+            apiRoute: 'https://api.fitbit.com/1/user/-/activities/tracker/calories/date'
+
         }]
     },{
         source     : 'jawbone',
-        metrics: [{
-            name: "distance",
-            route: "/api/jawbone/distance"
-        },{
-            name: "steps",
-            route: "/api/jawbone/steps"
-        },{
-            name: "sleep",
-            route: "/api/jawbone/sleep"
-        }]
+        metrics: [
+            {
+                apiRoute: "https://jawbone.com/nudge/api/v.1.1/users/@me/moves"
+            },
+            {
+                apiRoute: "https://jawbone.com/nudge/api/v.1.1/users/@me/sleeps"
+            }
+        ]
     }];
 
     return q.invoke(API, 'create', api);

@@ -31,63 +31,18 @@ module.exports = function(app) {
         });
     });
 
-    // link user device
-    // TODO possibly refactoring some/all of this to User Model statics/methods
+    // callback from linking user device
     router.post('/device', function (req, res, next) {
-
         // setting up params
         var authInfo = req.body;
         var config = app.getValue('env')[authInfo.provider.toUpperCase()];
-        var params = {
-            grant_type: 'authorization_code',
-            redirect_uri : authInfo.redirectUri
-        };
 
-        // custom headers for fitbit AUTH 2.0
-        var customHeaders = null;
-        if (authInfo.provider === 'fitbit') {
-            var authHeader = config.clientID + ":" + config.clientSecret;
-            console.log(authHeader);
-            customHeaders = {
-                Authorization : "Basic " + new Buffer(authHeader).toString('base64')
-            };
-        }
-
-        // oauth request to retrieve access token
-        var oauth = new OAuth2(config.clientID, config.clientSecret, '', config.authorizationURL, config.tokenURL, customHeaders);
-        oauth.getOAuthAccessToken(authInfo.code, params, function(err, accessToken, refreshToken, params) {
-            if (err) {
-                console.log(err);
-                return next(err);
-            }
-            console.log(params);
-            // update user to have the access token
-            User
-            .findById(authInfo.user, function(err, user) {
-                if (err) return err;
-                if (_.indexOf(user.active, authInfo.provider) === -1) {
-                    user.active.push(authInfo.provider);
-                }
-
-                // storing oauth info
-                user[authInfo.provider].token = accessToken;
-
-                // fitbit only shows expires_in as time left, and jawbone gives initial epoch timestamp
-                // might need to re-link the device if some calls do not work, until refreshtoken is working
-                if (params.expires_in) {
-                    user[authInfo.provider].expires_in = params.expires_in < 10000 ? Math.round((new Date()).getTime() * params.expires_in * 1000) : Math.round(params.expires_in * 1000);
-                }
-
-                if (params.refresh_token || refreshToken) {
-                    user[authInfo.provider].refresh_token = params.refresh_token || refreshToken;
-                }
-
-                user.save(function(err, savedUser) {
-                    if (err) return next(err);
-
-                    res.send({user : _.omit(savedUser.toJSON(), ['password', 'salt'])});
-                });
-            });
+        User.findByIdAndHandleLinkDeviceCallback(authInfo, config)
+        .then(function(savedUser) {
+            res.send({user : _.omit(savedUser.toJSON(), ['password', 'salt'])});
+        })
+        .catch(function(err) {
+            next(err);
         });
     });
 
@@ -104,17 +59,15 @@ module.exports = function(app) {
     //    });
     //});
 
-    // update user log
-    router.put('/logs/:user_id', function(req,res,next) {
+    // update user log by devices connected
+    router.put('/logs', function(req,res,next) {
         var user_id = req.params.user_id;
 
-        User.findById(user_id, function(err, user) {
-            user.updateLogs().then(function(logs){
-                console.log(logs);
-                res.json(logs);
-            }).catch(function(err){
-                next(err);
-            });
+        req.user.updateLogs()
+        .then(function(logs) {
+            res.json(logs);
+        }).catch(function(err) {
+            next(err);
         });
     });
 

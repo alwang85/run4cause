@@ -23,8 +23,8 @@ app.factory('UserFactory', function($http, $q, $auth) {
         });
     };
 
-    var updateLogs = function(user) {
-        return $http.put('/api/user/logs/'+user).then(function(response) {
+    var updateLogs = function() {
+        return $http.put('/api/user/logs/').then(function(response) {
             return response.data;
         });
     };

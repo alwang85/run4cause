@@ -13,7 +13,7 @@ app.controller('ProfileController', function($scope, AuthService, UserFactory) {
         $scope.user = user;
 
         //$scope.link_devices = _.difference(UserFactory.availableDevices, user.active);
-        $scope.link_devices = user.active;
+        $scope.link_devices = ['jawbone', 'fitbit'];
 
         $scope.linkDevice = function(provider) {
             UserFactory
