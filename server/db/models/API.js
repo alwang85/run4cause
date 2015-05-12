@@ -15,9 +15,11 @@ var schema = new mongoose.Schema({
 schema.statics.findBySourcesAndChangeDuration = function(query, lastLogUpdate) {
     var model = this;
     var startTime = lastLogUpdate;
-    var endTime   = new Date();
-    var startEpoch = Math.round(Date.parse(startTime.toISOString().slice(0,10))/1000);
-    var endEpoch = Math.round(Date.parse(endTime.toISOString().slice(0,10))/1000);
+    var regex = new RegExp("([0-9]+:[0-9]+:[0-9]+)", "g");
+    var startTimeString = startTime.toString().replace(regex, "00:00:00");
+    var endTime = new Date();
+    var startEpoch = Date.parse(startTimeString)/1000;
+    var endEpoch = endTime.getTime()/1000;
 
     return new Promise(function(resolve, reject) {
         model.find(query, function(err, sources) {

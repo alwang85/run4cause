@@ -36,12 +36,21 @@ module.exports = function() {
                                 return JSON.parse(item[1]);
                             })
                             .reduce(function(objResult, jsonParsedItem) {
-                                return _.merge(objResult, jsonParsedItem)
+                                if(provider.source === 'fitbit'){
+                                    return _.merge(objResult, jsonParsedItem)
+                                }
+
+                                if(provider.source === 'jawbone'){
+                                    objResult.items = objResult.items ? objResult.items : [];
+                                    objResult.items = objResult.items.concat(jsonParsedItem.data.items);
+                                    return objResult;
+                                }
                             }, {})
                             .value();
 
                         var returnObj = {};
                         returnObj[provider.source] = results;
+                        console.log(results.data);
                         return returnObj;
                     });
             });
