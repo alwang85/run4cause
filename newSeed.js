@@ -42,229 +42,18 @@ var getCurrentUserData = function () {
 
 var seedUsers = function () {
 
-    var users = [
-        {
-            email: 'testing@fsa.com',
-            password: 'password',
-            log: [
-                {
-                    date: new Date('2015-05-04'),
-                    metrics: [{
-                        measurement: "calories",
-                        qty: 800
-                    },{
-                        measurement: "distance",
-                        qty: 2
-                    },{
-                        measurement: "sleep",
-                        qty: 8
-                    }
-                    ]
-                },{
-                    date: new Date('2015-05-05') ,
-                    metrics: [{
-                        measurement: "calories",
-                        qty: 1200
-                    },{
-                        measurement: "distance",
-                        qty: 2
-                    },{
-                        measurement: "sleep",
-                        qty: 8
-                    }
-                    ]
-                },{
-                    date: new Date('2015-05-03'),
-                    metrics: [{
-                        measurement: "calories",
-                        qty: 1100
-                    },{
-                        measurement: "distance",
-                        qty: 2
-                    },{
-                        measurement: "sleep",
-                        qty: 7
-                    }
-                    ]
-                },{
-                    date: new Date('2015-05-02') ,
-                    metrics: [{
-                        measurement: "calories",
-                        qty: 1000
-                    },{
-                        measurement: "distance",
-                        qty: 3
-                    },{
-                        measurement: "sleep",
-                        qty: 6
-                    }
-                    ]
-                },{
-                    date: new Date('2015-05-01'),
-                    metrics: [{
-                        measurement: "calories",
-                        qty: 900
-                    },{
-                        measurement: "distance",
-                        qty: 4
-                    },{
-                        measurement: "sleep",
-                        qty: 5
-                    }
-                    ]
-                },{
-                    date: new Date('2015-04-30') ,
-                    metrics: [{
-                        measurement: "calories",
-                        qty: 1100
-                    },{
-                        measurement: "distance",
-                        qty: 2
-                    },{
-                        measurement: "sleep",
-                        qty: 5
-                    }
-                    ]
-                },{
-                    date: new Date('2015-04-29'),
-                    metrics: [{
-                        measurement: "calories",
-                        qty: 1300
-                    },{
-                        measurement: "distance",
-                        qty: 4
-                    },{
-                        measurement: "sleep",
-                        qty: 6
-                    }
-                    ]
-                },{
-                    date: new Date('2015-04-28') ,
-                    metrics: [{
-                        measurement: "calories",
-                        qty: 1100
-                    },{
-                        measurement: "distance",
-                        qty: 3
-                    },{
-                        measurement: "sleep",
-                        qty: 6
-                    }
-                    ]
-                }
-            ]
-        },
-        {
-            email: 'obama@gmail.com',
-            password: 'potus',log: [
-            {
-                date: new Date('2015-05-04'),
-                metrics: [{
-                    measurement: "calories",
-                    qty: 800
-                },{
-                    measurement: "distance",
-                    qty: 3
-                },{
-                    measurement: "sleep",
-                    qty: 6
-                }
-                ]
-            },{
-                date: new Date('2015-05-05') ,
-                metrics: [{
-                    measurement: "calories",
-                    qty: 1200
-                },{
-                    measurement: "distance",
-                    qty: 5
-                },{
-                    measurement: "sleep",
-                    qty: 7
-                }
-                ]
-            },{
-                date: new Date('2015-05-03'),
-                metrics: [{
-                    measurement: "calories",
-                    qty: 1300
-                },{
-                    measurement: "distance",
-                    qty: 3
-                },{
-                    measurement: "sleep",
-                    qty: 7
-                }
-                ]
-            },{
-                date: new Date('2015-05-02') ,
-                metrics: [{
-                    measurement: "calories",
-                    qty: 900
-                },{
-                    measurement: "distance",
-                    qty: 4
-                },{
-                    measurement: "sleep",
-                    qty: 6
-                }
-                ]
-            },{
-                date: new Date('2015-05-01'),
-                metrics: [{
-                    measurement: "calories",
-                    qty: 1300
-                },{
-                    measurement: "distance",
-                    qty: 4
-                },{
-                    measurement: "sleep",
-                    qty: 6
-                }
-                ]
-            },{
-                date: new Date('2015-04-30') ,
-                metrics: [{
-                    measurement: "calories",
-                    qty: 1100
-                },{
-                    measurement: "distance",
-                    qty: 4
-                },{
-                    measurement: "sleep",
-                    qty: 7
-                }
-                ]
-            },{
-                date: new Date('2015-04-29'),
-                metrics: [{
-                    measurement: "calories",
-                    qty: 1200
-                },{
-                    measurement: "distance",
-                    qty: 5
-                },{
-                    measurement: "sleep",
-                    qty: 6
-                }
-                ]
-            },{
-                date: new Date('2015-04-28') ,
-                metrics: [{
-                    measurement: "calories",
-                    qty: 1100
-                },{
-                    measurement: "distance",
-                    qty: 5
-                },{
-                    measurement: "sleep",
-                    qty: 7
-                }
-                ]
-            }
-        ]
-        }
-    ];
+  var users = [
+    {
+      email: 'testing@fsa.com',
+      password: 'password',
+      lastLogDate: new Date((new Date()).getTime() - 4*24*60*60*1000)
+    },
+    {
+      email: 'obama@gmail.com',
+      password: 'potus',
+      lastLogDate: new Date((new Date()).getTime() - 4*24*60*60*1000)
+    }
+  ];
 
     return q.invoke(User, 'create', users);
 
@@ -411,7 +200,7 @@ var seedNewEvents = function(challenges, nonprofits){
         contest: false,
         progess: 0,
         goal: 100,
-        challenges: [ {challenge: challenges[0], goal: 1000}],
+        challenges: [ {challenge: challenges, goal: 1000}],
         creator: users[0],
         challengers: [{
           user: users[0],
@@ -429,7 +218,7 @@ var seedNewEvents = function(challenges, nonprofits){
           contest: true,
           progess: 0,
           goal: 100,
-          challenges: [{challenge: challenges[0], goal: 1000}], //TODO add multiple challenge per event
+          challenges: [{challenge: challenges, goal: 1000}], //TODO add multiple challenge per event
           creator: users[0],
           challengers: [{
             user: users[0],

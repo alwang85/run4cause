@@ -32,7 +32,7 @@ var schema = new mongoose.Schema({
     friends: [{
       type: mongoose.Schema.Types.ObjectId, ref: 'User'
     }],
-    events: [{type: mongoose.Schema.Types.ObjectId, ref: 'Event'}],
+    events: [{type: mongoose.Schema.Types.ObjectId, ref: 'newEvent'}],
     log: [{
       date: Date,
       metrics: [{

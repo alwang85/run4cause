@@ -1,7 +1,8 @@
 'use strict';
 var mongoose = require('mongoose');
 var Challenge = mongoose.model('Challenge');
-
+var deepPopulate = require('mongoose-deep-populate');
+var async = require('async');
 var schema = new mongoose.Schema({
     category: Number,
     group: Boolean,
@@ -33,30 +34,38 @@ var schema = new mongoose.Schema({
     description: String,
     name: String
 });
-
+schema.plugin(deepPopulate);
 
 
 
 schema.methods.calculateProgress = function(cb) {
   // the Page model (represents collections!) doesn't exist until we build it from the schema… but we are writing the schema before we build the model! How can we access the collection then? One way is to ask for this instance's constructor. When this function is called, the constructor will be the model that built this instance.
-  var newEvent = this.constructor;
+  var newEvent = this;
   var progress;
   newEvent.challenges.forEach(function(challenge){
     if (newEvent.category == '1'){
       progress = 0;
-      this.challengers.forEach(function(user){
-        challenge.calculateProgress(user, function(userProgress){
-          progress += userProgress;
+      async.forEachLimit(newEvent.challengers, 1, function(user, done){
+        challenge.challenge.calculateProgress(user.user, function(err, userProgress){
+          //console.log('here is the user progress', userProgress);
+          progress += Number(userProgress);
+          done();
         })
+      }, function(err){
+        challenge.challenge.progress = progress;
+        //console.log('this should be somewhere', challenge.challenge.progress);
+        challenge.challenge.save(function(err, data){
+          if (err) console.log(err)
+          //console.log('saved challenge progress', data);
+        });
+        return cb(null, newEvent);
+
       })
-      challenge.progress = progress;
     } //TODO add logic for users
-    else if (newEvent.category == '2') {
-      challenge.progress = challengers.count;
-    }
-  }, function callback(){
-    newEvent.save();
   });
+
+
+
 
   // above, note that we simply call the callback given to us by the user of this function. "Let them decide what to do with the pages".
 };

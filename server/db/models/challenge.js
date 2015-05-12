@@ -10,6 +10,7 @@ var schema = new mongoose.Schema({
     metric: {type: mongoose.Schema.Types.ObjectId, ref: 'Metric'},
     category: {type: String, enum:['avg', 'total','frq']},
     goal: Number,
+    progress: Number,
     description: String,
     name: String,
     creator: {
@@ -20,15 +21,20 @@ var schema = new mongoose.Schema({
 //
 
 schema.methods.calculateProgress = function(user, cb) {
-  console.log('in method');
+  //console.log('in method');
+  //console.log(user);
     var progress = 0;
 
     var challengeMetric = this.metric;
     var that = this;
     return Metric.findById(challengeMetric).exec().then(function(theMetric){
       var results =[];
+      //console.log('startDate: ', that.startDate);
+      //console.log('endDate: ', that.endDate);
       var range1 = moment().range(that.startDate, that.endDate);
       range1.by('days', function(day) {
+        //console.log('before user.log');
+        //console.log(user.log);
         var tempResults = _.find(user.log, function(userLog) {
           return moment(userLog.date).toString() == day.toString();
         });
@@ -36,7 +42,7 @@ schema.methods.calculateProgress = function(user, cb) {
           results.push(tempResults);
         }
       });
-      console.log('results dates', results);
+      //console.log('results dates', results);
       results.forEach(function(dayResults){
         var tempMetric = _.find(dayResults.metrics, function(metric) {
           return metric.measurement == theMetric.name; //need to refactor once metric seeds properly
@@ -45,7 +51,7 @@ schema.methods.calculateProgress = function(user, cb) {
           progress += tempMetric.qty;
         }
       });
-      console.log('end progress', progress);
+      //console.log('end progress', progress);
       return cb(null, progress);
     })
 
