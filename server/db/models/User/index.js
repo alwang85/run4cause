@@ -65,14 +65,16 @@ schema.pre('save', function (next) {
 
 schema.statics.generateSalt = generateSalt;
 schema.statics.encryptPassword = encryptPassword;
-schema.statics.findByIdAndHandleLinkDeviceCallback = require('./user_methods/findByIdAndHandleLinkDeviceCallback');
+schema.statics.findByIdAndHandleLinkDeviceCallback = require('./findByIdAndHandleLinkDeviceCallback');
 
 schema.method('correctPassword', function (candidatePassword) {
     return encryptPassword(candidatePassword, this.salt) === this.password;
 });
 
-schema.method('refreshTokens', require('./user_methods/refreshTokens'));
-schema.method('parseData', require('./user_methods/parseData'));
-schema.method('updateLogs', require('./user_methods/updateLogs'));
+schema.method('refreshTokens', require('./refreshTokens'));
+schema.method('parseData', require('./parseData'));
+schema.method('updateLogs', require('./updateLogs'));
+
+
 
 mongoose.model('User', schema);
