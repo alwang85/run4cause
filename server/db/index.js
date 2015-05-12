@@ -15,9 +15,9 @@ require('./models/user');
 require('./models/event');
 require('./models/strategy');
 require('./models/nonprofit');
-require('./models/newEvent');
 require('./models/metric');
 require('./models/challenge');
+require('./models/newEvent');
 require('./models/API');
 
 
