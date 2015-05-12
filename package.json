@@ -44,6 +44,7 @@
     "karma-phantomjs-launcher": "^0.1.4",
     "lodash": "^3.3.0",
     "mocha-mongoose": "^1.0.3",
+    "moment-range": "^1.0.9",
     "mongodb": "^1.4.33",
     "mongoose": "3.8.23",
     "oauth": "^0.9.12",

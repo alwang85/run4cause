@@ -325,76 +325,80 @@ var seedAPI = function(){
 
 
 var seedMetrics = function(api){
-    var metrics = [{
+    return API.find({}).exec().then(function(api){
+      var metrics = [{
         category: 'health',
         name: 'distance',
         sources: [{
-            name: 'fitbit',
-            apiRef: api[0]
+          name: 'fitbit',
+          apiRef: api[0]._id
         },{
-            name: 'jawbone',
-            apiRef: api[1]
+          name: 'jawbone',
+          apiRef: api[1]._id
         }]
-    },{
+      },{
         category: 'health',
         name: 'sleep',
         sources: [{
-            name: 'fitbit',
-            apiRef: api[0]
+          name: 'fitbit',
+          apiRef: api[0]._id
         },{
-            name: 'jawbone',
-            apiRef: api[1]
+          name: 'jawbone',
+          apiRef: api[1]._id
         }]
-    },{
+      },{
         category: 'health',
         name: 'steps',
         sources: [{
-            name: 'fitbit',
-            apiRef: api[0]
+          name: 'fitbit',
+          apiRef: api[0]._id
         },{
-            name: 'jawbone',
-            apiRef: api[1]
+          name: 'jawbone',
+          apiRef: api[1]._id
         }]
-    }];
-    return q.invoke(Metric, 'create', metrics);
+      }];
+      return q.invoke(Metric, 'create', metrics);
+    });
 };
 
-var seedChallenges = function(metrics){
+var seedChallenges = function(){
   return User.find({}).exec()
     .then(function(users) {
-      var challenges = [{
-        startDate: new Date,
-        endDate: new Date('2015-05-14'),
-        metric: metrics[0],
-        category: 'total',
-        goal: 100,
-        description: 'Walk 100 miles',
-        name: 'Walk 100 miles',
-        creator: users[0]
-      },
-        {
+      return Metric.find({}).exec().then(function(metrics) {
+        var challenges = [{
           startDate: new Date,
           endDate: new Date('2015-05-14'),
           metric: metrics[0],
           category: 'total',
-          goal: 90000,
-          description: 'Sleep alot',
-          name: 'Sleep alot',
+          goal: 100,
+          description: 'Walk 100 miles',
+          name: 'Walk 100 miles',
           creator: users[0]
-        }, {
-          startDate: new Date,
-          endDate: new Date('2015-05-14'),
-          metric: metrics[0],
-          category: 'total',
-          goal: 10000,
-          description: 'Walk 10000 steps',
-          name: 'Walk 10000 steps',
-          creator: users[0]
-        }];
-      //TODO: Add frequency and average challenges later
-
-      return q.invoke(Challenge, 'create', challenges);
-    });
+        },
+          {
+            startDate: new Date,
+            endDate: new Date('2015-05-14'),
+            metric: metrics[0],
+            category: 'total',
+            goal: 90000,
+            description: 'Sleep alot',
+            name: 'Sleep alot',
+            creator: users[0]
+          }, {
+            startDate: new Date,
+            endDate: new Date('2015-05-14'),
+            metric: metrics[0],
+            category: 'total',
+            goal: 10000,
+            description: 'Walk 10000 steps',
+            name: 'Walk 10000 steps',
+            creator: users[0]
+          }];
+        //TODO: Add frequency and average challenges later
+        console.log('creating challenge');
+        return q.invoke(Challenge, 'create', challenges);
+      });
+    })
 };
 
 var seedNewEvents = function(challenges, nonprofits){
@@ -407,7 +411,7 @@ var seedNewEvents = function(challenges, nonprofits){
         contest: false,
         progess: 0,
         goal: 100,
-        challenges: [challenges[0]],
+        challenges: [ {challenge: challenges[0], goal: 1000}],
         creator: users[0],
         challengers: [{
           user: users[0],
@@ -425,7 +429,7 @@ var seedNewEvents = function(challenges, nonprofits){
           contest: true,
           progess: 0,
           goal: 100,
-          challenges: [challenges[0]],
+          challenges: [{challenge: challenges[0], goal: 1000}], //TODO add multiple challenge per event
           creator: users[0],
           challengers: [{
             user: users[0],
@@ -563,7 +567,7 @@ connectToDb.then(function () {
           return seedAPI(nonprofits).then(function(api) {
             //console.log('before seedMetrics');
             return seedMetrics(api).then(function(metrics) {
-              //console.log('before seedChallenges');
+              console.log('before seedChallenges', metrics);
               return seedChallenges(metrics).then(function(challenges) {
                 //console.log('before seedNewEvents');
                 return seedNewEvents(challenges, nonprofits).then(function () {
