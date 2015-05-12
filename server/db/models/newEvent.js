@@ -42,7 +42,7 @@ schema.methods.calculateProgress = function(cb) {
   // the Page model (represents collections!) doesn't exist until we build it from the schema… but we are writing the schema before we build the model! How can we access the collection then? One way is to ask for this instance's constructor. When this function is called, the constructor will be the model that built this instance.
   var newEvent = this;
   var progress;
-  newEvent.challenges.forEach(function(challenge){
+  async.forEachLimit(newEvent.challenges, 1, function(challenge, done){
     if (newEvent.category == '1'){
       progress = 0;
       async.forEachLimit(newEvent.challengers, 1, function(user, done){
@@ -58,10 +58,12 @@ schema.methods.calculateProgress = function(cb) {
           if (err) console.log(err)
           //console.log('saved challenge progress', data);
         });
-        return cb(null, newEvent);
-
+        done();
       })
+
     } //TODO add logic for users
+  }, function(err){
+    return cb(null, newEvent);
   });
 
 
