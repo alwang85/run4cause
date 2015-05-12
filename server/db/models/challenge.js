@@ -55,12 +55,6 @@ schema.methods.calculateProgress = function(user, cb) {
       return cb(null, progress);
     })
 
-
-  //in user.logs.date for dates between startDate and endDate
-  //find metric.name == user.logs.date.measurement
-  //if (category =='total') progress += above instance.value
-
-
 };
 
 mongoose.model('Challenge', schema);

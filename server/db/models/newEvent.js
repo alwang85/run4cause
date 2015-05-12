@@ -38,8 +38,7 @@ schema.plugin(deepPopulate);
 
 
 
-schema.methods.calculateProgress = function(cb) {
-  // the Page model (represents collections!) doesn't exist until we build it from the schema… but we are writing the schema before we build the model! How can we access the collection then? One way is to ask for this instance's constructor. When this function is called, the constructor will be the model that built this instance.
+schema.methods.calculateProgress = function(cb) {//for each user in an event, sums the progress for each user for each challenge
   var newEvent = this;
   var progress;
   async.forEachLimit(newEvent.challenges, 1, function(challenge, done){
@@ -66,10 +65,6 @@ schema.methods.calculateProgress = function(cb) {
     return cb(null, newEvent);
   });
 
-
-
-
-  // above, note that we simply call the callback given to us by the user of this function. "Let them decide what to do with the pages".
 };
 
 
