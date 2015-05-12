@@ -7,15 +7,23 @@ var Metric = require('mongoose').model('Metric');
 var schema = new mongoose.Schema({
     startDate: Date,
     endDate: Date,
-    metric: String,
-    category: {type: String, enum:['avg', 'total','frq']},
-    goal: Number,
     progress: Number,
     description: String,
     name: String,
-    creator: {
-      type: mongoose.Schema.Types.ObjectId, ref: 'User'
-    }
+    goals: [{
+        metric: String,
+        category: {type: String, enum:['avg', 'total','frq']},
+        target: Number
+    }],
+    challengers: [{
+        user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+        individualProgress: {
+            sleep: Number,
+            distance: Number,
+            steps: Number,
+            calories: Number
+        }
+    }]
 });
 
 //

@@ -1,0 +1,12 @@
+<div id="event">
+    <h1>this is event page</h1>
+    <h3>List of events</h3>
+    <button ng-click="getAllEvents()">get all events</button>
+    <div ng-repeat="event in events">
+        {{event.name}}
+        <div ng-repeat="challenge in event.challenges">
+            {{challenge.name}}
+            {{challenge.progress}}
+        </div>
+    </div>
+</div>
