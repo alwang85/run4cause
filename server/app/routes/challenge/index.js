@@ -8,6 +8,7 @@ var Challenge = require('mongoose').model('Challenge');
 
 router.post('/', function (req,res,next){
   var body = req.body;
+  body.creator = req.user._id;
   Challenge.create(body, function(err, savedChallenge){
     if (err) return next(err);
     res.send(savedChallenge);
@@ -15,9 +16,8 @@ router.post('/', function (req,res,next){
 });
 
 router.get('/', function (req,res,next){
-  var user = req.query.user;
-  Challenge.find({creator: user._id }).populate('metric category').exec(function(err, challenges){
-    console.log(challenges);
+  var userId = req.query.user;
+  Challenge.find({creator: userId }, function(err, challenges){
     if (err) return next(err);
     res.send(challenges);
     //    res.send(events);
