@@ -47,17 +47,19 @@ module.exports = function(app) {
     });
 
     //// TODO refresh user tokens
-    //router.put('/logs/:user_id', function(req,res,next) {
-    //    var user_id = req.params.user_id;
-    //
-    //    User.findById(user_id, function(err, user) {
-    //        user.refreshTokens().then(function(refreshedUser){
-    //            res.json(refreshedUser);
-    //        }).catch(function(err){
-    //            next(err);
-    //        });
-    //    });
-    //});
+    router.put('/tokens', function(req,res,next) {
+        var user_id = req.user.id;
+        var config = app.getValue('env');
+        User.findById(user_id, function(err, user) {
+            if (err) return next(err);
+
+            user.refreshTokens(config).then(function(refreshedUser){
+                res.json(refreshedUser);
+            }).catch(function(err){
+                next(err);
+            });
+        });
+    });
 
     // update user log by devices connected
     router.put('/logs', function(req,res,next) {
