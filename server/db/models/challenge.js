@@ -7,7 +7,7 @@ var Metric = require('mongoose').model('Metric');
 var schema = new mongoose.Schema({
     startDate: Date,
     endDate: Date,
-    metric: {type: mongoose.Schema.Types.ObjectId, ref: 'Metric'},
+    metric: String,
     category: {type: String, enum:['avg', 'total','frq']},
     goal: Number,
     progress: Number,

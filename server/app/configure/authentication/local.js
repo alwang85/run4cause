@@ -15,6 +15,7 @@ module.exports = function (app) {
             // user.correctPassword is a method from our UserModel schema.
             if (!user || !user.correctPassword(password)) return done(null, false);
             // Properly authenticated.
+
             done(null, user);
         });
     };
