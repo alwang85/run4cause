@@ -29,8 +29,9 @@ app.factory('UserFactory', function($http, $q, $auth) {
         });
     };
 
-    var refreshTokens = function(user) {
-        return $http.pu('/api/user/tokens/'+user).then(function(response) {
+    var refreshTokens = function() {
+        return $http.put('/api/user/tokens/').then(function(response) {
+            console.log(response.data);
             return response.data;
         });
     };
@@ -41,6 +42,7 @@ app.factory('UserFactory', function($http, $q, $auth) {
         createNewUser : createNewUser,
         availableDevices : availableDevices,
         linkDevice : linkDevice,
+        refreshTokens : refreshTokens,
         updateLogs : updateLogs
     };
 });

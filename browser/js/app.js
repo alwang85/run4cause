@@ -29,7 +29,7 @@ app.config(function($authProvider, Client) {
         name : 'jawbone',
         clientId: Client.jawbone.client_id,
         authorizationEndpoint : Client.jawbone.authorizationURL,
-        redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host + '/auth/jawbone',
+        redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
         scope: Client.jawbone.scope,
         requiredUrlParams: ['scope'],
         scopeDelimiter: ' '
@@ -40,7 +40,7 @@ app.config(function($authProvider, Client) {
         name : 'fitbit',
         clientId: Client.fitbit.client_id,
         authorizationEndpoint : Client.fitbit.authorizationURL,
-        redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host + '/auth/fitbit',
+        redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
         scope: Client.fitbit.scope,
         requiredUrlParams: ['scope'],
         scopeDelimiter: ' ',

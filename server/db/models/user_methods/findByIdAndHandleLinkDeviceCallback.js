@@ -33,6 +33,8 @@ module.exports = function(authInfo, config) {
                 console.log(err);
                 return reject(err);
             }
+            console.log(refreshToken);
+            console.log(params);
             User.findById(authInfo.user, function(err, user) {
                 if (err) return reject(err);
                 if (_.indexOf(user.active, authInfo.provider) === -1) {
@@ -45,12 +47,10 @@ module.exports = function(authInfo, config) {
                 // fitbit only shows expires_in as time left, and jawbone gives initial epoch timestamp
                 // might need to re-link the device if some calls do not work, until refresh token is working
                 if (params.expires_in) {
-                    user[authInfo.provider].expires_in = params.expires_in < 10000 ? Math.round((new Date()).getTime() * params.expires_in * 1000) : Math.round(params.expires_in * 1000);
+                    user[authInfo.provider].expires_in = params.expires_in < 10000 ? Math.round((new Date()).getTime()/1000 + params.expires_in) : Math.round(params.expires_in);
                 }
 
-                if (params.refresh_token || refreshToken) {
-                    user[authInfo.provider].refresh_token = params.refresh_token || refreshToken;
-                }
+                user[authInfo.provider].refresh_token = refreshToken || params.refresh_token;
 
                 user.save(function(err, savedUser) {
                     if (err) return reject(err);

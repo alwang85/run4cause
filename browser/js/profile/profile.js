@@ -21,21 +21,18 @@ app.controller('ProfileController', function($scope, AuthService, UserFactory) {
             .then(function(user) {
                 $scope.user = user;
                 // to filter out which devices are already linked
-                //$scope.link_devices = _.difference(UserFactory.availableDevices, user.active);
-
-                // for debugging, having the option to relink
-                $scope.link_devices = user.active;
+                $scope.link_devices = _.difference(UserFactory.availableDevices, user.active);
             });
         };
 
         $scope.updateLogs = function() {
-            UserFactory.updateLogs(user._id).then(function(logs) {
+            UserFactory.updateLogs().then(function(logs) {
                 console.log(logs);
             });
         };
 
         $scope.refreshTokens = function() {
-            UserFactory.refreshTokens(user._id).then(function(user) {
+            UserFactory.refreshTokens().then(function(user) {
                 $scope.user = user;
             });
         };

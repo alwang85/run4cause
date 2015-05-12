@@ -22,6 +22,7 @@ module.exports = {
     "clientSecret": '88557a229d1ed6e498744888a974eca2',
     "authorizationURL": 'https://www.fitbit.com/oauth2/authorize',
     "tokenURL": 'https://api.fitbit.com/oauth2/token',
+    "refreshTokenURL" : "https://api.fitbit.com/oauth2/token",
     "callbackURL": '/auth/fitbit/callback'
   },
   "JAWBONE" : {
@@ -29,6 +30,7 @@ module.exports = {
     "clientSecret": '8bff16cc6e7f6ed2669aa6a846808007afa3d934',
     "authorizationURL": 'https://jawbone.com/auth/oauth2/auth',
     "tokenURL": 'https://jawbone.com/auth/oauth2/token',
+    "refreshTokenURL" : "https://jawbone.com/auth/oauth2/token",
     "callbackURL": '/auth/jawbone/callback'
   }
 };
