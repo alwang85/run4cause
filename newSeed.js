@@ -367,35 +367,41 @@ var seedMetrics = function(api){
 };
 
 var seedChallenges = function(metrics){
-    var challenges = [{
+  return User.find({}).exec()
+    .then(function(users) {
+      var challenges = [{
         startDate: new Date,
         endDate: new Date('2015-05-14'),
         metric: metrics[0],
         category: 'total',
         goal: 100,
         description: 'Walk 100 miles',
-        name: 'Walk 100 miles'
-    },
-    {
-        startDate: new Date,
-        endDate: new Date('2015-05-14'),
-        metric: metrics[0],
-        category: 'total',
-        goal: 90000,
-        description: 'Sleep alot',
-        name: 'Sleep alot'
-    },{
-        startDate: new Date,
-        endDate: new Date('2015-05-14'),
-        metric: metrics[0],
-        category: 'total',
-        goal: 10000,
-        description: 'Walk 10000 steps',
-        name: 'Walk 10000 steps'
-    }];
-    //TODO: Add frequency and average challenges later
+        name: 'Walk 100 miles',
+        creator: users[0]
+      },
+        {
+          startDate: new Date,
+          endDate: new Date('2015-05-14'),
+          metric: metrics[0],
+          category: 'total',
+          goal: 90000,
+          description: 'Sleep alot',
+          name: 'Sleep alot',
+          creator: users[0]
+        }, {
+          startDate: new Date,
+          endDate: new Date('2015-05-14'),
+          metric: metrics[0],
+          category: 'total',
+          goal: 10000,
+          description: 'Walk 10000 steps',
+          name: 'Walk 10000 steps',
+          creator: users[0]
+        }];
+      //TODO: Add frequency and average challenges later
 
-    return q.invoke(Challenge, 'create', challenges);
+      return q.invoke(Challenge, 'create', challenges);
+    });
 };
 
 var seedNewEvents = function(challenges, nonprofits){

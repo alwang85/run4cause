@@ -34,7 +34,6 @@ app.factory('UserFactory', function($http, $q, $auth) {
             return response.data;
         });
     };
-
     // available api to link
     var availableDevices = ['jawbone', 'fitbit'];
 

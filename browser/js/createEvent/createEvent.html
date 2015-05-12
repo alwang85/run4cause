@@ -1,3 +1,34 @@
+<div id="createEvent">
+    <div name="createNewEvent">
+        <label>Pick event category</label>
+        <select class="form-control" ng-model="newEvent.category">
+            <option value="{{ category._id }}" ng-model="newEvent.category" ng-repeat="category in categories">{{ category.name }}</option>
+        </select>
+        <label>group</label>
+        <input name="group" value="true" class="radio-inline" type="radio" ng-model="newEvent.group" checked /> true
+        <input name="group" value="false" class="radio-inline" type="radio" /> false</br>
+        <label>contest</label><input name="contest" class="radio-inline" value="true" type="radio" ng-model="newEvent.contest" checked /> true
+        <input name="contest" class="radio-inline" value="false" type="radio" /> false</br>
+        <label>Event name</label>
+        <input class="form-control" placeholder="event name" ng-model="newEvent.name"/>
+        <label>Event description</label>
+        <textarea rows="10" class="form-control" placeholder="description" ng-model="newEvent.description"></textarea>
 
-<h1>This is event creation page</h1>
-<button ng-click="closeModal()">close modal</button>
+        <label>Start date</label><input type="date" class="form-control" ng-model="newEvent.startDate"/>
+        <label>End date</label><input type="date" class="form-control" ng-model="newEvent.endDate"/>
+        <select class="form-control" ng-model="newChallenge.nonProfit">
+            <option ng-repeat="nonprofit in nonprofitList" value="{{nonprofit._id}}">{{nonprofit.name}}</option>
+        </select>
+    </form>
+
+    <div>
+        <div class="challengePick col-xs-3">
+            <img ng-click="openModal()" class="plusSign" src="https://hunterfreeman.files.wordpress.com/2011/04/plus-sign-22.jpg">
+        </div>
+        <div class="col-xs-3" ng-repeat="challenge in newEvent.challenges">
+            <h1>This is one of user challenges</h1>
+            name: {{challenge.name}} metric: {{challenge.metric}}
+        </div>
+    </div>
+    <!--<button ng-click="closeModal()">close modal</button>-->
+</div>
