@@ -164,32 +164,39 @@ var seedChallenges = function(){
         var challenges = [{
           startDate: new Date,
           endDate: new Date('2015-05-14'),
-          metric: metrics[0],
-          category: 'total',
-          goal: 100,
-          description: 'Walk 100 miles',
-          name: 'Walk 100 miles',
-          creator: users[0]
-        },
+          goals: [{
+             metric: "distance",
+             category: 'total',
+             target: 20
+          },
           {
-            startDate: new Date,
-            endDate: new Date('2015-05-14'),
-            metric: metrics[0],
-            category: 'total',
-            goal: 90000,
-            description: 'Sleep alot',
-            name: 'Sleep alot',
-            creator: users[0]
-          }, {
-            startDate: new Date,
-            endDate: new Date('2015-05-14'),
-            metric: metrics[0],
-            category: 'total',
-            goal: 10000,
-            description: 'Walk 10000 steps',
-            name: 'Walk 10000 steps',
-            creator: users[0]
-          }];
+              metric: "sleep",
+              category: 'total',
+              target: 30
+          }],
+          challengers: [{
+              user: users[0],
+              individualProgress: {
+                  sleep: 5,
+                  distance: 6,
+                  steps: 3000,
+                  calories: 200
+              }
+          },
+              {
+                  user: users[1],
+                  individualProgress: {
+                      sleep: 6,
+                      distance: 7,
+                      steps: 4000,
+                      calories: 300
+                  }
+              }
+          ],
+          name: 'Walk 100 miles',
+          creator: users[0],
+          description: "let's walk and sleep"
+        }];
         //TODO: Add frequency and average challenges later
         console.log('creating challenge');
         return q.invoke(Challenge, 'create', challenges);
