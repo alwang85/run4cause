@@ -15,7 +15,8 @@ var schema = new mongoose.Schema({
     goals: [{
         metrics : {
             measurement: String,
-            target: Number
+            target: Number,
+            progress: Number
         },
         category: {type: String, enum:['avg', 'total','frq']}
     }],
@@ -35,16 +36,13 @@ var schema = new mongoose.Schema({
 schema.plugin(deepPopulate);
 
 schema.methods.calculateProgress = function(cb) {
-    //console.log('in method');
-    //console.log(user);
     var that = this;
+    var totalProgressObj = {};
     async.forEach(that.challengers, function(challenger, done){
         var results =[];
         var range1 = moment().range(that.startDate, that.endDate);
         range1.by('days', function(day) {
-            //console.log('before user.log');
             var tempResults = _.find(challenger.user.log, function(userLog) {
-                //console.log('this is results', userLog.date, day.toString());
                 return moment(userLog.date).toString() == day.toString();
             });
             if (tempResults){
@@ -62,49 +60,29 @@ schema.methods.calculateProgress = function(cb) {
                 })
             })
         });
-        console.log('this is obj', progressObj);
         var total = 0;
         for(var key in progressObj){
             total += progressObj[key];
+            if(!totalProgressObj[key]) totalProgressObj[key] = 0;
+            totalProgressObj[key] += progressObj[key];
         }
         challenger.individualProgress = total/(Object.keys(progressObj).length);
         done();
     }, function(err){
+            var totalProgress = 0;
+        _.map(that.goals, function(eachGoal){
+            for(var key in totalProgressObj){
+                if(key===eachGoal.metrics.measurement) {
+                    eachGoal.metrics.progress = totalProgressObj[key];
+                    totalProgress += (eachGoal.metrics.progress)/(Object.keys(totalProgressObj).length)
+                }
+            }
+            return eachGoal;
+        });
+        that.progress = totalProgress;
         that.save();
         return cb(null, that);
     });
 };
-
-//schema.methods.calculateProgress = function(cb) {//for each user in an event, sums the progress for each user for each challenge
-//  var newEvent = this;
-//  var progress;
-//  async.forEachLimit(newEvent.challenges, 1, function(challenge, done){
-//    if (newEvent.category == '1'){
-//      progress = 0;
-//      async.forEachLimit(newEvent.challengers, 1, function(user, done){
-//        challenge.challenge.calculateProgress(user.user, function(err, userProgress){
-//          //console.log('here is the user progress', userProgress);
-//          progress += Number(userProgress);
-//          done();
-//        })
-//      }, function(err){
-//        challenge.challenge.progress = progress;
-//        //console.log('this should be somewhere', challenge.challenge.progress);
-//        challenge.challenge.save(function(err, data){
-//          if (err) console.log(err)
-//          //console.log('saved challenge progress', data);
-//        });
-//        done();
-//      })
-//
-//    } //TODO add logic for users
-//  }, function(err){
-//    return cb(null, newEvent);
-//  });
-//
-//};
-
-
-
 
 mongoose.model('newEvent', schema);

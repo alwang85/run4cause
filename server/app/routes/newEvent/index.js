@@ -23,11 +23,13 @@ router.post('/', function (req,res,next){
 
 router.get('/', function (req,res,next){
     newEvent.find({}).deepPopulate('challenges challengers nonProfit').exec(function(err, events){
-        events.forEach(function(eachEvent){
-            event.calculateProgress(function(err, results){
-                console.log(results);
-                res.send(events);
-            });
+        var promises = events.map(function(eachEvent){
+            return new Promise(function(resolve,reject) {
+                resolve(eachEvent.calculateProgress());
+            })
+        });
+        return Promise.all(promises).then(function(){
+            res.send(events);
         });
       //    if (err) return next(err);
       //    res.send(events);
