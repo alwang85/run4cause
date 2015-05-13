@@ -9,7 +9,7 @@ var schema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, ref: 'User'
     },
     strategy: {
-        type: mongoose.Schema.Types.ObjectId, ref: 'Strategy'
+        //type: mongoose.Schema.Types.ObjectId, ref: 'Strategy'
     },
     challengers: [{
         user : {type: mongoose.Schema.Types.ObjectId, ref: 'User'},

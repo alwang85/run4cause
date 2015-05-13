@@ -1,6 +1,5 @@
 'use strict';
 var mongoose = require('mongoose');
-var Challenge = mongoose.model('Challenge');
 var deepPopulate = require('mongoose-deep-populate');
 var async = require('async');
 var schema = new mongoose.Schema({
@@ -10,7 +9,7 @@ var schema = new mongoose.Schema({
     goal: Number, //overall goal
     challenges: [
       {
-        challenge: {type: mongoose.Schema.Types.ObjectId, ref: 'Challenge'},
+        //challenge: {type: mongoose.Schema.Types.ObjectId, ref: 'Challenge'},
         goal: Number,
         progress: Number
       }
