@@ -23,7 +23,6 @@ var mongoose = require('mongoose');
 var connectToDb = require('./server/db');
 var User = mongoose.model('User');
 var Nonprofit = mongoose.model('Nonprofit');
-var Events = mongoose.model('Event');
 var Strategy = mongoose.model('Strategy');
 var API = mongoose.model('API');
 var Challenge = mongoose.model('Challenge');
@@ -157,54 +156,8 @@ var seedMetrics = function(api){
     });
 };
 
-var seedChallenges = function(){
-  return User.find({}).exec()
-    .then(function(users) {
-      return Metric.find({}).exec().then(function(metrics) {
-        var challenges = [{
-          startDate: new Date,
-          endDate: new Date('2015-05-14'),
-          goals: [{
-             metric: "distance",
-             category: 'total',
-             target: 20
-          },
-          {
-              metric: "sleep",
-              category: 'total',
-              target: 30
-          }],
-          challengers: [{
-              user: users[0],
-              individualProgress: {
-                  sleep: 5,
-                  distance: 6,
-                  steps: 3000,
-                  calories: 200
-              }
-          },
-              {
-                  user: users[1],
-                  individualProgress: {
-                      sleep: 6,
-                      distance: 7,
-                      steps: 4000,
-                      calories: 300
-                  }
-              }
-          ],
-          name: 'Walk 100 miles',
-          creator: users[0],
-          description: "let's walk and sleep"
-        }];
-        //TODO: Add frequency and average challenges later
-        console.log('creating challenge');
-        return q.invoke(Challenge, 'create', challenges);
-      });
-    })
-};
 
-var seedNewEvents = function(challenges, nonprofits){
+var seedNewEvents = function(nonprofits){
   return User.find({}).exec()
     .then(function(users) {
       //console.log('users inside new seed events', users);
@@ -212,42 +165,34 @@ var seedNewEvents = function(challenges, nonprofits){
         category: 1,
         group: false,
         contest: false,
-        progess: 0,
-        goal: 100,
-        challenges: [ {challenge: challenges, goal: 1000}],
+        progress: 0,
+        goals:[{
+            metrics: {
+                measurement: 'sleep',
+                target: 33
+            },
+            category: 'total'
+        },{
+            metrics: {
+                measurement: 'distance',
+                target: 55
+            },
+            category: 'total'
+        }],
         creator: users[0],
         challengers: [{
-          user: users[0],
-          join: new Date('2015-05-01')
+            user: users[0],
+            individualProgress: 0
+        },{
+            user: users[1],
+            individualProgress: 0
         }],
         startDate: new Date('2015-05-11'),
         endDate: new Date('2015-05-18'),
         nonProfit: nonprofits[0],
         description: "Lets walk lots of miles.",
         name: "Walk."
-      },
-        {
-          category: 1,
-          group: true,
-          contest: true,
-          progess: 0,
-          goal: 100,
-          challenges: [{challenge: challenges, goal: 1000}], //TODO add multiple challenge per event
-          creator: users[0],
-          challengers: [{
-            user: users[0],
-            join: new Date('2015-05-01')
-          },
-            {
-              user: users[0],
-              join: new Date('2015-05-01')
-            }],
-          startDate: new Date('2015-05-11'),
-          endDate: new Date('2015-05-18'),
-          nonProfit: nonprofits[1],
-          description: "Lets sleep",
-          name: "Sleep."
-        }];
+      }];
       return q.invoke(newEvent, 'create', newEvents);
     });
 };
@@ -370,17 +315,13 @@ connectToDb.then(function () {
           return seedAPI(nonprofits).then(function(api) {
             //console.log('before seedMetrics');
             return seedMetrics(api).then(function(metrics) {
-              console.log('before seedChallenges', metrics);
-              return seedChallenges(metrics).then(function(challenges) {
-                //console.log('before seedNewEvents');
-                return seedNewEvents(challenges, nonprofits).then(function () {
+                return seedNewEvents(nonprofits).then(function () {
                   console.log(chalk.green('Seed successful!'));
                   process.kill(0);
                 });
               });
             });
           })
-        });
     }).catch(function (err) {
         console.error(err);
         process.kill(1);

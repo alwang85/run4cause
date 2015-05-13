@@ -34,7 +34,7 @@ router.get('/', function (req,res,next){
     });
 });
 router.get('/:eventId', function (req,res,next){
-  newEvent.findById(req.params.eventId).deepPopulate('challenges.challenge challengers.user').exec(function(err, foundEvent){
+  newEvent.findById(req.params.eventId).deepPopulate('creator challengers.user').exec(function(err, foundEvent){
       if (err) return next(err);
       foundEvent.calculateProgress(function(err, result){
         console.log('result should equal to sum of distance in first 7 days for all users', result);

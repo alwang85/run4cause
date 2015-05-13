@@ -6,25 +6,7 @@ var Metric = require('mongoose').model('Metric');
 var async = require('async');
 
 var schema = new mongoose.Schema({
-    startDate: Date,
-    endDate: Date,
-    progress: Number,
-    description: String,
-    name: String,
-    goals: [{
-        metric: String,
-        category: {type: String, enum:['avg', 'total','frq']},
-        target: Number
-    }],
-    challengers: [{
-        user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-        individualProgress: {
-            sleep: Number,
-            distance: Number,
-            steps: Number,
-            calories: Number
-        }
-    }]
+
 });
 
 //
