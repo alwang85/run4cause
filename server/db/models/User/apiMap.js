@@ -2,7 +2,9 @@ var Promise = require('bluebird');
 var _ = require('lodash');
 
 module.exports = {
-    fitbit: function(provider,logItem, dateObj, date, value){
+    fitbit: function(provider,logItem, dateObj){
+
+        var date, value;
         var fitbitMap = {
             "activities-tracker-distance" : "distance",
             "activities-tracker-steps"    : "steps",
@@ -29,11 +31,11 @@ module.exports = {
                 });
             });
         });
-
-        return dateObj;
     },
 
-    jawbone: function(logitem, dateObj, date, value){
+    jawbone: function(provider, logItem, dateObj){
+
+        var date, value;
         var jawboneItems = logItem[provider].items;
 
         _.forEach(jawboneItems, function(item) {

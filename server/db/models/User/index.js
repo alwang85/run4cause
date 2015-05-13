@@ -75,6 +75,4 @@ schema.method('refreshTokens', require('./refreshTokens'));
 schema.method('parseData', require('./parseData'));
 schema.method('updateLogs', require('./updateLogs'));
 
-
-
 mongoose.model('User', schema);
