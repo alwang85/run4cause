@@ -84,4 +84,4 @@ schema.methods.calculateProgress = function() {
     });
 };
 
-mongoose.model('newEvent', schema);
+mongoose.model('Event', schema);

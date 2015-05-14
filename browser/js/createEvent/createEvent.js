@@ -7,7 +7,7 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('CreateEventController', function($modal, $http, NewEvent, $scope, Nonprofit, Challenge){
+app.controller('CreateEventController', function($modal, $http, Event, $scope, Nonprofit, Challenge){
     $scope.openModal = function(){
         var modalInstance = $modal.open({
             templateUrl: 'js/createChallenge/createChallenge.html',
@@ -21,7 +21,7 @@ app.controller('CreateEventController', function($modal, $http, NewEvent, $scope
     });
 
     $scope.postEvent = function(anewEvent){
-        NewEvent.addEvent(anewEvent).then(function(savedEvent){
+        Event.addEvent(anewEvent).then(function(savedEvent){
             console.log(savedEvent);
         });
     };
