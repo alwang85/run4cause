@@ -22,12 +22,12 @@ module.exports = function(app) {
         delete newUser.passwordConfirm;
         User.create(newUser, function (err, returnedUser) {
             if (err) return next(err);
+
             req.logIn(returnedUser, function (err) {
                 if (err) return next(err);
                 // We respond with a reponse object that has user with _id and email.
-                res.status(200).send({user: _.omit(returnedUser.toJSON(), ['password', 'salt'])});
+                res.json(_.omit(savedUser.toJSON(), ['password', 'salt', 'jawbone', 'fitbit']));
             });
-
         });
     });
 
@@ -39,14 +39,12 @@ module.exports = function(app) {
 
         User.findByIdAndHandleLinkDeviceCallback(authInfo, config)
         .then(function(savedUser) {
-            res.send({user : _.omit(savedUser.toJSON(), ['password', 'salt'])});
+            res.json(_.omit(savedUser.toJSON(), ['password', 'salt', 'jawbone', 'fitbit']));
         })
-        .catch(function(err) {
-            next(err);
-        });
+        .catch(next);
     });
 
-    //// TODO refresh user tokens
+    // refresh tokens
     router.put('/tokens', function(req,res,next) {
         var user_id = req.user.id;
         var config = app.getValue('env');
@@ -54,10 +52,8 @@ module.exports = function(app) {
             if (err) return next(err);
 
             user.refreshTokens(config).then(function(refreshedUser){
-                res.json(refreshedUser);
-            }).catch(function(err){
-                next(err);
-            });
+                res.json(_.omit(refreshedUser.toJSON(), ['password', 'salt', 'jawbone', 'fitbit']));
+            }).catch(next);
         });
     });
 
@@ -65,19 +61,24 @@ module.exports = function(app) {
     router.put('/logs', function(req,res,next) {
         var user_id = req.params.user_id;
 
-        req.user.updateLogs()
+        req.user.updateUserLogs()
         .then(function(logs) {
             res.json(logs);
-        }).catch(function(err) {
-            next(err);
-        });
+        }).catch(next);
+    });
+
+    router.get('/logs', function(req,res,next) {
+        req.user.getUserLogs()
+            .then(function(logs) {
+                res.json(logs);
+            }).catch(next);
     });
 
     //Get All users
     router.get('/', function (req, res, next) {
         User.find({}, function (err, foundUser) {
             if (err) return next(err);
-            res.send(foundUser);
+            res.json(foundUser);
         });
     });
 
@@ -95,16 +96,13 @@ module.exports = function(app) {
         var user_id = req.params.user_id;
         if (!user_id) return next(new Error("Specify user id"));
 
-        User.findById(user_id, function (err, user) {
+
+        _.extend(req.user, req.body);
+
+        req.user.save(function (err, savedData) {
+            console.log(savedData);
             if (err) return next(err);
-            _.extend(user, req.body);
-
-            user.save(function (err, savedData) {
-                console.log(savedData);
-                if (err) return next(err);
-                res.json(savedData);
-            });
-
+            res.json(savedData);
         });
     });
 

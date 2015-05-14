@@ -30,14 +30,7 @@ var schema = new mongoose.Schema({
     friends: [{
       type: mongoose.Schema.Types.ObjectId, ref: 'User'
     }],
-    events: [{type: mongoose.Schema.Types.ObjectId, ref: 'newEvent'}],
-    log: [{
-      date: Date,
-      metrics: [{
-        measurement: String, //distance
-        qty: Number
-      }]
-    }]
+    events: [{type: mongoose.Schema.Types.ObjectId, ref: 'newEvent'}]
 });
 
 // generateSalt, encryptPassword and the pre 'save' and 'correctPassword' operations
@@ -72,7 +65,8 @@ schema.method('correctPassword', function (candidatePassword) {
 });
 
 schema.method('refreshTokens', require('./refreshTokens'));
-schema.method('parseData', require('./parseData'));
-schema.method('updateLogs', require('./updateLogs'));
+schema.method('parseLogData', require('./parseLogData'));
+schema.method('updateUserLogs', require('./updateUserLogs'));
+schema.method('getUserLogs', require('./getUserLogs'));
 
 mongoose.model('User', schema);
