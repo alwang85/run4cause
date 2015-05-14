@@ -35,6 +35,12 @@ app.factory('UserFactory', function($http, $q, $auth) {
             return response.data;
         });
     };
+
+    var getUserLogs = function() {
+        return $http.get('/api/user/logs/').then(function(response) {
+            return response.data;
+        });
+    };
     // available api to link
     var availableDevices = ['jawbone', 'fitbit'];
 
@@ -43,6 +49,7 @@ app.factory('UserFactory', function($http, $q, $auth) {
         availableDevices : availableDevices,
         linkDevice : linkDevice,
         refreshTokens : refreshTokens,
-        updateLogs : updateLogs
+        updateLogs : updateLogs,
+        getUserLogs : getUserLogs
     };
 });
