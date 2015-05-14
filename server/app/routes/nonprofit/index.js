@@ -8,18 +8,22 @@ var Nonprofit = require('mongoose').model('Nonprofit');
 
 
 router.post('/', function (req,res,next){
-  var body = req.body;
-  Nonprofit.create(body, function(err, savedNonprofit){
-    if (err) return next(err);
-    res.send(savedNonprofit);
-  })
+    var body = req.body;
+    Nonprofit.create(body, function(err, savedNonprofit){
+      if (err) return next(err);
+      res.send(savedNonprofit);
+    });
 });
 
 router.get('/', function (req,res,next){
-  Nonprofit.find({}).deepPopulate('events').exec(function(err, nonprofits){
-    console.log(nonprofits);
-    if (err) return next(err);
-    res.send(nonprofits);
-    //    res.send(events);
-  });
+    Nonprofit.getEveryNonProfitEvents(function(err, npOnSteroids) {
+        if (err) return next(err);
+
+        console.log(npOnSteroids);
+        res.json(npOnSteroids);
+    });
+    //.then(function(npOnSteroids) {
+    //    console.log(npOnSteroids);
+    //    res.json(npOnSteroids);
+    //});
 });
