@@ -1,4 +1,4 @@
-app.factory("Nonprofit", function($http){
+app.factory("NonProfitFactory", function($http){
   return{
     getNonprofits : function(){
       return $http.get('/api/nonprofit').then(function(res){
