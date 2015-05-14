@@ -1,6 +1,7 @@
 'use strict';
 var crypto = require('crypto');
 var mongoose = require('mongoose');
+var deepPopulate = require('mongoose-deep-populate');
 
 var schema = new mongoose.Schema({
   creator: {
@@ -17,8 +18,13 @@ var schema = new mongoose.Schema({
   },
   followers: [{
     type: mongoose.Schema.Types.ObjectId, ref: 'User'
-  }],
-  events: [{type: mongoose.Schema.Types.ObjectId, ref: 'Event'}]
+  }]
+});
+
+schema.plugin(deepPopulate);
+
+schema.virtual('events').get(function() {
+    //var nonProfitId
 });
 
 

@@ -16,7 +16,7 @@ router.post('/', function (req,res,next){
 });
 
 router.get('/', function (req,res,next){
-  Nonprofit.find({}).exec(function(err, nonprofits){
+  Nonprofit.find({}).deepPopulate('events').exec(function(err, nonprofits){
     console.log(nonprofits);
     if (err) return next(err);
     res.send(nonprofits);
