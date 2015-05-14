@@ -1,6 +1,5 @@
 'use strict';
 var mongoose = require('mongoose');
-var Challenge = mongoose.model('Challenge');
 var deepPopulate = require('mongoose-deep-populate');
 var async = require('async');
 var _ = require('lodash');
@@ -20,13 +19,13 @@ var schema = new mongoose.Schema({
         },
         category: {type: String, enum:['avg', 'total','frq']}
     }],
+    creator: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'User'
+    },
     challengers: [{
         user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
         individualProgress: Number
     }],
-    creator: {
-        type: mongoose.Schema.Types.ObjectId, ref: 'User'
-    },
     nonProfit: {
         type: mongoose.Schema.Types.ObjectId, ref: 'Nonprofit'
     },
