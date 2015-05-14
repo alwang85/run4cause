@@ -1,5 +1,6 @@
 <div id="createEvent">
     <div name="createNewEvent">
+    <form ng-submit="postEvent(newEvent)">
         <label>Pick event category</label>
         <select class="form-control" ng-model="newEvent.category">
             <option value="{{ category._id }}" ng-model="newEvent.category" ng-repeat="category in categories">{{ category.name }}</option>
@@ -19,6 +20,7 @@
         <select class="form-control" ng-model="newChallenge.nonProfit">
             <option ng-repeat="nonprofit in nonprofitList" value="{{nonprofit._id}}">{{nonprofit.name}}</option>
         </select>
+        <button type="submit">Post Event</button>
     </form>
 
     <div>
@@ -30,5 +32,5 @@
             name: {{challenge.name}} metric: {{challenge.metric}}
         </div>
     </div>
-    <!--<button ng-click="closeModal()">close modal</button>-->
+
 </div>

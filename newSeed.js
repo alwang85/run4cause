@@ -23,7 +23,6 @@ var mongoose = require('mongoose');
 var connectToDb = require('./server/db');
 var User = mongoose.model('User');
 var Nonprofit = mongoose.model('Nonprofit');
-var Events = mongoose.model('Event');
 var Strategy = mongoose.model('Strategy');
 var API = mongoose.model('API');
 var Challenge = mongoose.model('Challenge');
@@ -157,201 +156,91 @@ var seedMetrics = function(api){
     });
 };
 
-var seedChallenges = function(){
-  return User.find({}).exec()
-    .then(function(users) {
-      return Metric.find({}).exec().then(function(metrics) {
-        var challenges = [{
-          startDate: new Date,
-          endDate: new Date('2015-05-14'),
-          metric: metrics[0],
-          category: 'total',
-          goal: 100,
-          description: 'Walk 100 miles',
-          name: 'Walk 100 miles',
-          creator: users[0]
-        },
-          {
-            startDate: new Date,
-            endDate: new Date('2015-05-14'),
-            metric: metrics[0],
-            category: 'total',
-            goal: 90000,
-            description: 'Sleep alot',
-            name: 'Sleep alot',
-            creator: users[0]
-          }, {
-            startDate: new Date,
-            endDate: new Date('2015-05-14'),
-            metric: metrics[0],
-            category: 'total',
-            goal: 10000,
-            description: 'Walk 10000 steps',
-            name: 'Walk 10000 steps',
-            creator: users[0]
-          }];
-        //TODO: Add frequency and average challenges later
-        console.log('creating challenge');
-        return q.invoke(Challenge, 'create', challenges);
-      });
-    })
-};
 
-var seedNewEvents = function(challenges, nonprofits){
+var seedNewEvents = function(nonprofits){
   return User.find({}).exec()
     .then(function(users) {
       //console.log('users inside new seed events', users);
       var newEvents = [{
         category: 1,
-        group: false,
+        group: true,
         contest: false,
-        progess: 0,
-        goal: 100,
-        challenges: [ {challenge: challenges, goal: 1000}],
+        progress: 0,
+        goals:[{
+            metrics: {
+                measurement: 'sleep',
+                target: 33,
+                progress: 0
+            },
+            category: 'total'
+        },{
+            metrics: {
+                measurement: 'distance',
+                target: 55,
+                progress: 0
+            },
+            category: 'total'
+        }],
         creator: users[0],
         challengers: [{
-          user: users[0],
-          join: new Date('2015-05-01')
+            user: users[0],
+            individualProgress: 0
+        },{
+            user: users[1],
+            individualProgress: 0
         }],
         startDate: new Date('2015-05-11'),
         endDate: new Date('2015-05-18'),
-        nonProfit: nonprofits[0],
+        nonProfit: nonprofits,
         description: "Lets walk lots of miles.",
         name: "Walk."
       },
-        {
+      {
           category: 1,
           group: true,
-          contest: true,
-          progess: 0,
-          goal: 100,
-          challenges: [{challenge: challenges, goal: 1000}], //TODO add multiple challenge per event
+          contest: false,
+          progress: 0,
+          goals:[{
+              metrics: {
+                  measurement: 'sleep',
+                  target: 70,
+                  progress: 0
+              },
+              category: 'total'
+          },{
+              metrics: {
+                  measurement: 'distance',
+                  target: 90,
+                  progress: 0
+              },
+              category: 'total'
+          },
+          {
+              metrics: {
+                  measurement: 'steps',
+                  target: 3000,
+                  progress: 0
+              },
+              category: 'total'
+          }],
           creator: users[0],
           challengers: [{
-            user: users[0],
-            join: new Date('2015-05-01')
-          },
-            {
               user: users[0],
-              join: new Date('2015-05-01')
-            }],
+              individualProgress: 0
+          },{
+              user: users[1],
+              individualProgress: 0
+          }],
           startDate: new Date('2015-05-11'),
           endDate: new Date('2015-05-18'),
-          nonProfit: nonprofits[1],
-          description: "Lets sleep",
-          name: "Sleep."
-        }];
+          nonProfit: nonprofits,
+          description: "many things",
+          name: "Walk Sleep."
+      }
+      ];
       return q.invoke(newEvent, 'create', newEvents);
     });
 };
-
-//var seedEvents = function() {
-//    var foundUsers;
-//    var foundStrategies;
-//    var nonProfits;
-//    return User.find({}).exec()
-//        .then(function(users) {
-//            foundUsers = users;
-//        })
-//        .then(function(){
-//            return Strategy.find({}).exec()
-//        })
-//        .then(function(strategies){
-//            foundStrategies = strategies;
-//        })
-//        .then(function(){
-//            return Nonprofit.find({}).exec()
-//        })
-//        .then(function(foundNonprofits){
-//            var events = [{
-//                type: 'goal',
-//                creator: foundUsers[0]._id,
-//                strategy: foundStrategies[0]._id,
-//                challengers: [{
-//                    user: foundUsers[0],
-//                    join: new Date('2015-05-01')
-//                },
-//                    {
-//                        user: foundUsers[1],
-//                        join: new Date('2015-05-02')
-//                    }],
-//                startDate: new Date('2015-05-01'),
-//                endDate: new Date('2015-05-03'),
-//                nonProfit: foundNonprofits[0]._id
-//            },
-//                {
-//                    type: 'lifeStyle',
-//                    creator: foundUsers[0]._id,
-//                    strategy: foundStrategies[1]._id,
-//                    challengers: [{
-//                        user: foundUsers[0],
-//                        join: new Date('2015-05-02')
-//                    },
-//                        {
-//                            user: foundUsers[1],
-//                            join: new Date('2015-05-02')
-//                        }],
-//                    startDate: new Date('2015-05-02'),
-//                    endDate: new Date('2015-05-02'),
-//                    nonProfit: foundNonprofits[1]._id
-//                },
-//                {
-//                    type: 'lifeStyle',
-//                    creator: foundUsers[0]._id,
-//                    strategy: foundStrategies[1]._id,
-//                    challengers: [{
-//                        user: foundUsers[0],
-//                        join: new Date('2015-05-02')
-//                    },
-//                        {
-//                            user: foundUsers[1],
-//                            join: new Date('2015-05-02')
-//                        }],
-//                    startDate: new Date('2015-05-02'),
-//                    endDate: new Date('2015-05-02'),
-//                    nonProfit: foundNonprofits[1]._id
-//                },
-//                {
-//                    type: 'lifeStyle',
-//                    creator: foundUsers[0]._id,
-//                    strategy: foundStrategies[1]._id,
-//                    challengers: [{
-//                        user: foundUsers[0],
-//                        join: new Date('2015-05-02')
-//                    },
-//                        {
-//                            user: foundUsers[1],
-//                            join: new Date('2015-05-02')
-//                        }],
-//                    startDate: new Date('2015-05-02'),
-//                    endDate: new Date('2015-05-02'),
-//                    nonProfit: foundNonprofits[1]._id
-//                },
-//                {
-//                    type: 'lifeStyle',
-//                    creator: foundUsers[1]._id,
-//                    strategy: foundStrategies[1]._id,
-//                    challengers: [{
-//                        user: foundUsers[0],
-//                        join: new Date('2015-05-02')
-//                    },
-//                        {
-//                            user: foundUsers[1],
-//                            join: new Date('2015-05-02')
-//                        }],
-//                    startDate: new Date('2015-05-02'),
-//                    endDate: new Date('2015-05-02'),
-//                    nonProfit: foundNonprofits[1]._id
-//                }
-//            ];
-//
-//            return q.invoke(Events, 'create', events)
-//                .then(function(event){
-//                    foundNonprofits[0].events.push(event);
-//                    foundNonprofits[0].save();
-//                });
-//        });
-//};
 
 connectToDb.then(function () {
     getCurrentUserData().then(function (users) {
@@ -363,17 +252,13 @@ connectToDb.then(function () {
           return seedAPI(nonprofits).then(function(api) {
             //console.log('before seedMetrics');
             return seedMetrics(api).then(function(metrics) {
-              console.log('before seedChallenges', metrics);
-              return seedChallenges(metrics).then(function(challenges) {
-                //console.log('before seedNewEvents');
-                return seedNewEvents(challenges, nonprofits).then(function () {
+                return seedNewEvents(nonprofits).then(function () {
                   console.log(chalk.green('Seed successful!'));
                   process.kill(0);
                 });
               });
             });
           })
-        });
     }).catch(function (err) {
         console.error(err);
         process.kill(1);

@@ -7,7 +7,7 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('CreateEventController', function($modal, $http, $scope, Event, Nonprofit, Challenge){
+app.controller('CreateEventController', function($modal, $http, NewEvent, $scope, Nonprofit, Challenge){
     $scope.openModal = function(){
         var modalInstance = $modal.open({
             templateUrl: 'js/createChallenge/createChallenge.html',
@@ -20,11 +20,17 @@ app.controller('CreateEventController', function($modal, $http, $scope, Event, N
       $scope.nonprofitList = nonprofitList;
     });
 
-    $scope.newEvent = new NewEvent();
+    $scope.postEvent = function(anewEvent){
+        NewEvent.addEvent(anewEvent).then(function(savedEvent){
+            console.log(savedEvent);
+        });
+    };
+
+    $scope.newEvent = new ANewEvent();
     Challenge.getChallengesByUser().then(function(challenges){
        $scope.newEvent.challenges = challenges;
     });
-    function NewEvent () {
+    function ANewEvent () {
         this.challenges = [];
         this.category = null;
         this.group = true;

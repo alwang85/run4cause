@@ -13,7 +13,6 @@ var db = mongoose.connect(DATABASE_URI).connection;
 // anywhere the User model needs to be used.
 require('./models/Logs');
 require('./models/User');
-require('./models/event');
 require('./models/nonprofit');
 require('./models/newEvent');
 

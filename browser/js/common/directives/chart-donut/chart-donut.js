@@ -1,26 +1,37 @@
 'use strict';
-var chart;
 app.directive('chartDonut', function ($rootScope, $state, $timeout) {
     return {
         restrict : 'E',
+        scope: {
+            event: '='
+        },
         replace: true,
         templateUrl : 'js/common/directives/chart-donut/chart-donut.html',
         link : function(scope, element, attr) {
             var canvas = element.find('canvas')[0];
-            element.height(element.width());
-            canvas.width = canvas.height = element.width();
+            console.log(element.parent().outerWidth(false));
+            scope.$watch(function() {
+                element.height(element.width());
+                canvas.width = canvas.height = element.width();
+                var context = canvas.getContext('2d');
+                var myDoughnutChart = new Chart(context).Doughnut(data,option);
+            });
+            //element.height(element.offsetWidth);
+            //canvas.width = canvas.height = element.offsetWidth;
             var context = canvas.getContext('2d');
+            var progress = scope.event.progress;
+            var remaining = (progress>1) ? 0 : 1-progress;
 
             var data = [
                 {
-                    value: 80,
-                    color:"#F7464A",
+                    value: progress,
+                    color:"green",
                     highlight: "#FF5A5E",
                     label: "Progress"
                 },
                 {
-                    value: 20,
-                    color: "#46BFBD",
+                    value: remaining,
+                    color: "red",
                     highlight: "#5AD3D1",
                     label: "Remaining"
                 }
@@ -33,8 +44,6 @@ app.directive('chartDonut', function ($rootScope, $state, $timeout) {
                 scaleFontSize: 20,
                 percentageInnerCutout : 90
             };
-
-            var myDoughnutChart = new Chart(context).Doughnut(data,option);
         }
     };
 });

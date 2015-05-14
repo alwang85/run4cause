@@ -3,7 +3,7 @@ app.directive('chartBox', function () {
     return {
         restrict : 'E',
         scope : {
-
+            event: '='
         },
         transclude: true,
         replace : true,
