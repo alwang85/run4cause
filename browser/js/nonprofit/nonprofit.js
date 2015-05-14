@@ -14,23 +14,28 @@ app.config(function ($stateProvider) {
 
     $stateProvider.state('nonProfit.detail', {
         url: '/:nonProfitToken',
-        templateUrl: 'js/nonprofit/partial/detail.html'
+        templateUrl: 'js/nonprofit/partial/detail.html',
+        controller: function($scope, NonProfitFactory, $state, $stateParams){
+            NonProfitFactory.getNonprofit($stateParams.nonProfitToken).then(function(patient){
+                $scope.patient = patient;
+            });
+        }
     });
 });
 
+
 app.controller('NonProfitController', function ($scope, AuthService, NonProfitFactory, $state) {
     $scope.nonprofits= [];
+    $scope.patient = {};
 
     NonProfitFactory.getNonprofits()
     .then(function(nonprofits) {
         $scope.nonprofits = nonprofits;
     });
     $scope.getPatient = function(patientId){
-      console.log('scopegetPatient', patientId);
       NonProfitFactory.getNonprofit(patientId).then(function(patient){
-        $scope.patient = patient;
+        //$scope.patient = patient;
+        //$state.go("nonProfit.detail",{nonProfitToken:patientId});
       });
-      console.log($state);
     };
-    console.log($state);
 });

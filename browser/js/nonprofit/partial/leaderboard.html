@@ -1,19 +1,24 @@
 <div class="header-padding">
     <div id="nonprofit-list">
-        <h1>this is the list of patients</h1>
-        <div class="col-xs-2">
-            left
-        </div>
-        <div class="eventList col-xs-8">
-            <h3>List of patients</h3>
+        <div class="eventList col-md-12">
+            <h1>List of patients</h1>
             <div class="eachNonprofit" ng-repeat="nonprofit in nonprofits">
-                <div class="info col-xs-4"><a ui-sref="nonProfit.detail({nonProfitToken: nonprofit.token})" ng-click="getPatient(nonprofit.token)" class="clickable"><img alt={{nonprofit.name}} height="248" src={{nonprofit.profile_url}} width="330"><span class="link">Read More&nbsp;»</span></h3><p class="progress_bar" title="{{nonprofit.per_cent_funded}}"><span style="width: {{nonprofit.per_cent_funded}}%">37% funded</span></p><p class="raised">{{nonprofit.donated}} raised</p><p class="to_go">{{nonprofit.target_to_go }}</p></a>
+                <div class="info col-xs-4">
+                    <a  ui-sref="nonProfit.detail({nonProfitToken:nonprofit.token})"
+                       class="clickable">
+                    <img alt={{nonprofit.name}}
+                         height="248"
+                         ng-src={{nonprofit.profile_url}}
+                         width="330">
+                    <p class="link">Read More</p></a>
+                    <p class="progress_bar"
+                       title="{{nonprofit.per_cent_funded}}">
+                    <span>{{nonprofit.per_cent_funded}} funded</span>
+                    </p>
+                    <p class="raised">{{nonprofit.donated}} raised</p>
+                    <p class="to_go">{{nonprofit.target_to_go }}</p>
                 </div>
             </div>
-        </div>
-        <div>here is the patient{{patient}}</div>
-        <div class="col-xs-2">
-            right
         </div>
     </div>
 </div>

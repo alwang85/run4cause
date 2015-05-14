@@ -1,11 +1,11 @@
 <div class="header-padding">
-    <p>This is Non Profit Detail</p>
-    name: {{patient.name}}<br/>
-    header: {{patient.header}}<br/>
-    description: {{patient.description}}<br/>
-    age: {{patient.age}}<br/>
-    country: {{patient.country}}<br/>
-<img alt={{nonprofit.name}} height="248" src={{patient.profile_url}} width="330">
+    <h1>{{patient.name}}'s Page</h1>
+    <h3> {{patient.header}}</h3><br/>
+    <img alt={{nonprofit.name}} height="248" ng-src={{patient.profile_url}} width="330">
+    <p>Age: {{patient.age}}</p>
+    <p>Country: {{patient.country}}</p>
+    <p>Description:<br/>{{patient.description}}</p>
+
     target: {{patient.target}}<br/>
     target_to_go: {{patient.target_to_go}}<br/>
     donated: {{patient.donated}}<br/>
