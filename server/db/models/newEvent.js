@@ -4,6 +4,7 @@ var deepPopulate = require('mongoose-deep-populate');
 var async = require('async');
 var _ = require('lodash');
 var moment = require('moment-range');
+var Promise = require('bluebird');
 var schema = new mongoose.Schema({
     startDate: Date,
     endDate: Date,
@@ -34,42 +35,41 @@ var schema = new mongoose.Schema({
 });
 schema.plugin(deepPopulate);
 
-schema.methods.calculateProgress = function(cb) {
+schema.methods.calculateProgress = function() {
     var that = this;
     var totalProgressObj = {};
-    async.forEach(that.challengers, function(challenger, done){
-        var results =[];
-        var range1 = moment().range(that.startDate, that.endDate);
-        range1.by('days', function(day) {
-            var tempResults = _.find(challenger.user.log, function(userLog) {
-                return moment(userLog.date).toString() == day.toString();
-            });
-            if (tempResults){
-                results.push(tempResults);
-            }
-        });
-        var progressObj = {};
-        _.forEach(results, function(eachDayLog) {
-            _.forEach(eachDayLog.metrics, function (eachMetric) {
-                _.forEach(that.goals, function(goal){
-                    if(goal.metrics.measurement === eachMetric.measurement){
-                        if(!progressObj[goal.metrics.measurement]) progressObj[goal.metrics.measurement] = 0;
-                        progressObj[goal.metrics.measurement] += (eachMetric.qty/goal.metrics.target);
-                    }
-                })
-            })
-        });
-        var total = 0;
-        for(var key in progressObj){
-            total += progressObj[key];
-            if(!totalProgressObj[key]) totalProgressObj[key] = 0;
-            totalProgressObj[key] += progressObj[key];
-        }
+    var promises = _.map(that.challengers, function(challenger){
+        return new Promise(function(resolve,reject){
+            var results = [];
+            challenger.user.getUserLogs(that.startDate, that.endDate).then(function(logs){
+                results = logs;
+                console.log(results);
+                var progressObj = {};
+                _.forEach(results, function(eachDayLog) {
+                    _.forEach(eachDayLog.metrics, function (eachMetric) {
+                        _.forEach(that.goals, function(goal){
+                            if(goal.metrics.measurement === eachMetric.measurement){
+                                if(!progressObj[goal.metrics.measurement]) progressObj[goal.metrics.measurement] = 0;
+                                progressObj[goal.metrics.measurement] += (eachMetric.qty/goal.metrics.target);
+                            }
+                        })
+                    })
+                });
+                var total = 0;
+                for(var key in progressObj){
+                    total += progressObj[key];
+                    if(!totalProgressObj[key]) totalProgressObj[key] = 0;
+                    totalProgressObj[key] += progressObj[key];
+                }
 
-        challenger.individualProgress = ((total/(Object.keys(progressObj).length)) || 0);
-        done();
-    }, function(err){
-            var totalProgress = 0;
+                challenger.individualProgress = ((total/(Object.keys(progressObj).length)) || 0);
+                resolve(challenger);
+         })
+     });
+    });
+
+    return Promise.all(promises).then(function(){
+        var totalProgress = 0;
         _.map(that.goals, function(eachGoal){
             for(var key in totalProgressObj){
                 if(key===eachGoal.metrics.measurement) {
@@ -80,8 +80,12 @@ schema.methods.calculateProgress = function(cb) {
             return eachGoal;
         });
         that.progress = totalProgress;
-        that.save();
-        return cb(null, that);
+
+        that.save(function(err,savedThat){
+
+        });
+        console.log(that);
+        return that;
     });
 };
 
