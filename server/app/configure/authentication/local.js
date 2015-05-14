@@ -39,7 +39,7 @@ module.exports = function (app) {
             req.logIn(user, function (err) {
                 if (err) return next(err);
                 // We respond with a reponse object that has user with _id and email.
-                res.status(200).send({ user: _.omit(user.toJSON(), ['password', 'salt']) });
+                res.status(200).send({ user: _.omit(user.toJSON(), ['password', 'salt', 'jawbone', 'fitbit']) });
             });
 
         };

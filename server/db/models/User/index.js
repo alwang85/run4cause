@@ -30,14 +30,7 @@ var schema = new mongoose.Schema({
     friends: [{
       type: mongoose.Schema.Types.ObjectId, ref: 'User'
     }],
-    events: [{type: mongoose.Schema.Types.ObjectId, ref: 'newEvent'}],
-    log: [{
-      date: Date,
-      metrics: [{
-        measurement: String, //distance
-        qty: Number
-      }]
-    }]
+    events: [{type: mongoose.Schema.Types.ObjectId, ref: 'newEvent'}]
 });
 
 // generateSalt, encryptPassword and the pre 'save' and 'correctPassword' operations
@@ -65,14 +58,15 @@ schema.pre('save', function (next) {
 
 schema.statics.generateSalt = generateSalt;
 schema.statics.encryptPassword = encryptPassword;
-schema.statics.findByIdAndHandleLinkDeviceCallback = require('./user_methods/findByIdAndHandleLinkDeviceCallback');
+schema.statics.findByIdAndHandleLinkDeviceCallback = require('./findByIdAndHandleLinkDeviceCallback');
 
 schema.method('correctPassword', function (candidatePassword) {
     return encryptPassword(candidatePassword, this.salt) === this.password;
 });
 
-schema.method('refreshTokens', require('./user_methods/refreshTokens'));
-schema.method('parseData', require('./user_methods/parseData'));
-schema.method('updateLogs', require('./user_methods/updateLogs'));
+schema.method('refreshTokens', require('./refreshTokens'));
+schema.method('parseLogData', require('./parseLogData'));
+schema.method('updateUserLogs', require('./updateUserLogs'));
+schema.method('getUserLogs', require('./getUserLogs'));
 
 mongoose.model('User', schema);
