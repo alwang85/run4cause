@@ -22,10 +22,13 @@ router.post('/', function (req,res,next){
 });
 
 router.get('/', function (req,res,next){
-    newEvent.find({}).deepPopulate('challenges challengers nonProfit').exec(function(err, events){
+    newEvent.find({}).deepPopulate('creator challengers.user nonProfit').exec(function(err, events){
         var promises = events.map(function(eachEvent){
             return new Promise(function(resolve,reject) {
-                resolve(eachEvent.calculateProgress());
+                resolve(eachEvent.calculateProgress(function(){
+
+                }));
+                reject()
             })
         });
         return Promise.all(promises).then(function(){
@@ -36,7 +39,7 @@ router.get('/', function (req,res,next){
     });
 });
 router.get('/:eventId', function (req,res,next){
-  newEvent.findById(req.params.eventId).deepPopulate('creator challengers.user').exec(function(err, foundEvent){
+  newEvent.findById(req.params.eventId).deepPopulate('creator challengers.user nonProfit').exec(function(err, foundEvent){
       if (err) return next(err);
       foundEvent.calculateProgress(function(err, result){
         console.log('result should equal to sum of distance in first 7 days for all users', result);

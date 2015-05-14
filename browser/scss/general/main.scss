@@ -74,6 +74,9 @@ a {
             text-align: center;
             width: 75%;
             margin: 0 auto;
+            canvas {
+                width: 100%;
+            }
 
             .chart {
                 display: block;
@@ -83,7 +86,11 @@ a {
                 transition: all 0.4s linear;
                 opacity: 1;
             }
-
+            .progress-indication-events {
+                position: absolute;
+                top: 47px;
+                left: 50px;
+            }
             .progress-indication {
                 display: table-cell;
                 width: 100%;

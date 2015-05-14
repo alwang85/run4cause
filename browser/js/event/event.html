@@ -1,12 +1,25 @@
 <div id="event">
     <h1>this is event page</h1>
-    <h3>List of events</h3>
-    <button ng-click="getAllEvents()">get all events</button>
-    <div ng-repeat="event in events">
-        {{event.name}}
-        <div ng-repeat="challenge in event.challenges">
-            {{challenge.name}}
-            {{challenge.progress}}
+    <div class="col-xs-2">
+        left
+    </div>
+    <div class="eventList col-xs-8">
+        <h3>List of events</h3>
+        <div class="eachEvent" ng-repeat="event in events">
+            <div class="info col-xs-9">
+                <h5>{{event.name}}</h5>
+                <h5>picutre</h5>
+                <h5>{{event.description.slice(0,100)}}</h5>
+            </div>
+            <div class="eventProgress col-xs-3">
+                <chart-box event='event'></chart-box>
+            </div>
+            <div class="creatorFunctionalities col-xs-12">
+                <button>creator functionalities</button>
+            </div>
         </div>
+    </div>
+    <div class="col-xs-2">
+        right
     </div>
 </div>

@@ -9,10 +9,9 @@ app.config(function($stateProvider){
 });
 
 app.controller('EventController', function($scope, NewEvent){
-    $scope.getAllEvents = function(){
-        NewEvent.getAllEvents().then(function(events){
-            console.log(events);
-            $scope.events = events;
-        });
-    };
+
+    NewEvent.getAllEvents().then(function(events){
+        console.log(events);
+        $scope.events = events;
+    });
 });

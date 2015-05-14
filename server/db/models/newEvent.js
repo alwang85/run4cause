@@ -66,7 +66,8 @@ schema.methods.calculateProgress = function(cb) {
             if(!totalProgressObj[key]) totalProgressObj[key] = 0;
             totalProgressObj[key] += progressObj[key];
         }
-        challenger.individualProgress = total/(Object.keys(progressObj).length);
+
+        challenger.individualProgress = ((total/(Object.keys(progressObj).length)) || 0);
         done();
     }, function(err){
             var totalProgress = 0;
