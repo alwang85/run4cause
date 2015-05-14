@@ -69,7 +69,7 @@ module.exports = function() {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(log);
+                    resolve(savedData);
                 }
             });
         });

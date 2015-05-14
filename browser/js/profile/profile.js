@@ -36,5 +36,11 @@ app.controller('ProfileController', function($scope, AuthService, UserFactory) {
                 $scope.user = user;
             });
         };
+
+        $scope.getUserLogs = function() {
+            UserFactory.getUserLogs().then(function(log) {
+                $scope.user_log = log;
+            });
+        };
     });
 });

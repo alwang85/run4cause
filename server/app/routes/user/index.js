@@ -26,7 +26,7 @@ module.exports = function(app) {
             req.logIn(returnedUser, function (err) {
                 if (err) return next(err);
                 // We respond with a reponse object that has user with _id and email.
-                res.json(_.omit(savedUser.toJSON(), ['password', 'salt', 'jawbone', 'fitbit']));
+                res.json({ user : _.omit(savedUser.toJSON(), ['password', 'salt', 'jawbone', 'fitbit'])});
             });
         });
     });
@@ -39,7 +39,7 @@ module.exports = function(app) {
 
         User.findByIdAndHandleLinkDeviceCallback(authInfo, config)
         .then(function(savedUser) {
-            res.json(_.omit(savedUser.toJSON(), ['password', 'salt', 'jawbone', 'fitbit']));
+            res.json({ user : _.omit(savedUser.toJSON(), ['password', 'salt', 'jawbone', 'fitbit']) });
         })
         .catch(next);
     });
@@ -52,7 +52,7 @@ module.exports = function(app) {
             if (err) return next(err);
 
             user.refreshTokens(config).then(function(refreshedUser){
-                res.json(_.omit(refreshedUser.toJSON(), ['password', 'salt', 'jawbone', 'fitbit']));
+                res.json({ user : _.omit(refreshedUser.toJSON(), ['password', 'salt', 'jawbone', 'fitbit'])});
             }).catch(next);
         });
     });
