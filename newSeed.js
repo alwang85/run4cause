@@ -23,10 +23,6 @@ var mongoose = require('mongoose');
 var connectToDb = require('./server/db');
 var User = mongoose.model('User');
 var Nonprofit = mongoose.model('Nonprofit');
-var Strategy = mongoose.model('Strategy');
-var API = mongoose.model('API');
-var Challenge = mongoose.model('Challenge');
-var Metric = mongoose.model('Metric');
 var newEvent = mongoose.model('newEvent');
 
 
@@ -80,81 +76,7 @@ var seedNonProfit = function() {
         });
 };
 
-var seedAPI = function(){
-    var api = [{
-        source     : 'fitbit',
-        metrics: [{
-            //name: "distance",
-            //route: "/api/fitbit/distance",
-            apiRoute: 'https://api.fitbit.com/1/user/-/activities/tracker/distance/date'
-        },{
-            //name: "steps",
-            //route: "/api/fitbit/steps",
-            apiRoute: 'https://api.fitbit.com/1/user/-/activities/tracker/steps/date'
-        },{
-            //name: "sleep",
-            //route: "/api/fitbit/sleep",
-            apiRoute: 'https://api.fitbit.com/1/user/-/sleep/minutesAsleep/date'
 
-        },{
-            name: "calories",
-            route: "/api/fitbit/sleep",
-            apiRoute: 'https://api.fitbit.com/1/user/-/activities/tracker/calories/date'
-
-        }]
-    },{
-        source     : 'jawbone',
-        metrics: [
-            {
-                apiRoute: "https://jawbone.com/nudge/api/v.1.1/users/@me/moves"
-            },
-            {
-                apiRoute: "https://jawbone.com/nudge/api/v.1.1/users/@me/sleeps"
-            }
-        ]
-    }];
-
-    return q.invoke(API, 'create', api);
-
-};
-
-
-var seedMetrics = function(api){
-    return API.find({}).exec().then(function(api){
-      var metrics = [{
-        category: 'health',
-        name: 'distance',
-        sources: [{
-          name: 'fitbit',
-          apiRef: api[0]._id
-        },{
-          name: 'jawbone',
-          apiRef: api[1]._id
-        }]
-      },{
-        category: 'health',
-        name: 'sleep',
-        sources: [{
-          name: 'fitbit',
-          apiRef: api[0]._id
-        },{
-          name: 'jawbone',
-          apiRef: api[1]._id
-        }]
-      },{
-        category: 'health',
-        name: 'steps',
-        sources: [{
-          name: 'fitbit',
-          apiRef: api[0]._id
-        },{
-          name: 'jawbone',
-          apiRef: api[1]._id
-        }]
-      }];
-      return q.invoke(Metric, 'create', metrics);
-    });
-};
 
 
 var seedNewEvents = function(nonprofits){
@@ -249,15 +171,10 @@ connectToDb.then(function () {
         //console.log('before seedNonProfit');
         return seedNonProfit(users).then(function(nonprofits) {
           //console.log('before seedAPI');
-          return seedAPI(nonprofits).then(function(api) {
-            //console.log('before seedMetrics');
-            return seedMetrics(api).then(function(metrics) {
                 return seedNewEvents(nonprofits).then(function () {
                   console.log(chalk.green('Seed successful!'));
                   process.kill(0);
                 });
-              });
-            });
           })
     }).catch(function (err) {
         console.error(err);
