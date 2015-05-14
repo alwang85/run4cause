@@ -42,8 +42,7 @@ schema.methods.calculateProgress = function() {
         return new Promise(function(resolve,reject){
             var results = [];
             challenger.user.getUserLogs(that.startDate, that.endDate).then(function(logs){
-                results = logs;
-                console.log(results);
+                results = logs.logData;
                 var progressObj = {};
                 _.forEach(results, function(eachDayLog) {
                     _.forEach(eachDayLog.metrics, function (eachMetric) {
@@ -80,11 +79,7 @@ schema.methods.calculateProgress = function() {
             return eachGoal;
         });
         that.progress = totalProgress;
-
-        that.save(function(err,savedThat){
-
-        });
-        console.log(that);
+        that.save();
         return that;
     });
 };
