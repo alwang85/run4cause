@@ -1,0 +1,34 @@
+<div id="messages">
+    <h1>this is the users messages page</h1>
+    <div class="col-xs-2">
+        left
+    </div>
+    <div class="eventList col-xs-8">
+        <h3>List of messages</h3><a ui-sref="messageCompose">Compose Message</a>
+        <div>
+            <div class="info col-xs-3">
+                <h4>Sender</h4>
+            </div>
+            <div class="info col-xs-3">
+                <h4>Recipient</h4>
+            </div>
+            <div class="info col-xs-6">
+                <h4>Title</h4>
+            </div>
+        </div>
+        <div class="eachEvent" ng-click="readMessage(message._id)" ng-repeat="message in messages | orderBy:'timestamp' : true">
+            <div class="info col-xs-3">
+                <p>{{message.sender.email}}</p>
+            </div>
+            <div class="info col-xs-3">
+                <p>{{message.recipient.email}}</p>
+            </div>
+            <div class="info col-xs-6">
+                <p>{{message.title}}{{message.timestamp}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-2">
+        right
+    </div>
+</div>

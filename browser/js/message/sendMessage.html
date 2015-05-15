@@ -1,0 +1,33 @@
+<div id="messageCompose">
+    <h1>this is the users send message page</h1>
+    <div class="col-xs-2">
+        left
+    </div>
+    <div class="eventList col-xs-8">
+        <h3>Send Message</h3>
+        <form ng-submit="sendMessage(message)">
+        <div class="message">
+            <div class="info col-xs-3">
+                <label>Sender Email</label>
+                <input class="form-control" ng-model="message.sender.email"/>
+            </div>
+            <div class="info col-xs-3">
+                <label>Recipient Email</label>
+                <input class="form-control" ng-model="message.recipient.email"/>
+            </div>
+            <div class="info col-xs-6">
+                <label>Message Title</label>
+                <input class="form-control" ng-model="message.title"/>
+            </div>
+            <div class="info col-xs-12">
+                <label>Message Content</label>
+                <input class="form-control" ng-model="message.content"/>
+            </div>
+            <button class="btn btn-primary">Send Message</button>
+        </div>
+        </form>
+    </div>
+    <div class="col-xs-2">
+        right
+    </div>
+</div>
