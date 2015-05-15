@@ -9,7 +9,7 @@ app.directive('chartDonut', function ($rootScope, $state, $timeout) {
         templateUrl : 'js/common/directives/chart-donut/chart-donut.html',
         link : function(scope, element, attr) {
             var canvas = element.find('canvas')[0];
-            console.log(element.parent().outerWidth(false));
+
             $timeout(function() {
                 element.height(element.width());
                 canvas.width = canvas.height = element.width();

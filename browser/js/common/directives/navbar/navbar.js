@@ -42,14 +42,15 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
             $rootScope.$on(AUTH_EVENTS.loginSuccess, setUser);
             $rootScope.$on(AUTH_EVENTS.logoutSuccess, removeUser);
             $rootScope.$on(AUTH_EVENTS.sessionTimeout, removeUser);
-            console.log($state.current);
-            scope.validState = $state.current.name === "";
 
             $rootScope.$on('$stateChangeStart', function(event, toState) {
-                console.log(toState);
-                scope.validState = toState.name === "home";
+                scope.validState = $state.$current.includes.home;
             });
 
+            $rootScope.$on('$viewContentLoaded', function(event) {
+                console.log('loaded');
+                scope.validState = $state.$current.includes.home;
+            });
         }
 
     };
