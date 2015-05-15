@@ -1,4 +1,147 @@
-#home {
-  margin-top: 80px;
-}
+.home-container {
+    width: 100%;
 
+    .home-intro {
+        width: 100%;
+        height: 100vh;
+        background-image: url('./images/home-intro.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        position: relative;
+        .center-container {
+            position: relative;
+            z-index: 1;
+            .center-content {
+                h1 {
+                    padding: 0 15%;
+                    color: #FFF;
+                }
+
+                .btn {
+                    @include forceGpu();
+                    transition: all 0.2s linear;
+                    padding: 12px 30px;
+                    background: rgba(0,0,0,0.3);
+                    color: #FFF;
+                    border: 1px solid #FFF;
+                    border-radius: 4px;
+                    margin-top: 8px;
+
+                    &:hover {
+                        background: $blue-color;
+                        border-color: $blue-color;
+                    }
+                }
+            }
+        }
+
+        &:after {
+            content: "";
+            display: block;
+            position: absolute;
+            top:0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.45);
+            z-index: 0;
+        }
+
+        .learn-more {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            color: #FFF;
+            z-index: 1;
+            bottom: 16px;
+
+            span {
+                display: block;
+                position: absolute;
+                bottom: 25px;
+                font-size: 18px;
+                width: 100%;
+            }
+            a {
+                font-size: 18px;
+                color: #FFF;
+                transition: font-size 0.2s linear;
+                transform: translate3d(0,0,0);
+                &:hover {
+                    font-size: 22px;
+                }
+            }
+        }
+    } // end home-intro
+
+    .how-it-works-container {
+        text-align: center;
+        padding: 60px 0;
+        background: $blue-color;
+        color:#FFF;
+        h1 {
+            padding: 0 0 0px 0;
+            color: $off-blue-color;
+        }
+
+        i {
+            font-size: 85px;
+
+        }
+
+        h3 {
+            line-height: 110%;
+            margin: 15px 0;
+            color: $off-blue-color;
+        }
+        .thr-column {
+            text-align: center;
+            padding: 25px 15px 0px;
+        }
+    } // end how-it-works container
+
+    .who-needs-you-container {
+        text-align: center;
+        padding: 100px 0 60px;
+        height: 100vh;
+        background-image: url('./images/watsi-bg.jpg');
+        background-position: top center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        color: #FFF;
+
+        .medium-width-container {
+            background: rgba(0,0,0,0.35);
+            padding: 25px 10px;
+            border-radius: 5px;
+        }
+
+        h2 {
+            margin: 0 0 16px 0;
+        }
+
+        p {
+            font-size: 20px;
+            line-height: 125%;
+            margin-bottom: 16px;
+        }
+
+        .btn {
+            @include forceGpu();
+            transition: all 0.2s linear;
+            padding: 12px 50px;
+            background: $blue-color;
+            color: #FFF;
+            border: 1px solid $blue-color;
+            border-radius: 4px;
+            margin-top: 8px;
+
+            &:hover {
+                background: lighten($blue-color, 10%);
+                border-color: lighten($blue-color, 10%);
+            }
+        }
+    }
+}
