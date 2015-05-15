@@ -24,7 +24,7 @@ var connectToDb = require('./server/db');
 var User = mongoose.model('User');
 var Nonprofit = mongoose.model('Nonprofit');
 var Event = mongoose.model('Event');
-
+var Message = mongoose.model('Message');
 
 
 
@@ -111,7 +111,7 @@ var seedEvents = function(nonprofits){
             user: users[1],
             individualProgress: 0
         }],
-        startDate: new Date('2015-05-11'),
+        startDate: new Date('2015-04-01'),
         endDate: new Date('2015-05-18'),
         nonProfit: nonprofits,
         description: "Lets walk lots of miles.",
@@ -153,7 +153,7 @@ var seedEvents = function(nonprofits){
               user: users[1],
               individualProgress: 0
           }],
-          startDate: new Date('2015-05-11'),
+          startDate: new Date('2015-04-01'),
           endDate: new Date('2015-05-18'),
           nonProfit: nonprofits,
           description: "many things",
@@ -161,6 +161,30 @@ var seedEvents = function(nonprofits){
       }
       ];
       return q.invoke(Event, 'create', Events);
+    });
+};
+var seedMessages = function(){
+  return User.find({}).exec()
+    .then(function(users) {
+      //console.log('users inside new seed events', users);
+      var Messages = [{
+        timestamp: new Date,
+        sender: users[0],
+        recipient: users[1],
+        title: "welcome",
+        content: "this is a test email",
+        read: {type: Boolean, default: false}
+      },
+        {
+          timestamp: new Date,
+          sender: users[1],
+          recipient: users[0],
+          title: "goodbye",
+          content: "this is a test email2",
+          read: {type: Boolean, default: false}
+        }
+      ];
+      return q.invoke(Message, 'create', Messages);
     });
 };
 
@@ -171,9 +195,12 @@ connectToDb.then(function () {
         //console.log('before seedNonProfit');
         return seedNonProfit(users).then(function(nonprofits) {
           //console.log('before seedAPI');
-                return seedEvents(nonprofits).then(function () {
-                  console.log(chalk.green('Seed successful!'));
-                  process.kill(0);
+                return seedEvents(nonprofits).then(function(nonprofits) {
+                  //console.log('before seedAPI');
+                  return seedMessages().then(function () {
+                    console.log(chalk.green('Seed successful!'));
+                    process.kill(0);
+                  });
                 });
           })
     }).catch(function (err) {

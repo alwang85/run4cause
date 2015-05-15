@@ -15,6 +15,7 @@ require('./models/Logs');
 require('./models/User');
 require('./models/nonprofit');
 require('./models/event');
+require('./models/message');
 
 
 
