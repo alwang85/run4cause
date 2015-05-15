@@ -14,8 +14,9 @@ var db = mongoose.connect(DATABASE_URI).connection;
 require('./models/Logs');
 require('./models/User');
 require('./models/nonprofit');
-require('./models/event');
 require('./models/message');
+require('./models/event');
+
 
 
 

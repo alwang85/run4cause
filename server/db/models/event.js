@@ -4,6 +4,8 @@ var deepPopulate = require('mongoose-deep-populate');
 var async = require('async');
 var _ = require('lodash');
 var moment = require('moment-range');
+var Message = require('mongoose').model('Message');
+var User = require('mongoose').model('User');
 var Promise = require('bluebird');
 var schema = new mongoose.Schema({
     startDate: Date,
@@ -11,6 +13,10 @@ var schema = new mongoose.Schema({
     progress: Number,
     patient: {},
     group: Boolean,
+    status: {
+      type: String,
+      default: 'Active'
+    },
     goals: [{
         metrics : {
             measurement: String,
@@ -75,22 +81,44 @@ schema.methods.calculateProgress = function() {
          })
      });
     });
-
-    return Promise.all(promises).then(function(){
+    User.findOne({email: 'admin@admin.com'}, function(err, foundUser){
+      return Promise.all(promises).then(function(){
         var totalProgress = 0;
         _.map(that.goals, function(eachGoal){
-            for(var key in totalProgressObj){
-                if(key===eachGoal.metrics.measurement) {
-                    eachGoal.metrics.progress = totalProgressObj[key];
-                    totalProgress += (eachGoal.metrics.progress)/(Object.keys(totalProgressObj).length)
-                }
+          for(var key in totalProgressObj){
+            if(key===eachGoal.metrics.measurement) {
+              eachGoal.metrics.progress = totalProgressObj[key];
+              totalProgress += (eachGoal.metrics.progress)/(Object.keys(totalProgressObj).length)
             }
-            return eachGoal;
+          }
+          return eachGoal;
         });
         that.progress = totalProgress;
+        var message = {};
+        if (totalProgress >= 1 && that.status !== 'achieved') {
+            async.forEach(that.sponsor, function(sponsor){
+            message.recipient = sponsor.user;
+            message.sender = foundUser._id;
+            message.title = 'the event goals you sponsored have been reached!';
+            message.content = 'you owe some monies';
+            message.date = new Date;
+            Message.create(message, function(err, savedMessage){
+              savedMessage.save();
+            });
+
+          }, function(err){
+            if (err) {
+              console.log(err);
+              next()
+            }
+            that.status = 'achieved';
+          });
+        }
         that.save();
         return that;
-    });
+      });
+    })
+
 };
 
 mongoose.model('Event', schema);

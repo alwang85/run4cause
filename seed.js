@@ -41,6 +41,10 @@ var seedUsers = function () {
       email: 'obama@gmail.com',
       password: 'potus',
       lastLogDate: new Date((new Date()).getTime() - 4*24*60*60*1000)
+    },{
+      email: 'admin@admin.com',
+      password: 'fullstack',
+      lastLogDate: new Date((new Date()).getTime() - 4*24*60*60*1000)
     }
 
   ];

@@ -11,11 +11,16 @@ var deepPopulate = require('mongoose-deep-populate');
 router.post('/', function (req,res,next){
   var body = req.body;
   body.timestamp = new Date;
-  Message.create(body, function(err, savedMessage){
-    if (err) next(err)
-    console.log('message created', savedMessage);
-    res.send('success');
-  });
+  body.sender = req.user._id;
+  User.findOne({email: req.body.recipient.email}, function(err, foundRecipient){
+    body.recipient = foundRecipient._id;
+    Message.create(body, function(err, savedMessage){
+      if (err) next(err);
+      console.log('message created', savedMessage);
+      res.send('success');
+    });
+  })
+
 });
 
 router.get('/:userId', function (req,res,next){

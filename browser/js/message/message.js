@@ -9,7 +9,7 @@ app.config(function($stateProvider){
 });
 
 app.controller('MessageController', function($scope, $state, Message){
-
+    $scope.messages;
     $scope.getAllMessages = function(){
       Message.getAllMessages().then(function(messages){
         $scope.messages = messages;
@@ -17,6 +17,7 @@ app.controller('MessageController', function($scope, $state, Message){
     }
     $scope.getAllMessages();
     $scope.readMessage = function(messageId){
-
+      Message.currentMessage._id = messageId;
+      $state.go('messageDetail');
     }
 });

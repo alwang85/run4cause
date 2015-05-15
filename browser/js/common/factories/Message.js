@@ -1,5 +1,6 @@
 app.factory("Message", function($http, AuthService){
   return{
+    currentMessage:{},
     getAllMessages : function(){
       return AuthService.getLoggedInUser().then(function(currentUser){
         return currentUser;
@@ -12,7 +13,8 @@ app.factory("Message", function($http, AuthService){
       });
     },
     sendMessage : function(message) {
-      return $http.post('/api/message/').then(function (res) {
+      return $http.post('/api/message/', message).then(function (res) {
+
         return res.data;
       })
     }
