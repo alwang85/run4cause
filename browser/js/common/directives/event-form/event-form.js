@@ -50,21 +50,7 @@ app.directive('eventForm', function (Event, NonProfitFactory) {
                 console.log(selectedPatient);
             };
 
-            scope.newEvent = new ANewEvent();
-            function ANewEvent () {
-                this.category = null;
-                this.goals = [];
-                this.group = true;
-                this.startDate = null;
-                this.endDate = null;
-                this.name = null;
-                this.description = null;
-                this.nonProfit = null;
-                this.patient = null;
-                this.sponsor = null;
-                this.pledgedAmount = null;
-                this.progress = 0;
-            }
+            scope.newEvent = Event.editFormInit();
         }
     };
 });
