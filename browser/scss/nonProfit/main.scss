@@ -1,5 +1,19 @@
-.eachNonProfit {
-  img{
+.nonProfit {
+  img {
     width: 100%;
+    padding-bottom: 3%;
   }
+  p {
+    font-size:1.25em;
+    font-weight: lighter;
+  }
+
+  .link {
+    padding-bottom: 10%;
+  }
+
+  .patientInfo {
+    padding-left: 2%;
+  }
+
 }

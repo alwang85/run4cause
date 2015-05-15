@@ -1,4 +1,4 @@
-<div class="header-padding container">
+<div class="header-padding nonProfit container">
     <div id="nonprofit-list">
         <div class="eventList">
             <h1>List of patients</h1><br/>
@@ -7,11 +7,17 @@
                     <a ng-click="getPatient(nonprofit.token)" class="clickable">
                         <img alt={{nonprofit.name}} ng-src={{nonprofit.profile_url}}>
                     </a>
-                    <p>{{nonprofit.name}}</p>
-                    <a ng-click="getPatient(nonprofit.token)"
-                       class="clickable">
-                        <p class="link">Read More</p>
-                    </a>
+                    <div class="patientInfo">
+                        <p>Country: {{nonprofit.country}}</p>
+                        <p>Name: {{nonprofit.name}}</p>
+                        <a ng-click="getPatient(nonprofit.token)"
+                           class="clickable">
+                            <p class="link">Read More</p>
+                        </a>
+                    </div>
+
+
+
                 </div>
             </div>
         </div>
