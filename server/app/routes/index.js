@@ -4,6 +4,7 @@ module.exports = function(app){
     router.use('/user', require('./user')(app));
     router.use('/event', require('./event'));
    router.use('/nonprofit', require('./nonprofit'));
+  router.use('/message', require('./message'));
     // Make sure this is after all of
     // the registered routes!
     router.use(function (req, res) {

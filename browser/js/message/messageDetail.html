@@ -1,0 +1,27 @@
+<div id="messages">
+    <h1>this is the users single message page</h1>
+    <div class="col-xs-2">
+        left
+    </div>
+    <div class="eventList col-xs-8">
+        <h3>Single Message</h3>
+        <div class="message">
+            <div class="info col-xs-3">
+                <p>From: {{message.sender.email}}</p>
+            </div>
+            <div class="info col-xs-3">
+                <p>To: {{message.recipient.email}}</p>
+            </div>
+            <div class="info col-xs-6">
+                <p>Title: {{message.title}}{{message.timestamp}}</p>
+            </div>
+            <div class="info col-xs-12">
+                <p>Content: {{message.content}}</p>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-xs-2">
+        right
+    </div>
+</div>
