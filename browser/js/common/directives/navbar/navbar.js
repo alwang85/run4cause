@@ -1,5 +1,5 @@
 'use strict';
-app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state, $window) {
+app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) {
 
     return {
         restrict: 'E',
@@ -43,13 +43,14 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state, 
             $rootScope.$on(AUTH_EVENTS.logoutSuccess, removeUser);
             $rootScope.$on(AUTH_EVENTS.sessionTimeout, removeUser);
 
-            scope.validState = true;
-
-            $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-                console.log(toState);
-                scope.validState = toState.name === "home";
+            $rootScope.$on('$stateChangeStart', function(event, toState) {
+                scope.validState = $state.$current.includes.home;
             });
 
+            $rootScope.$on('$viewContentLoaded', function(event) {
+                console.log('loaded');
+                scope.validState = $state.$current.includes.home;
+            });
         }
 
     };

@@ -1,5 +1,5 @@
 'use strict';
-app.directive('createOrEdit', function (Event) {
+app.directive('createOrEdit', function (Event, NonProfitFactory) {
     return {
         restrict: 'E',
         scope: {
@@ -39,6 +39,17 @@ app.directive('createOrEdit', function (Event) {
                 scope.newGoal = null;
             };
 
+            scope.getAllPatients = function(){
+               return NonProfitFactory.getNonprofits().then(function(patients){
+                   scope.patients = patients
+               });
+            };
+
+            scope.selectPatient = function(selectedPatient){
+                scope.newEvent.patient = selectedPatient;
+                console.log(selectedPatient);
+            };
+
             scope.newEvent = new ANewEvent();
             function ANewEvent () {
                 this.category = null;
@@ -49,6 +60,7 @@ app.directive('createOrEdit', function (Event) {
                 this.name = null;
                 this.description = null;
                 this.nonProfit = null;
+                this.patient = null;
                 this.sponsor = null;
                 this.pledgedAmount = null;
                 this.progress = 0;

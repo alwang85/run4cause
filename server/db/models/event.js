@@ -9,6 +9,7 @@ var schema = new mongoose.Schema({
     startDate: Date,
     endDate: Date,
     progress: Number,
+    patient: {},
     group: Boolean,
     goals: [{
         metrics : {
@@ -28,6 +29,16 @@ var schema = new mongoose.Schema({
     nonProfit: {
         type: mongoose.Schema.Types.ObjectId, ref: 'Nonprofit'
     },
+    sponsor: [{
+      user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+      details: {
+        '0': {type: Number, default: 0},
+        '25': {type: Number, default: 0},
+        '50': {type: Number, default: 0},
+        '75': {type: Number, default: 0},
+        '100': {type: Number, default: 0}
+      }
+    }],
     description: String,
     name: String
 });

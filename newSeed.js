@@ -111,8 +111,8 @@ var seedEvents = function(nonprofits){
             user: users[1],
             individualProgress: 0
         }],
-        startDate: new Date('2015-04-01'),
-        endDate: new Date('2015-05-18'),
+        startDate: new Date('2015-03-11'),
+        endDate: new Date('2015-06-18'),
         nonProfit: nonprofits,
         description: "Lets walk lots of miles.",
         name: "Walk."
@@ -153,8 +153,8 @@ var seedEvents = function(nonprofits){
               user: users[1],
               individualProgress: 0
           }],
-          startDate: new Date('2015-04-01'),
-          endDate: new Date('2015-05-18'),
+          startDate: new Date('2015-03-11'),
+          endDate: new Date('2015-06-18'),
           nonProfit: nonprofits,
           description: "many things",
           name: "Walk Sleep."

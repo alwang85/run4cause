@@ -11,7 +11,6 @@ app.config(function($stateProvider){
 app.controller('EventController', function($state, $scope, Event){
 
     Event.getAllEvents().then(function(events){
-        console.log(events);
         $scope.events = events;
     });
     $scope.editEvent = function(eventId) {
@@ -20,7 +19,6 @@ app.controller('EventController', function($state, $scope, Event){
     };
     $scope.deleteEvent = function(event){
         Event.deleteEvent(event._id).then(function(status){
-            console.log(status);
            $scope.events = $scope.events.filter(function(eachEvent){
                return eachEvent._id !== event._id;
            })
@@ -41,5 +39,9 @@ app.controller('EventController', function($state, $scope, Event){
                 $scope.events = events;
             });
         })
+    };
+    $scope.sponsorEvent = function(event){
+        Event.editing.id = event._id;
+        $state.go('sponsor');
     };
 });
