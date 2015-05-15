@@ -42,8 +42,8 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
             $rootScope.$on(AUTH_EVENTS.loginSuccess, setUser);
             $rootScope.$on(AUTH_EVENTS.logoutSuccess, removeUser);
             $rootScope.$on(AUTH_EVENTS.sessionTimeout, removeUser);
-
-            scope.validState = $state.current.name === "home";
+            console.log($state.current);
+            scope.validState = $state.current.name === "";
 
             $rootScope.$on('$stateChangeStart', function(event, toState) {
                 console.log(toState);
