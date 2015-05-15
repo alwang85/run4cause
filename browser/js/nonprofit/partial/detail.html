@@ -1,3 +1,13 @@
-<div class="header-padding">
-    This is Non Profit Detail
+<div class="header-padding" ng-cloak>
+    <h1 ng-bind="patient.name"></h1>
+    <h3 ng-bind="patient.header"></h3><br/>
+    <img alt={{nonprofit.name}} height="248" ng-src={{patient.profile_url}} width="330"><br/>
+    Age: <span ng-bind="patient.age"></span><br>
+    Country: <span ng-bind="patient.country"></span><br>
+    Description: <span ng-bind="patient.description"></span><br>
+
+    Target: <span ng-bind="patient.target"></span><br>
+    Target to go: <span ng-bind="patient.target_to_go"></span><br>
+    Donated: <span ng-bind="patient.donated"></span><br>
+    Number of Donors: <span ng-bind="patient.number_of_donors"></span><br>
 </div>

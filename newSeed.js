@@ -23,7 +23,7 @@ var mongoose = require('mongoose');
 var connectToDb = require('./server/db');
 var User = mongoose.model('User');
 var Nonprofit = mongoose.model('Nonprofit');
-var newEvent = mongoose.model('newEvent');
+var Event = mongoose.model('Event');
 
 
 
@@ -79,11 +79,11 @@ var seedNonProfit = function() {
 
 
 
-var seedNewEvents = function(nonprofits){
+var seedEvents = function(nonprofits){
   return User.find({}).exec()
     .then(function(users) {
       //console.log('users inside new seed events', users);
-      var newEvents = [{
+      var Events = [{
         category: 1,
         group: true,
         contest: false,
@@ -160,7 +160,7 @@ var seedNewEvents = function(nonprofits){
           name: "Walk Sleep."
       }
       ];
-      return q.invoke(newEvent, 'create', newEvents);
+      return q.invoke(Event, 'create', Events);
     });
 };
 
@@ -171,7 +171,7 @@ connectToDb.then(function () {
         //console.log('before seedNonProfit');
         return seedNonProfit(users).then(function(nonprofits) {
           //console.log('before seedAPI');
-                return seedNewEvents(nonprofits).then(function () {
+                return seedEvents(nonprofits).then(function () {
                   console.log(chalk.green('Seed successful!'));
                   process.kill(0);
                 });

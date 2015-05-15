@@ -8,10 +8,15 @@ app.config(function($stateProvider){
    });
 });
 
-app.controller('EventController', function($scope, NewEvent){
+app.controller('EventController', function($scope, Event){
 
-    NewEvent.getAllEvents().then(function(events){
+    Event.getAllEvents().then(function(events){
         console.log(events);
         $scope.events = events;
     });
+    $scope.joinEvent = function(eventId){
+        Event.joinEvent(eventId).then(function(){
+
+        });
+    };
 });

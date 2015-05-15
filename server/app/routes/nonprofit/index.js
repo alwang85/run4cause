@@ -16,14 +16,16 @@ router.post('/', function (req,res,next){
 });
 
 router.get('/', function (req,res,next){
-    Nonprofit.getEveryNonProfitEvents(function(err, npOnSteroids) {
-        if (err) return next(err);
-
-        console.log(npOnSteroids);
-        res.json(npOnSteroids);
-    });
-    //.then(function(npOnSteroids) {
-    //    console.log(npOnSteroids);
-    //    res.json(npOnSteroids);
-    //});
+  request.get('https://watsi.org/fund-treatments.json', {
+    json: true
+  }, function(err, response, patients){
+    res.json(patients.profiles);
+  });
+});
+router.get('/:tokenId', function (req,res,next){
+  request.get('https://watsi.org/profile/'+req.params.tokenId+'.json', {
+    json: true
+  }, function(err, response, patient){
+    res.json(patient);
+  });
 });
