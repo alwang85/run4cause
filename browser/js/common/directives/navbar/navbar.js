@@ -1,5 +1,5 @@
 'use strict';
-app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) {
+app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state, $window) {
 
     return {
         restrict: 'E',
@@ -8,9 +8,10 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
         link: function (scope) {
 
             scope.items = [
+                { label: 'Events', state: 'event'},
+                { label: 'Patients', state: 'nonProfit.leaderboard'},
                 { label: 'Dashboard', state: 'dashboard.events', auth: true },
-                { label: 'Profile Test', state: 'profile', auth: true},
-                { label: 'Non Profits', state: 'nonProfit.leaderboard'}
+                { label: 'Profile', state: 'profile', auth: true},
             ];
 
             scope.user = null;
@@ -40,6 +41,13 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
             $rootScope.$on(AUTH_EVENTS.loginSuccess, setUser);
             $rootScope.$on(AUTH_EVENTS.logoutSuccess, removeUser);
             $rootScope.$on(AUTH_EVENTS.sessionTimeout, removeUser);
+
+            scope.validState = true;
+
+            $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+                console.log(toState);
+                scope.validState = toState.name === "home";
+            });
 
         }
 

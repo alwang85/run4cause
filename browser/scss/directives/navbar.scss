@@ -1,15 +1,42 @@
 .navbar-fixed-top {
-    box-shadow: 0px 1px 6px -4px #000;
     background: #FFF;
-    .container {
-        .navbar-brand {
-            img {
-                height: 100%;
-            }
-        }
+    z-index: 9999;
+    transition: all 0.2s linear;
+    box-shadow: 0px 1px 6px -4px rgba(0,0,0,0.75);
 
-        .navbar-toggle .icon-bar {
-            background: #000;
+    .navbar-nav a {
+        transition: all 0.2s linear;
+        transform: translate3d(0,0,0);
+        border-radius: 4px;
+        color: #0c0c0c;
+    }
+
+    .navbar-brand {
+        color : $blue-color;
+        font-family: "Montserrat", sans-serif;
+        height: auto;
+        padding: 13px 0px;
+        img {
+            height: 100%;
+        }
+    }
+
+    .navbar-toggle .icon-bar {
+        background: #000;
+    }
+
+    &.nav-top-level {
+        background: transparent;
+        box-shadow: 0 0 0 0;
+        .navbar-brand {
+            color: #FFF;
+        }
+        .navbar-nav a {
+            color: #FFF;
+            &:hover, &:focus {
+                background: rgba(255,255,255,0.6);
+                color: #0C0C0C;
+            }
         }
     }
 }
