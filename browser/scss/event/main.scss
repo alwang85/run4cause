@@ -1,10 +1,34 @@
 #event {
   margin-top: 60px;
-  .eachEvent {
-    height:250px;
-    border: 1px solid skyblue;
+  .impactTitle {
+    text-align: center;
+    color: $blue-color;
     margin-bottom: 30px;
   }
+  .eachEvent {
+    @include clearfix;
+    border: 1px solid $blue-color;
+    margin-bottom: 30px;
+    position: relative;
+    padding: 15px;
+  }
+  .eventInfo {
+    margin: 10px auto;
+  }
+  .info{
+    img {
+      width: 100%;
+    }
+    margin: 10px auto;
+  }
+  .eventProgress {
+    margin: 10px auto;
+  }
   .creatorFunctionalities {
+    text-align: center;
+    margin-bottom: 20px;
+    button{
+      width:15%;
+    }
   }
 }
