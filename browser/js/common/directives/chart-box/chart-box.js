@@ -23,6 +23,9 @@ app.directive('chartBox', function () {
 
 app.directive('boxContainer', function() {
     return {
+        scope: {
+            event: '='
+        },
         restrict : 'E',
         transclude: true,
         replace : true,
