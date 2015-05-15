@@ -7,7 +7,9 @@ app.config(function($stateProvider){
        controller: 'EventController',
        resolve: {
            events: function(Event){
-                   return Event.getAllEvents();
+                   return Event.getAllEvents().then(function(events){
+
+                   })
                }
            }
        })
@@ -16,11 +18,10 @@ app.config(function($stateProvider){
 app.controller('EventController', function(events, $modal, $state, $scope, Event, NonProfitFactory){
     $scope.events = events;
         NonProfitFactory.getNonprofits().then(function(patients){
-          events.forEach(function(event){
+          $scope.events.forEach(function(event){
              patients.forEach(function(patient){
                 if(event.patient.token === patient.token){
                     event.patient.profilePic = patient.profile_url;
-                    event.patient.link = patient.url;
                     event.patient.country = patient.country;
                 }
              });

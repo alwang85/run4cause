@@ -1,34 +1,55 @@
 #event {
   margin-top: 60px;
+  background: #36465d;
+  display: inline-block;
+  .eventList {
+    padding: 0 40px;
+  }
   .impactTitle {
     text-align: center;
-    color: $blue-color;
-    margin-bottom: 30px;
+    color: skyblue;
+    margin: 30px 0;
   }
   .eachEvent {
     @include clearfix;
+    background: white;
     border: 1px solid $blue-color;
     margin-bottom: 30px;
     position: relative;
-    padding: 15px;
   }
   .eventInfo {
-    margin: 10px auto;
+    margin: 0 auto;
   }
   .info{
+    text-align: center;
+    padding: 0;
     img {
       width: 100%;
+      height: 50vh;
     }
-    margin: 10px auto;
+    h5{
+      color: #a1a1a1;
+      padding: 15px 0;
+    }
   }
   .eventProgress {
     margin: 10px auto;
+    text-align: right;
+    position:relative;
   }
   .creatorFunctionalities {
     text-align: center;
     margin-bottom: 20px;
     button{
+      @include forceGpu();
       width:15%;
+      height: 50px;
+      transition: all 0.2s linear;
+      &:hover {
+        color:white;
+        background: lighten($blue-color, 10%);
+        border-color: lighten($blue-color, 10%);
+      }
     }
   }
 }
