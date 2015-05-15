@@ -4,12 +4,29 @@ app.config(function($stateProvider){
    $stateProvider.state('event', {
        url: '/event',
        templateUrl: 'js/event/event.html',
-       controller: 'EventController'
+       controller: 'EventController',
+       resolve: {
+           events: function(Event){
+                   return Event.getAllEvents().then(function(events){
+
+                   })
+               }
+           }
+       })
    });
-});
 
-app.controller('EventController', function($state, $scope, Event){
-
+app.controller('EventController', function(events, $modal, $state, $scope, Event, NonProfitFactory){
+    $scope.events = events;
+        NonProfitFactory.getNonprofits().then(function(patients){
+          $scope.events.forEach(function(event){
+             patients.forEach(function(patient){
+                if(event.patient.token === patient.token){
+                    event.patient.profilePic = patient.profile_url;
+                    event.patient.country = patient.country;
+                }
+             });
+          });
+        });
     Event.getAllEvents().then(function(events){
         $scope.events = events;
     });
@@ -41,7 +58,11 @@ app.controller('EventController', function($state, $scope, Event){
         })
     };
     $scope.sponsorEvent = function(event){
+        var modalInstance = $modal.open({
+            templateUrl: '/js/sponsor/sponsor.html',
+            controller: 'SponsorController',
+            size:'lg'
+        });
         Event.editing.id = event._id;
-        $state.go('sponsor');
     };
 });
