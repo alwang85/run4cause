@@ -7,39 +7,6 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('HomeController', function($http, $scope, JawboneFactory, FitbitFactory, AuthService){
-    $scope.getFitbitData = function(){
-        $http.get('/api/fitbit/getUserData').then(function(response){
-            console.log(response.data);
-        })
-    };
+app.controller('HomeController', function($scope, AuthService){
 
-    $scope.getJawboneData = function() {
-        JawboneFactory.getJawboneData({
-            start_time : 0,
-            end_time   : 1431030511
-        }).then(function(data) {
-            console.log(data);
-        });
-    };
-    $scope.getData = function(){
-        AuthService.getLoggedInUser().then(function(user){
-        if (user.fitbit && user.fitbit.id){
-          FitbitFactory.getFitbitData().then(function(data){
-            console.log('fitbit', data);
-          })
-        }
-        else if (user.jawbone && user.jawbone.id){
-          JawboneFactory.getJawboneData({
-            start_time : 0,
-            end_time   : 1431030511
-          }).then(function(data){
-            console.log('jawbone', data);
-          })
-        }
-        else {
-          console.log('no sports data');
-        }
-      });
-    };
 });
