@@ -29,18 +29,16 @@ app.controller('EventController', function($state, $scope, Event){
         });
     };
     $scope.joinEvent = function(event){
-        Event.joinEvent(event._id).then(function(savedEvent){
-            console.log(savedEvent);
-        }).then(function(){
-                if(event.progress!=savedEvent.progress) event.progress = savedEvent.progress;
+        Event.joinEvent(event._id).then(function(savedEvent) {
+            Event.getAllEvents().then(function (events) {
+                $scope.events = events;
             });
+        })
     };
     $scope.leaveEvent = function(event){
         Event.leaveEvent(event._id).then(function(savedEvent){
-            console.log(savedEvent);
-        }).then(function(){
             Event.getAllEvents().then(function(events){
-                if(event.progress!=savedEvent.progress) event.progress = savedEvent.progress;
+                $scope.events = events;
             });
         })
     };

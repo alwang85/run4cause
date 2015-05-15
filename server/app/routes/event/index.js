@@ -56,7 +56,7 @@ router.delete('/:eventId', function(req,res,next){
 });
 
 router.put('/:eventId', function(req,res,next){
-    Event.findById(req.params.eventId, function(err,foundEvent){
+    Event.findById(req.params.eventId).deepPopulate('creator challengers.user nonProfit').exec(function(err,foundEvent){
         if(err) return next(err);
         console.log("req.body", req.body);
         _.extend(foundEvent, req.body);
@@ -71,8 +71,8 @@ router.post('/:eventId/join', function(req,res,next){
     Event.findById(req.params.eventId, function(err,event){
         var exists = false;
         _.forEach(event.challengers, function(challenger){
-            if(challenger.user==req.body.userId){
-                console.log('user alread exists')
+            if(challenger.user.toString()==req.body.userId.toString()){
+                console.log('user already exists')
                 exists = true;
             }
         });
@@ -95,11 +95,10 @@ router.post('/:eventId/join', function(req,res,next){
 router.put('/:eventId/join', function(req,res,next){
     Event.findById(req.params.eventId, function(err,event){
         var filtered = _.filter(event.challengers, function(challenger){
-            console.log(challenger.user.toString(), req.body.userId.toString())
-            return challenger.user!=req.body.userId
+            return challenger.user.toString()!==req.body.userId.toString()
         });
-        if(event.challengers.length!=filtered.length){
-            event.challengers = filtered
+        if(event.challengers.length!==filtered.length){
+            event.challengers = filtered;
             event.save(function(err,saved){
                 res.send(saved);
             });
