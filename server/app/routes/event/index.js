@@ -109,3 +109,24 @@ router.put('/:eventId/join', function(req,res,next){
     });
 
 });
+router.put('/:eventId/sponsor', function(req,res,next){
+  Event.findById(req.params.eventId, function(err,event){
+      var filtered = _.filter(event.sponsor, function(eachSponsor){
+          return eachSponsor.user.toString()!==req.body.userId.toString()
+      });
+      if(event.sponsor.length == filtered.length){
+          event.sponsor.push({
+              user: req.body.userId,
+              details: req.body.details
+          });
+          event.save(function(err,saved){
+              console.log('saved', saved.sponsor[0]);
+              res.send(saved);
+          });
+      } else {
+          console.log('already sponsored');
+          res.sendStatus('409'); //You already sponsored!
+      }
+  });
+
+});
