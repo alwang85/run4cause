@@ -8,15 +8,38 @@ app.config(function($stateProvider){
    });
 });
 
-app.controller('EventController', function($scope, Event){
+app.controller('EventController', function($state, $scope, Event){
 
     Event.getAllEvents().then(function(events){
         console.log(events);
         $scope.events = events;
     });
-    $scope.joinEvent = function(eventId){
-        Event.joinEvent(eventId).then(function(){
-
+    $scope.editEvent = function(eventId) {
+        Event.editing.id = eventId;
+        $state.go('editEvent');
+    };
+    $scope.deleteEvent = function(event){
+        Event.deleteEvent(event._id).then(function(status){
+            console.log(status);
+           $scope.events = $scope.events.filter(function(eachEvent){
+               return eachEvent._id !== event._id;
+           })
+        }, function(err){
+            console.log(err);
         });
+    };
+    $scope.joinEvent = function(event){
+        Event.joinEvent(event._id).then(function(savedEvent) {
+            Event.getAllEvents().then(function (events) {
+                $scope.events = events;
+            });
+        })
+    };
+    $scope.leaveEvent = function(event){
+        Event.leaveEvent(event._id).then(function(savedEvent){
+            Event.getAllEvents().then(function(events){
+                $scope.events = events;
+            });
+        })
     };
 });

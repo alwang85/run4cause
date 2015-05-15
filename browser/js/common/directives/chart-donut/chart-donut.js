@@ -10,7 +10,7 @@ app.directive('chartDonut', function ($rootScope, $state, $timeout) {
         link : function(scope, element, attr) {
             var canvas = element.find('canvas')[0];
             console.log(element.parent().outerWidth(false));
-            scope.$watch(function() {
+            $timeout(function() {
                 element.height(element.width());
                 canvas.width = canvas.height = element.width();
                 var context = canvas.getContext('2d');
