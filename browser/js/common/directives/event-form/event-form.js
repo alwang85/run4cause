@@ -1,11 +1,11 @@
 'use strict';
-app.directive('createOrEdit', function (Event, NonProfitFactory) {
+app.directive('eventForm', function (Event, NonProfitFactory) {
     return {
         restrict: 'E',
         scope: {
             event: '='
         },
-        templateUrl : 'js/common/directives/create-or-edit/create-or-edit.html',
+        templateUrl : 'js/common/directives/event-form/event-form.html',
         link: function(scope) {
             if(scope.event){
                 Event.getEvent(scope.event).then(function(event){

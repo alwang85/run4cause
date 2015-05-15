@@ -1,11 +1,42 @@
-#createEvent {
-  margin-top: 60px;
-  .plusSign {
-    width: 70%;
-    height: 50vh;
-  }
-  .challengePick {
-    //height:60px;
-  }
+.event-form-container {
+    .event-form {
+        text-align: center;
+        form {
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-size: ($h1-font-size * 2);
+            font-family: Impact, sans-serif;
+        }
+        h2 {
+            font-size: ($h2-font-size * 1.5);
+            font-family: Impact, sans-serif;
+        }
+    }
 }
 
+.event-action {
+    display: inline-block;
+    background: transparent;
+    margin: 0;
+    padding: 0;
+    line-height: 100%;
+
+    button.dropdown-toggle {
+        display: inline-block;
+        position: relative;
+        top: -3px;
+        background: transparent;
+        border: 2px solid $black-color;
+        border-radius: 0;
+        margin: 0;
+        padding: 0;
+        -webkit-appearance: none;
+        height: 45px;
+        width: 160px;
+        text-align: center;
+        font-size: $h1-font-size;
+        line-height: 100%;
+    }
+}
