@@ -1,22 +1,17 @@
-<div class="header-padding">
+<div class="header-padding container">
     <div id="nonprofit-list">
-        <div class="eventList col-md-12">
-            <h1>List of patients</h1>
-            <div class="eachNonprofit" ng-repeat="nonprofit in nonprofits">
-                <div class="info col-xs-4">
+        <div class="eventList">
+            <h1>List of patients</h1><br/>
+            <div class="eachNonProfit" ng-repeat="nonprofit in nonprofits">
+                <div class="info col-md-4">
+                    <a ng-click="getPatient(nonprofit.token)" class="clickable">
+                        <img alt={{nonprofit.name}} ng-src={{nonprofit.profile_url}}>
+                    </a>
+                    <p>{{nonprofit.name}}</p>
                     <a ng-click="getPatient(nonprofit.token)"
                        class="clickable">
-                    <img alt={{nonprofit.name}}
-                         height="248"
-                         ng-src={{nonprofit.profile_url}}
-                         width="330">
-                    <p class="link">Read More</p></a>
-                    <p class="progress_bar"
-                       title="{{nonprofit.per_cent_funded}}">
-                    <span>{{nonprofit.per_cent_funded}} funded</span>
-                    </p>
-                    <p class="raised">{{nonprofit.donated}} raised</p>
-                    <p class="to_go">{{nonprofit.target_to_go }}</p>
+                        <p class="link">Read More</p>
+                    </a>
                 </div>
             </div>
         </div>
