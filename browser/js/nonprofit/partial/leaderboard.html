@@ -4,7 +4,7 @@
             <h1>List of patients</h1>
             <div class="eachNonprofit" ng-repeat="nonprofit in nonprofits">
                 <div class="info col-xs-4">
-                    <a  ui-sref="nonProfit.detail({nonProfitToken:nonprofit.token})"
+                    <a ng-click="getPatient(nonprofit.token)"
                        class="clickable">
                     <img alt={{nonprofit.name}}
                          height="248"

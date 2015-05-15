@@ -1,13 +1,14 @@
-<div class="header-padding">
-    <h1>{{patient.name}}'s Page</h1>
-    <h3> {{patient.header}}</h3><br/>
+<div class="header-padding" ng-cloak>
+    <h1 ng-bind="patient.name"></h1>
+    <h3 ng-bind="patient.header"></h3><br/>
     <img alt={{nonprofit.name}} height="248" ng-src={{patient.profile_url}} width="330">
-    <p>Age: {{patient.age}}</p>
-    <p>Country: {{patient.country}}</p>
-    <p>Description:<br/>{{patient.description}}</p>
+    <p ng-bind="patient.age"></p>
+    <p ng-bind="patient.country"></p>
+    <p ng-bind="patient.description"></p>
 
-    target: {{patient.target}}<br/>
-    target_to_go: {{patient.target_to_go}}<br/>
-    donated: {{patient.donated}}<br/>
-    number_of_donors: {{patient.number_of_donors}}<br/>
+    <p ng-bind="patient.target"></p>
+    <p ng-bind="patient.target_to_go"></p>
+    <p ng-bind="patient.donated"></p>
+    <p ng-bind="patient.number_of_donors"></p>
+
 </div>
