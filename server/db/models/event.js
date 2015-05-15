@@ -28,6 +28,16 @@ var schema = new mongoose.Schema({
     nonProfit: {
         type: mongoose.Schema.Types.ObjectId, ref: 'Nonprofit'
     },
+    sponsor: [{
+      user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+      details: {
+        0: 0,
+        25: 0,
+        50: 0,
+        75: 0,
+        100: 0
+      }
+    }],
     description: String,
     name: String
 });

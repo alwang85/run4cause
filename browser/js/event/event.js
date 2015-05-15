@@ -42,4 +42,8 @@ app.controller('EventController', function($state, $scope, Event){
             });
         })
     };
+    $scope.sponsorEvent = function(event){
+        Event.editing.id = event._id;
+        $state.go('');
+    };
 });
