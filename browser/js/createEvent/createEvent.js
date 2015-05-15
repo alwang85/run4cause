@@ -2,12 +2,6 @@
 app.config(function ($stateProvider) {
     $stateProvider.state('createEvent', {
         url: '/createEvent',
-        templateUrl: 'js/createEvent/createEvent.html',
-        controller: 'CreateEventController'
+        templateUrl: 'js/createEvent/createEvent.html'
     });
-});
-
-app.controller('CreateEventController', function(){
-
-
 });

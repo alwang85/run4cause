@@ -9,6 +9,7 @@ var schema = new mongoose.Schema({
     startDate: Date,
     endDate: Date,
     progress: Number,
+    patient: {},
     group: Boolean,
     goals: [{
         metrics : {
