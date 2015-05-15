@@ -13,9 +13,10 @@ router.post('/', function (req,res,next){
     Event.create(body, function(err, savedEvent){
         if (err) return next(err);
         User.findOne({_id:req.user._id}, function(err, foundUser){
-           foundUser.events.push(savedEvent._id);
-            foundUser.save(function(err,saved){
-                res.send(savedEvent);
+            savedEvent.creator = foundUser._id;
+            savedEvent.challengers.push({user:foundUser._id, individualProgress: 0});
+            savedEvent.save(function(err,saved){
+                res.send(saved);
             });
         });
     })
@@ -47,12 +48,64 @@ router.get('/:eventId', function (req,res,next){
   });
 });
 
+router.delete('/:eventId', function(req,res,next){
+    Event.findByIdAndRemove(req.params.eventId, function(err,event){
+        if(err) return next(err);
+        res.sendStatus(200);
+    });
+});
+
+router.put('/:eventId', function(req,res,next){
+    Event.findById(req.params.eventId, function(err,foundEvent){
+        if(err) return next(err);
+        console.log("req.body", req.body);
+        _.extend(foundEvent, req.body);
+        console.log("after find",foundEvent);
+        foundEvent.save();
+        res.send(foundEvent);
+    });
+});
+
 router.post('/:eventId/join', function(req,res,next){
     Event.findById(req.params.eventId, function(err,event){
-       event.challengers.push({
-           user: req.body.userId,
-           individualProgress: 0
-       });
-        event.save();
+        var exists = false;
+        _.forEach(event.challengers, function(challenger){
+            if(challenger.user==req.body.userId){
+                console.log('user alread exists')
+                exists = true;
+            }
+        });
+       if(!exists) {
+           event.challengers.push({
+               user: req.body.userId,
+               individualProgress: 0
+           });
+           event.save(function(err,saved){
+               if(err) console.log(err);
+               res.send(saved);
+           });
+       }else {
+           res.sendStatus('409');
+       }
+
     });
+});
+
+router.put('/:eventId/join', function(req,res,next){
+    Event.findById(req.params.eventId, function(err,event){
+        var filtered = _.filter(event.challengers, function(challenger){
+            console.log(challenger.user.toString(), req.body.userId.toString())
+            return challenger.user!=req.body.userId
+        });
+        if(event.challengers.length!=filtered.length){
+            event.challengers = filtered
+            event.save(function(err,saved){
+                res.send(saved);
+            });
+        } else {
+            res.sendStatus('409');
+        }
+
+    });
+
 });
