@@ -60,6 +60,7 @@ app.directive('createOrEdit', function (Event, NonProfitFactory) {
                 this.name = null;
                 this.description = null;
                 this.nonProfit = null;
+                this.patient = null;
                 this.sponsor = null;
                 this.pledgedAmount = null;
                 this.progress = 0;
