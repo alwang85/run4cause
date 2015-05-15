@@ -35,9 +35,17 @@
                 <button ng-click="addGoal(newGoal)">Add new goal</button>
             </div>
             <div class="patient">
-                <label>Patient</label>
-                <button>Select your patient</button>
-                <h4>patient's info goes here</h4>
+                <button ng-click="getAllPatients()">Select your patient</button><br>
+                <h4 ng-if="newEvent.patient">Selected Patient: {{newEvent.patient.name}}</h4>
+
+
+                <div ng-if="patients">
+                    <label>Patients</label>
+                    <div ng-repeat="patient in patients">
+                        <span ng-click="selectPatient({name:patient.name, token: patient.token})">{{patient.name}}</span>
+                    </div>
+                </div>
+
             </div>
             <button ng-if="!event" type="submit" ng-click="postEvent(newEvent)">Post Event</button>
             <button ng-if="event" type="submit" ng-click="editEvent(newEvent, event)">Edit Event</button>
