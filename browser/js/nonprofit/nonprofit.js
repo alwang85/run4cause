@@ -13,16 +13,30 @@ app.config(function ($stateProvider) {
     });
 
     $stateProvider.state('nonProfit.detail', {
-        url: '/nonprofitID',
-        templateUrl: 'js/nonprofit/partial/detail.html'
+        url: '/:nonProfitToken',
+        templateUrl: 'js/nonprofit/partial/detail.html',
+        controller: function($scope, NonProfitFactory, $state, $stateParams){
+            $scope.loaded = false;
+            NonProfitFactory.getNonprofit($stateParams.nonProfitToken).then(function(patient){
+                $scope.patient = patient;
+            });
+        }
     });
 });
 
-app.controller('NonProfitController', function ($scope, AuthService, NonProfitFactory) {
-    $scope.events= [];
+
+app.controller('NonProfitController', function ($scope, AuthService, NonProfitFactory, $state) {
+    $scope.nonprofits= [];
+    $scope.patient = {};
 
     NonProfitFactory.getNonprofits()
     .then(function(nonprofits) {
-        $scope.events = nonprofits;
+        $scope.nonprofits = nonprofits;
     });
+    $scope.getPatient = function(patientId){
+      NonProfitFactory.getNonprofit(patientId).then(function(patient){
+        $scope.patient = patient;
+        $state.go("nonProfit.detail",{nonProfitToken:patientId});
+      });
+    };
 });

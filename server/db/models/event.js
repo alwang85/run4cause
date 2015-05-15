@@ -8,10 +8,8 @@ var Promise = require('bluebird');
 var schema = new mongoose.Schema({
     startDate: Date,
     endDate: Date,
-    category: Number,
     progress: Number,
     group: Boolean,
-    contest: Boolean,
     goals: [{
         metrics : {
             measurement: String,
@@ -84,4 +82,4 @@ schema.methods.calculateProgress = function() {
     });
 };
 
-mongoose.model('newEvent', schema);
+mongoose.model('Event', schema);

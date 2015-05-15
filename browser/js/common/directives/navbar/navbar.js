@@ -12,6 +12,7 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state, 
                 { label: 'Patients', state: 'nonProfit.leaderboard'},
                 { label: 'Dashboard', state: 'dashboard.events', auth: true },
                 { label: 'Profile', state: 'profile', auth: true},
+                { label: 'Patients', state: 'nonProfit.leaderboard'}
             ];
 
             scope.user = null;
