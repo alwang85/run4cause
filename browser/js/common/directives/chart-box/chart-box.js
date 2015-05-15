@@ -14,7 +14,6 @@ app.directive('chartBox', function () {
                 scope.flipped = !scope.flipped;
             };
 
-            element.css('minHeight', element.outerWidth() + "px");
             transclude(function (clone) {
                 element.append(clone);
             });
