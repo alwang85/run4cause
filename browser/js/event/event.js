@@ -26,14 +26,15 @@ app.controller('EventController', function(events, $modal, $state, $scope, Event
              });
           });
         });
-
+    Event.getAllEvents().then(function(events){
+        $scope.events = events;
+    });
     $scope.editEvent = function(eventId) {
         Event.editing.id = eventId;
         $state.go('editEvent');
     };
     $scope.deleteEvent = function(event){
         Event.deleteEvent(event._id).then(function(status){
-            console.log(status);
            $scope.events = $scope.events.filter(function(eachEvent){
                return eachEvent._id !== event._id;
            })
