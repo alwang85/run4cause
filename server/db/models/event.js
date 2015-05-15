@@ -31,11 +31,11 @@ var schema = new mongoose.Schema({
     sponsor: [{
       user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
       details: {
-        0: 0,
-        25: 0,
-        50: 0,
-        75: 0,
-        100: 0
+        '0': {type: Number, default: 0},
+        '25': {type: Number, default: 0},
+        '50': {type: Number, default: 0},
+        '75': {type: Number, default: 0},
+        '100': {type: Number, default: 0}
       }
     }],
     description: String,

@@ -116,9 +116,11 @@ router.put('/:eventId/sponsor', function(req,res,next){
       });
       if(event.sponsor.length == filtered.length){
           event.sponsor.push({
-              user: req.body.userId
+              user: req.body.userId,
+              details: req.body.details
           });
           event.save(function(err,saved){
+              console.log('saved', saved.sponsor[0]);
               res.send(saved);
           });
       } else {
