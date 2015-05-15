@@ -61,8 +61,9 @@ router.put('/:eventId', function(req,res,next){
         console.log("req.body", req.body);
         _.extend(foundEvent, req.body);
         console.log("after find",foundEvent);
-        foundEvent.save();
-        res.send(foundEvent);
+        foundEvent.save(function(err,saved){
+            res.send(saved);
+        });
     });
 });
 
