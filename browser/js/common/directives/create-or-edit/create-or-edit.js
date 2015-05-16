@@ -9,13 +9,12 @@ app.directive('createOrEdit', function (Event, NonProfitFactory) {
         link: function(scope) {
             if(scope.event){
                 Event.getEvent(scope.event).then(function(event){
-                    event.startDate = new Date(event.startDate);
-                    event.endDate = new Date(event.endDate);
-                    console.log(event)
-                    if(event) scope.newEvent = event;
+                    scope.newEvent = event;
                 });
+            } else {
+                scope.newEvent = new ANewEvent();
             }
-
+            console.log('this is scope.newEvent', scope.newEvent);
             //Nonprofit.getNonprofits().then(function(nonprofitList){
             //    scope.nonprofitList = nonprofitList;
             //});
@@ -27,6 +26,7 @@ app.directive('createOrEdit', function (Event, NonProfitFactory) {
             };
 
             scope.editEvent = function(newEvent, eventId){
+                console.log('this is new eventddd',newEvent);
                 Event.editEvent(newEvent, eventId).then(function(savedEvent){
                     console.log(savedEvent);
                 });
@@ -50,7 +50,7 @@ app.directive('createOrEdit', function (Event, NonProfitFactory) {
                 console.log(selectedPatient);
             };
 
-            scope.newEvent = new ANewEvent();
+
             function ANewEvent () {
                 this.category = null;
                 this.goals = [];

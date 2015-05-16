@@ -6,33 +6,44 @@ app.config(function($stateProvider){
        templateUrl: 'js/event/event.html',
        controller: 'EventController',
        resolve: {
-           events: function(Event){
-                   return Event.getAllEvents().then(function(events){
-
-                   })
+           events: function (Event) {
+               return Event.getAllEvents();
                }
            }
-       })
    });
+});
 
-app.controller('EventController', function(events, $modal, $state, $scope, Event, NonProfitFactory){
+app.controller('EventController', function(AuthService, events, $modal, $state, $scope, Event, NonProfitFactory){
     $scope.events = events;
-        NonProfitFactory.getNonprofits().then(function(patients){
-          $scope.events.forEach(function(event){
-             patients.forEach(function(patient){
-                if(event.patient.token === patient.token){
-                    event.patient.profilePic = patient.profile_url;
-                    event.patient.country = patient.country;
-                }
-             });
-          });
+    console.log(events);
+    AuthService.getLoggedInUser().then(function(user){
+            $scope.currentUser = user
         });
+    NonProfitFactory.getNonprofits().then(function(patients){
+      $scope.events.forEach(function(event){
+         patients.forEach(function(patient){
+             if(event.patient){
+                 if(event.patient.token === patient.token){
+                     event.patient.profilePic = patient.profile_url;
+                     event.patient.country = patient.country;
+                 }
+             }
+         });
+      });
+    });
     Event.getAllEvents().then(function(events){
         $scope.events = events;
     });
     $scope.editEvent = function(eventId) {
         Event.editing.id = eventId;
         $state.go('editEvent');
+    };
+    $scope.checkParticipation = function(event){
+        var participating = false;
+        event.challengers.forEach(function(challenger){
+            if(challenger.user._id===$scope.currentUser) participating = true;
+        });
+        return participating
     };
     $scope.deleteEvent = function(event){
         Event.deleteEvent(event._id).then(function(status){
@@ -46,6 +57,7 @@ app.controller('EventController', function(events, $modal, $state, $scope, Event
     $scope.joinEvent = function(event){
         Event.joinEvent(event._id).then(function(savedEvent) {
             Event.getAllEvents().then(function (events) {
+                console.log("events after join", events)
                 $scope.events = events;
             });
         })
@@ -53,6 +65,7 @@ app.controller('EventController', function(events, $modal, $state, $scope, Event
     $scope.leaveEvent = function(event){
         Event.leaveEvent(event._id).then(function(savedEvent){
             Event.getAllEvents().then(function(events){
+                console.log("events after leave", events)
                 $scope.events = events;
             });
         })

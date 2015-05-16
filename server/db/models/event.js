@@ -72,13 +72,12 @@ schema.methods.calculateProgress = function() {
                     if(!totalProgressObj[key]) totalProgressObj[key] = 0;
                     totalProgressObj[key] += progressObj[key];
                 }
-
                 challenger.individualProgress = ((total/(Object.keys(progressObj).length)) || 0);
                 resolve(challenger);
-         })
+         });
      });
     });
-    User.findOne({email: 'admin@admin.com'}, function(err, foundUser){
+    //User.findOne({email: 'admin@admin.com'}, function(err, foundUser){
       return Promise.all(promises).then(function(){
         var totalProgress = 0;
         _.map(that.goals, function(eachGoal){
@@ -91,31 +90,29 @@ schema.methods.calculateProgress = function() {
           return eachGoal;
         });
         that.progress = totalProgress;
-        var message = {};
-        if (totalProgress >= 1 && that.status !== 'achieved') {
-            async.forEach(that.sponsor, function(sponsor){
-            message.recipient = sponsor.user;
-            message.sender = foundUser._id;
-            message.title = 'the event goals you sponsored have been reached!';
-            message.content = 'you owe some monies';
-            message.date = new Date;
-            Message.create(message, function(err, savedMessage){
-              savedMessage.save();
-            });
-
-          }, function(err){
-            if (err) {
-              console.log(err);
-              next()
-            }
-            that.status = 'achieved';
-          });
-        }
+      //  var message = {};
+      //  if (totalProgress >= 1 && that.status !== 'achieved') {
+      //      async.forEach(that.sponsor, function(sponsor){
+      //      message.recipient = sponsor.user;
+      //      message.sender = foundUser._id;
+      //      message.title = 'the event goals you sponsored have been reached!';
+      //      message.content = 'you owe some monies';
+      //      message.date = new Date;
+      //      Message.create(message, function(err, savedMessage){
+      //        savedMessage.save();
+      //      });
+      //
+      //    }, function(err){
+      //      if (err) {
+      //        console.log(err);
+      //        next()
+      //      }
+      //      that.status = 'achieved';
+      //    });
+      //  }
         that.save();
         return that;
       });
-    })
-
 };
 
 mongoose.model('Event', schema);
