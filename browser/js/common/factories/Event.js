@@ -1,4 +1,4 @@
-app.factory("Event", function($http, AuthService){
+app.factory("Event", function($http, AuthService, NonProfitFactory){
   return {
     editing: {},
     addEvent: function (event) {
@@ -68,6 +68,21 @@ app.factory("Event", function($http, AuthService){
           console.log(err);
         })
       })
-    }
+    },
+   getMoreInfoForNonProfits: function (events){
+    return NonProfitFactory.getNonprofits().then(function(patients){
+      events.forEach(function(event){
+        patients.forEach(function(patient){
+          if(event.patient){
+            if(event.patient.token === patient.token){
+              event.patient.profilePic = patient.profile_url;
+              event.patient.country = patient.country;
+            }
+          }
+        });
+      });
+      return events;
+    });
+  }
   };
 });

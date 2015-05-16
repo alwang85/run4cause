@@ -7,33 +7,23 @@ app.config(function($stateProvider){
        controller: 'EventController',
        resolve: {
            events: function (Event) {
-               return Event.getAllEvents();
+               return Event.getAllEvents().then(function(allEvents){
+                   return allEvents;
+               }).then(function(allEvents){
+                   return Event.getMoreInfoForNonProfits(allEvents).then(function(events){
+                       return events;
+                   })
+               });
                }
            }
    });
 });
 
-app.controller('EventController', function(AuthService, events, $modal, $state, $scope, Event, NonProfitFactory){
+app.controller('EventController', function(AuthService, events, $modal, $state, $scope, Event){
     $scope.events = events;
-    console.log(events);
     AuthService.getLoggedInUser().then(function(user){
             $scope.currentUser = user
         });
-    NonProfitFactory.getNonprofits().then(function(patients){
-      $scope.events.forEach(function(event){
-         patients.forEach(function(patient){
-             if(event.patient){
-                 if(event.patient.token === patient.token){
-                     event.patient.profilePic = patient.profile_url;
-                     event.patient.country = patient.country;
-                 }
-             }
-         });
-      });
-    });
-    Event.getAllEvents().then(function(events){
-        $scope.events = events;
-    });
     $scope.editEvent = function(eventId) {
         Event.editing.id = eventId;
         $state.go('editEvent');
@@ -41,7 +31,7 @@ app.controller('EventController', function(AuthService, events, $modal, $state, 
     $scope.checkParticipation = function(event){
         var participating = false;
         event.challengers.forEach(function(challenger){
-            if(challenger.user._id===$scope.currentUser) participating = true;
+            if(challenger.user._id===$scope.currentUser._id) participating = true;
         });
         return participating
     };
@@ -55,20 +45,33 @@ app.controller('EventController', function(AuthService, events, $modal, $state, 
         });
     };
     $scope.joinEvent = function(event){
-        Event.joinEvent(event._id).then(function(savedEvent) {
-            Event.getAllEvents().then(function (events) {
-                console.log("events after join", events)
-                $scope.events = events;
+        Event.joinEvent(event._id).then(function(savedEvents){
+            return savedEvents;
+        }).then(function() {
+            return Event.getAllEvents().then(function(allEvents){
+                return allEvents;
             });
-        })
+        }).then(function(allEvents) {
+            console.log(allEvents);
+            Event.getMoreInfoForNonProfits(allEvents).then(function(eventsWithInfo) {
+                $scope.events = eventsWithInfo;
+            });
+        });
     };
+
     $scope.leaveEvent = function(event){
-        Event.leaveEvent(event._id).then(function(savedEvent){
-            Event.getAllEvents().then(function(events){
-                console.log("events after leave", events)
-                $scope.events = events;
+        Event.leaveEvent(event._id).then(function(savedEvents){
+            return savedEvents;
+        }).then(function() {
+            return Event.getAllEvents().then(function(allEvents){
+                return allEvents;
             });
-        })
+        }).then(function(allEvents) {
+            console.log(allEvents);
+            Event.getMoreInfoForNonProfits(allEvents).then(function (eventsWithInfo) {
+                $scope.events = eventsWithInfo;
+            });
+        });
     };
     $scope.sponsorEvent = function(event){
         var modalInstance = $modal.open({

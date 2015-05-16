@@ -1,4 +1,4 @@
-<div id="event">
+<div id="event" class="header-padding">
     <h1 class="impactTitle">IMPACT MISSIONS</h1>
     <div class="col-xs-3">
 
@@ -8,20 +8,32 @@
             <div class="oneRow col-xs-12">
                 <h5 class="patientInfo">{{event.patient.name}} from {{event.patient.country}}</h5>
                 <div class="info col-xs-8">
+                    <div class="infoContainer">
+                        <div class="seeStoryBtn">
+                            <button class="btn btn-default"><a ui-sref="nonProfit.detail({nonProfitToken: event.patient.token})">Read Story</a></button>
+                        </div>
+                    </div>
                     <img src="{{event.patient.profilePic}}" />
                 </div>
-                <div class="pledge col-xs-4">
-                    <h3>Pledge</h3>
-                    <h5>"I am going to run for 12 miles between 1/1/2015 and 4/1/2016 for this patient."</h5>
+                <div class="mission col-xs-4">
+                    <h3 class="missionTitle">MISSION</h3>
+                    <h5 class="missionStatement">I am going to run for 12 miles between 1/1/2015 and 4/1/2016 for this patient.</h5>
                 </div>
             </div>
-            <div class="col-xs-6">
-                <chart-box class="eventProgress" event='event'></chart-box>
-            </div>
-            <div class="eventInfo col-xs-6">
-                <h5>{{event.name}}</h5>
-                <h6>{{event.description.slice(0,100)}}</h5>
-                <h5>{{event.sponsor[0].user}}</h5>
+            <div class="twoRow col-xs-12">
+                <div class="col-xs-4">
+                    <chart-box class="eventProgress" event='event'></chart-box>
+                </div>
+                <div class="eventInfo col-xs-8">
+                    <h5>
+                        <font-awesome class='quote' font="quote-left">
+                        </font-awesome>
+                        {{event.description.slice(0,100)}}
+                        <font-awesome class='quote' font="quote-right">
+                        </font-awesome>
+                    </h5>
+                    <h5>{{event.sponsor[0].user}}</h5>
+                </div>
             </div>
             <div class="creatorFunctionalities btn-group btn-group-justified col-xs-12">
                 <div class="btn-group" ng-if="event.creator._id===currentUser._id" role="group">
@@ -30,10 +42,10 @@
                 <div class="btn-group"  ng-if="event.creator._id===currentUser._id" role="group">
                     <button class='btn btn-default' ng-click="deleteEvent(event)">delete</button>
                 </div>
-                <div class="btn-group"  ng-if="checkParticipation(event)" role="group">
+                <div class="btn-group"  ng-if="!checkParticipation(event)" role="group">
                     <button class='btn btn-default' ng-click="joinEvent(event)">join</button>
                 </div>
-                <div class="btn-group"  ng-if="!checkParticipation(event)" role="group">
+                <div class="btn-group"  ng-if="checkParticipation(event)" role="group">
                     <button class='btn btn-default' ng-click="leaveEvent(event)">leave</button>
                 </div>
                 <div class="btn-group"  role="group">
