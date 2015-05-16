@@ -6,7 +6,9 @@ app.directive('eventForm', function (Event, NonProfitFactory) {
             event: '='
         },
         templateUrl : 'js/common/directives/event-form/event-form.html',
-        link: function(scope) {
+        link: function(scope, element, attr) {
+            scope.actionList = Event.getActions();
+
             if(scope.event){
                 Event.getEvent(scope.event).then(function(event){
                     event.startDate = new Date(event.startDate);
@@ -15,10 +17,6 @@ app.directive('eventForm', function (Event, NonProfitFactory) {
                     if(event) scope.newEvent = event;
                 });
             }
-
-            //Nonprofit.getNonprofits().then(function(nonprofitList){
-            //    scope.nonprofitList = nonprofitList;
-            //});
 
             scope.postEvent = function(anewEvent){
                 Event.addEvent(anewEvent).then(function(savedEvent){

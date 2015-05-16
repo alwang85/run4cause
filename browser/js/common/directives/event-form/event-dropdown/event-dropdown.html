@@ -1,0 +1,15 @@
+<div class="dropdown event-action">
+    <button class="btn btn-default dropdown-toggle"
+            type="button" data-toggle="dropdown"
+            aria-expanded="true"
+            >
+        <span ng-class="{ selected : itemSelected }">{{placeholder}}</span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <li ng-repeat="item in droplist track by $index" role="presentation">
+            <a role="menuitem" tabindex="-1" ng-click="selectItem($index)">
+                {{item.name}}
+            </a>
+        </li>
+    </ul>
+</div>

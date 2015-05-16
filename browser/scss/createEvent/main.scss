@@ -7,11 +7,9 @@
 
         h1 {
             font-size: ($h1-font-size * 2);
-            font-family: Impact, sans-serif;
         }
         h2 {
             font-size: ($h2-font-size * 1.5);
-            font-family: Impact, sans-serif;
         }
     }
 }
@@ -38,5 +36,8 @@
         text-align: center;
         font-size: $h1-font-size;
         line-height: 100%;
+        .selected {
+            color: #BBB;
+        }
     }
 }
