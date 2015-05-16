@@ -18,7 +18,7 @@
                 <h5>{{event.sponsor[0].user}}</h5>
             </div>
             <div class="creatorFunctionalities col-xs-12">
-                <button class='btn btn-default' ng-click="editEvent(event._id)">edit</button>
+                <button class='btn btn-default' ui-sref="editEvent({ eventID : event._id })">edit</button>
                 <button class='btn btn-default' ng-click="deleteEvent(event)">delete</button>
                 <button class='btn btn-default' ng-click="joinEvent(event)">join</button>
                 <button class='btn btn-default' ng-click="leaveEvent(event)">leave</button>

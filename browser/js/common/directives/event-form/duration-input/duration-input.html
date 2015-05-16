@@ -1,0 +1,11 @@
+<div class="goal-form">
+    <div class="goal-quantity">
+        <input type="text" placeholder="# OF" ng-model="durationQty" numbers-only>
+        <event-dropdown
+                droplist="durationList"
+                placeholder="DURATION"
+                class="duration-input"
+                on-change="updateDuration()">
+        </event-dropdown>
+    </div>
+</div>

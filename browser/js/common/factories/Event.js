@@ -7,7 +7,6 @@ app.factory("Event", function($http, AuthService){
         endDate : null,
         name : null,
         description : null,
-        nonProfit : null,
         patient : null,
         sponsor : null,
         pledgedAmount : null,
@@ -15,12 +14,12 @@ app.factory("Event", function($http, AuthService){
     };
 
     var actionList = [
-        {name : 'Run', measurement : 'distance', unit : 'miles'},
-        {name : 'Burn', measurement : 'calories', unit : 'cal'}
+        {name : 'Run', value : 'distance', unit : 'miles'},
+        {name : 'Burn', value : 'calories', unit : 'cal'}
     ];
 
     return {
-        editFormInit : function(options) {
+        formInit : function(options) {
             return angular.extend({}, eventForm, options);
         },
         getActions : function() {

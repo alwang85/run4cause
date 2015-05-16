@@ -9,6 +9,50 @@ app.directive('eventForm', function (Event, NonProfitFactory) {
         link: function(scope, element, attr) {
             scope.actionList = Event.getActions();
 
+            scope.eventFormData = Event.formInit({
+                goals : [{
+                    category : "total",
+                    metrics  : {
+                        unit     : ''
+                    }
+                }],
+                startDate : new Date()
+            });
+
+            scope.updateAction = function(index) {
+                return {
+                    actUpon : function(action) {
+                        scope
+                            .eventFormData
+                            .goals[index]
+                            .metrics
+                            .measurement = action.value;
+
+                        scope
+                            .eventFormData
+                            .goals[index]
+                            .metrics
+                            .unit = action.unit;
+                    }
+                };
+            };
+
+            scope.eventFormData.duration = 0;
+            scope.updateDuration = function() {
+                return {
+                    actUpon : function(duration) {
+                        console.log(scope.eventFormData.startTime);
+                        scope.eventFormData.duration = duration;
+                        scope.eventFormData.endDate = new Date(scope.eventFormData.startDate.getTime() + scope.eventFormData.duration);
+                    }
+                };
+            };
+
+            scope.$watch('eventFormData.startDate', function(value) {
+                scope.eventFormData.endDate = new Date(value.getTime() + scope.eventFormData.duration);
+            });
+
+            // steve and alex's code starts here
             if(scope.event){
                 Event.getEvent(scope.event).then(function(event){
                     event.startDate = new Date(event.startDate);
@@ -47,8 +91,6 @@ app.directive('eventForm', function (Event, NonProfitFactory) {
                 scope.newEvent.patient = selectedPatient;
                 console.log(selectedPatient);
             };
-
-            scope.newEvent = Event.editFormInit();
         }
     };
 });

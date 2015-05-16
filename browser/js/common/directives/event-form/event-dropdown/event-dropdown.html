@@ -3,7 +3,7 @@
             type="button" data-toggle="dropdown"
             aria-expanded="true"
             >
-        <span ng-class="{ selected : itemSelected }">{{placeholder}}</span>
+        <span ng-class="{ selected : !itemSelected }">{{selectedName}}</span>
     </button>
     <ul class="dropdown-menu" role="menu">
         <li ng-repeat="item in droplist track by $index" role="presentation">

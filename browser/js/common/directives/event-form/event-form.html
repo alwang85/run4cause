@@ -1,13 +1,25 @@
 <div class="event-form-container header-padding">
     <div class="medium-width-container event-form">
-        <form>
+        <form ng-submit="submitEvent(eventFormData)">
             <h1>Impact Mission:</h1>
-            <h2>Go
-                <event-dropdown droplist="actionList" placeholder="action"></event-dropdown>
+            <h2>
+                <div class="goal-form" ng-repeat="goal in eventFormData.goals track by $index">
+                    <event-dropdown
+                            droplist="actionList"
+                            placeholder="action"
+                            on-change="updateAction($index)">
+                    </event-dropdown>
+                    &nbsp;FOR A TOTAL OF&nbsp;
+                    <metric-input
+                            goal="goal">
+                    </metric-input>
+                </div>
             </h2>
-            <h2>BY 05/07/2015</h2>
-            <h2>STARTING 05/07/2015</h2>
-            <h2>TO SUPPORT AUNG</h2>
+            <h2>WITHIN <duration-input event-form="eventFormData" on-change="updateDuration()"></duration-input>
+            </h2>
+            <h2>STARTING <date-input event-form="eventFormData"></date-input></h2>
+            <h2>TO SUPPORT <select-patient event-form="eventFormData"></select-patient></h2>
+            <button type="submit" class="btn btn-primary impact-submit">Create IMPACT</button>
         </form>
     </div>
 </div>
