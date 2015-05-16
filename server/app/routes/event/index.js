@@ -25,12 +25,12 @@ router.post('/', function (req,res,next){
 router.get('/', function (req,res,next){
     Event.find({}).deepPopulate('creator challengers.user nonProfit').exec(function(err, events){
         var promises = events.map(function(eachEvent){
-            return new Promise(function(resolve,reject)
-            {
+            return new Promise(function(resolve,reject) {
                 resolve(eachEvent.calculateProgress());
             })
         });
         return Promise.all(promises).then(function(){
+            console.log(events);
             res.send(events);
         });
       //    if (err) return next(err);
@@ -39,13 +39,12 @@ router.get('/', function (req,res,next){
 });
 
 router.get('/:eventId', function (req,res,next){
-  Event.findById(req.params.eventId).deepPopulate('creator challengers.user nonProfit').exec(function(err, foundEvent){
-      if (err) return next(err);
-      foundEvent.calculateProgress().then(function(result){
-        console.log('result should equal to sum of distance in first 7 days for all users', result);
-        res.send(result);
-      })
-  });
+    Event.findById(req.params.eventId).deepPopulate('creator challengers.user nonProfit').exec(function(err, foundEvent){
+        if (err) return next(err);
+        foundEvent.calculateProgress().then(function(result){
+            res.send(result);
+        })
+    });
 });
 
 router.delete('/:eventId', function(req,res,next){
@@ -58,9 +57,7 @@ router.delete('/:eventId', function(req,res,next){
 router.put('/:eventId', function(req,res,next){
     Event.findById(req.params.eventId).deepPopulate('creator challengers.user nonProfit').exec(function(err,foundEvent){
         if(err) return next(err);
-        console.log("req.body", req.body);
         _.extend(foundEvent, req.body);
-        console.log("after find",foundEvent);
         foundEvent.save(function(err,saved){
             res.send(saved);
         });
@@ -72,7 +69,7 @@ router.post('/:eventId/join', function(req,res,next){
         var exists = false;
         _.forEach(event.challengers, function(challenger){
             if(challenger.user.toString()==req.body.userId.toString()){
-                console.log('user already exists')
+                console.log('user already exists');
                 exists = true;
             }
         });
