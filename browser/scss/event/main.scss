@@ -2,7 +2,37 @@
   background: #36465d;
   display: inline-block;
   .eventList {
-    padding: 0 40px;
+    padding: 0;
+  }
+  .creatorBox {
+    width:70px;
+    height:70px;
+    position: absolute;
+    top:0;
+    left:-90px;
+    img{
+      height:100%;
+      width:100%;
+      border-radius: 5px;
+    }
+  }
+  .participantsBox {
+    width:220px;
+    position: absolute;
+    top:0;
+    right:-210px;
+    .eachParticipant {
+      margin-bottom: 15px;
+    }
+    .participantsTitle {
+      color: white;
+      font-size: 15px;
+    }
+    img{
+      height:70px;
+      width:100%;
+      border-radius: 5px;
+    }
   }
   .impactTitle {
     text-align: center;
