@@ -1,40 +1,73 @@
-<div id="event">
+<div id="event" class="header-padding">
     <h1 class="impactTitle">IMPACT MISSIONS</h1>
     <div class="col-xs-3">
 
     </div>
     <div class="eventList col-xs-6">
         <div class="eachEvent" ng-repeat="event in events">
+            <div class="creatorBox">
+                <img src="https://scontent-lga.xx.fbcdn.net/hphotos-xtp1/v/t1.0-9/10402536_848562865184461_80417573342618318_n.jpg?oh=6fcac3c583c855aa17ec55dcd30ccaaa&oe=560250B5">
+            </div>
+            <div class="participantsBox">
+                <div class="eachParticipant col-xs-12">
+                    <div class="col-xs-6">
+                        <img src="https://scontent-lga.xx.fbcdn.net/hphotos-xtp1/v/t1.0-9/10402536_848562865184461_80417573342618318_n.jpg?oh=6fcac3c583c855aa17ec55dcd30ccaaa&oe=560250B5">
+                    </div>
+                    <div class="col-xs-6">
+                        <h6 class="participantsTitle">5%</h6>
+                    </div>
+                </div>
+                <div class="eachParticipant col-xs-12">
+                    <div class="col-xs-6">
+                        <img src="https://scontent-iad.xx.fbcdn.net/hphotos-xfp1/v/t1.0-9/1476599_10152931858347316_765901485_n.jpg?oh=78ba26957743804b7284c8c9dbe966a7&oe=560DA39A">
+                    </div>
+                    <div class="col-xs-6">
+                        <h6 class="participantsTitle">5%</h6>
+                    </div>
+                </div>
+            </div>
             <div class="oneRow col-xs-12">
                 <h5 class="patientInfo">{{event.patient.name}} from {{event.patient.country}}</h5>
                 <div class="info col-xs-8">
+                    <div class="infoContainer">
+                        <div class="seeStoryBtn">
+                            <button class="btn btn-default"><a ui-sref="nonProfit.detail({nonProfitToken: event.patient.token})">Read Story</a></button>
+                        </div>
+                    </div>
                     <img src="{{event.patient.profilePic}}" />
                 </div>
-                <div class="pledge col-xs-4">
-                    <h3>Pledge</h3>
-                    <h5>"I am going to run for 12 miles between 1/1/2015 and 4/1/2016 for this patient."</h5>
+                <div class="mission col-xs-4">
+                    <h3 class="missionTitle">MISSION</h3>
+                    <h5 class="missionStatement">I am going to run for 12 miles between 1/1/2015 and 4/1/2016 for this patient.</h5>
                 </div>
             </div>
-            <div class="col-xs-6">
-                <chart-box class="eventProgress" event='event'></chart-box>
-            </div>
-            <div class="eventInfo col-xs-6">
-                <h5>{{event.name}}</h5>
-                <h6>{{event.description.slice(0,100)}}</h6>
-                <h5>{{event.sponsor[0].user}}</h5>
+            <div class="twoRow col-xs-12">
+                <div class="col-xs-4">
+                    <chart-box class="eventProgress" event='event'></chart-box>
+                </div>
+                <div class="eventInfo col-xs-8">
+                    <h5>
+                        <font-awesome class='quote' font="quote-left">
+                        </font-awesome>
+                        {{event.description.slice(0,100)}}
+                        <font-awesome class='quote' font="quote-right">
+                        </font-awesome>
+                    </h5>
+                    <h5>{{event.sponsor[0].user}}</h5>
+                </div>
             </div>
 
             <div class="creatorFunctionalities btn-group btn-group-justified col-xs-12">
                 <div class="btn-group" ng-if="event.creator._id===currentUser._id" role="group">
-                    <button class='btn btn-default' ui-sref="editEvent({ eventID : event._id })">edit</button>
+                    <button class='btn btn-default' ui-sref="impactForm.edit({ eventID : event._id })">edit</button>
                 </div>
                 <div class="btn-group"  ng-if="event.creator._id===currentUser._id" role="group">
                     <button class='btn btn-default' ng-click="deleteEvent(event)">delete</button>
                 </div>
-                <div class="btn-group"  ng-if="checkParticipation(event)" role="group">
+                <div class="btn-group"  ng-if="!checkParticipation(event)" role="group">
                     <button class='btn btn-default' ng-click="joinEvent(event)">join</button>
                 </div>
-                <div class="btn-group"  ng-if="!checkParticipation(event)" role="group">
+                <div class="btn-group"  ng-if="checkParticipation(event)" role="group">
                     <button class='btn btn-default' ng-click="leaveEvent(event)">leave</button>
                 </div>
                 <div class="btn-group"  role="group">

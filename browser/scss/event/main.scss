@@ -1,9 +1,38 @@
 #event {
-  margin-top: 60px;
   background: #36465d;
   display: inline-block;
   .eventList {
-    padding: 0 40px;
+    padding: 0;
+  }
+  .creatorBox {
+    width:70px;
+    height:70px;
+    position: absolute;
+    top:0;
+    left:-90px;
+    img{
+      height:100%;
+      width:100%;
+      border-radius: 5px;
+    }
+  }
+  .participantsBox {
+    width:220px;
+    position: absolute;
+    top:0;
+    right:-210px;
+    .eachParticipant {
+      margin-bottom: 15px;
+    }
+    .participantsTitle {
+      color: white;
+      font-size: 15px;
+    }
+    img{
+      height:70px;
+      width:100%;
+      border-radius: 5px;
+    }
   }
   .impactTitle {
     text-align: center;
@@ -18,15 +47,54 @@
     position: relative;
   }
   .eventInfo {
-    margin: 0 auto;
+    font-style: italic;
+    margin: 20px auto;
+    display: table-cell;
+    vertical-align: middle;
+    float: none;
+    .quote{
+      color: #a1a1a1;
+      font-size: 20px;
+      margin: 0 10px;
+    }
+  }
+  .mission{
+    .missionTitle{
+      text-align: center;
+      color: $off-grey-color;
+      margin: 10px 0;
+    }
+    .missionStatement{
+      color: navy;
+    }
   }
   .info{
     text-align: center;
     padding: 0;
+    position: relative;
     img {
       width: 100%;
       height: 35vh;
     }
+    .infoContainer{
+      display: table;
+      position: absolute;
+      width:100%;
+      height: 35vh;
+      &:hover{
+        .seeStoryBtn{
+          opacity:1;
+        }
+      }
+      .seeStoryBtn{
+        @include forceGpu();
+        transition: all 0.4s linear;
+        display: table-cell;
+        vertical-align: middle;
+        opacity: 0;
+      }
+    }
+
   }
   .oneRow{
     padding: 0;
@@ -36,7 +104,11 @@
       color: #a1a1a1;
       padding: 15px 0;
       border-bottom: 1px solid skyblue;
+      font-size: 18px;
     }
+  }
+  .twoRow{
+    display: table;
   }
   .eventProgress {
     margin: 10px auto;
