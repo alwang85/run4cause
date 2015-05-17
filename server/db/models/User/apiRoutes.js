@@ -25,7 +25,7 @@ module.exports = function(activeDevices) {
         });
 
         if (index !== -1) {
-            return apiRoutes[index];
+            return _.clone(apiRoutes[index], true);
         }
     });
 };

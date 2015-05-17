@@ -5,7 +5,7 @@ var _ = require('lodash');
 module.exports = function(startDate, endDate) {
     var user = this;
     var query = {
-        user : user._id
+        user : user
     };
 
     return new Promise (function(resolve, reject) {
