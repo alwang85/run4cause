@@ -1,4 +1,4 @@
-app.directive('initialLoad', function($rootScope, InitialLoadService, $timeout, AuthService) {
+app.directive('initialLoad', function($rootScope, InitialLoadService, $timeout, AuthService, AUTH_EVENTS) {
     return {
         restrict : 'E',
         scope    : {},
@@ -7,9 +7,7 @@ app.directive('initialLoad', function($rootScope, InitialLoadService, $timeout, 
             scope.loaded = false;
             var updateLoadStatus = function(err, res) {
                 if (err) throw err;
-                $timeout(function() {
-                    scope.loaded = true;
-                }, 1000);
+                scope.loaded = true;
             };
 
             var displayStatus = function(status) {
@@ -18,19 +16,21 @@ app.directive('initialLoad', function($rootScope, InitialLoadService, $timeout, 
 
             scope.loadPermitted = false;
             InitialLoadService.onBeforeRequestSync(function() {
-                AuthService.getLoggedInUser().then(function(user) {
-                    if (user) {
-                        scope.loadPermitted = true;
-                        scope.loaded = false;
-                    }
-                });
+                if (AuthService.isAuthenticated()) {
+                    scope.loadPermitted = true;
+                    scope.loaded = false;
+                }
             });
 
             InitialLoadService.registerLoadCallback(updateLoadStatus);
             InitialLoadService.registerServiceUpdater(displayStatus);
 
-            InitialLoadService.requestSync().then(function(logs) {
-                console.log(logs);
+            $rootScope.$on(AUTH_EVENTS.loginSuccess, function() {
+                AuthService.getLoggedInUser().then(function (user) {
+                    if (user) {
+                        InitialLoadService.requestSync(user);
+                    }
+                });
             });
         }
     };

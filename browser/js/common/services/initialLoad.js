@@ -4,6 +4,7 @@ app.service('InitialLoadService', function($rootScope, $q, $timeout, AuthService
     service.loadList = [];
     service.serviceUpdater = null;
     service.callback = null;
+    service.user = null;
     service.beforeAsyncCallbacks = [];
 
     service.registerLoadCallback = function(cb) {
@@ -19,26 +20,16 @@ app.service('InitialLoadService', function($rootScope, $q, $timeout, AuthService
     };
 
     service.loadInit = function() {
-
-        // Step 1: check user is logged in
-        service.registerLoadSteps(function() {
-            return AuthService.getLoggedInUser().then(function(user) {
-                var status = "Checking to Sync User...";
-                service.serviceUpdater(status);
-
-                return user;
-
-            });
-        });
-
-        // Step 2: get/check last Log update & the user's active devices
+        // Step 1: get/check last Log update & the user's active devices
         // returns true if its time to update
-        service.registerLoadSteps(function(user) {
+        service.registerLoadSteps(function() {
+            var user = service.user;
+            var status = "Checking User Devices...";
+            service.serviceUpdater(status);
             if (user) {
                 var lastUpdateTime = Math.round((new Date(user.lastLogUpdate)).getTime()/1000);
                 var currentTime = Math.round((new Date()).getTime()/1000);
                 var timeGapLimit = 60 * 60; // might want to increase after debug;
-
                 return user.active.length > 0 && currentTime - lastUpdateTime > timeGapLimit;
             } else {
                 service.callback(null, null);
@@ -48,10 +39,10 @@ app.service('InitialLoadService', function($rootScope, $q, $timeout, AuthService
         // Step 3: if it's time to update, refresh token first
         // TODO: Backend to monitor when to refresh the token or not
         service.registerLoadSteps(function(timeToUpdate) {
-            console.log(timeToUpdate);
             if (timeToUpdate) {
                 return UserFactory.refreshTokens()
             } else { // skip over;
+                console.log("not time to update yet");
                 service.callback(null, null);
             }
         });
@@ -82,8 +73,8 @@ app.service('InitialLoadService', function($rootScope, $q, $timeout, AuthService
         service.beforeAsyncCallbacks.push(cb);
     };
 
-    service.requestSync = function() {
-
+    service.requestSync = function(user) {
+        service.user = user;
         return $q.when().then(function() {
             _.forEach(service.beforeAsyncCallbacks, function(fn) {
                 fn();
@@ -95,6 +86,5 @@ app.service('InitialLoadService', function($rootScope, $q, $timeout, AuthService
                 return service.loadInit().runLoad();
             }
         });
-
     }
 });

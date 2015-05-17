@@ -8,7 +8,7 @@ app.config(function ($stateProvider) {
 
 });
 
-app.controller('LoginCtrl', function ($scope, AuthService, $state, $stateParams, InitialLoadService) {
+app.controller('LoginCtrl', function ($scope, AuthService, $state, $stateParams) {
 
     $scope.login = {};
     $scope.error = null;
@@ -17,15 +17,13 @@ app.controller('LoginCtrl', function ($scope, AuthService, $state, $stateParams,
 
         $scope.error = null;
 
-        AuthService.login(loginInfo, $stateParams.redirect).then(function () {
-            InitialLoadService.requestSync().then(function(logs) {
-                if ($stateParams.redirect) {
-                    var redirectState = $state.get($stateParams.redirect);
+        AuthService.login(loginInfo, $stateParams.redirect).then(function (user) {
+            if ($stateParams.redirect) {
+                var redirectState = $state.get($stateParams.redirect);
 
-                } else {
-                    $state.go('home');
-                }
-            });
+            } else {
+                $state.go('home');
+            }
         }).catch(function (error) {
             console.log(error);
             $scope.error = 'Invalid login credentials.';
