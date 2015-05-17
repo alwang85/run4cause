@@ -1,4 +1,5 @@
-app.factory("NonProfitFactory", function($http){
+app.factory("NonProfitFactory", function($http, $q){
+  var cachedPatientData;
   return{
     getNonprofits : function(){
       return $http.get('/api/nonprofit').then(function(res){
@@ -9,7 +10,10 @@ app.factory("NonProfitFactory", function($http){
       });
     },
     getNonprofit : function(patientId){
+      if (cachedPatientData) return $q.defer().resolve(cachedPatientData);
+
       return $http.get('/api/nonprofit/' + patientId).then(function(res){
+        cachedPatientData = res.data;
         return res.data;
       }, function(err){
         console.log(err);

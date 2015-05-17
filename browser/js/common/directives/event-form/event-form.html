@@ -1,0 +1,30 @@
+<div class="event-form-container header-padding">
+    <div class="medium-width-container event-form">
+        <form ng-submit="submitEvent(eventFormData)">
+            <h1>Impact Mission:</h1>
+            <h2>
+                <div class="goal-form" ng-repeat="goal in eventFormData.goals track by $index">
+                    <event-dropdown
+                            droplist="actionList"
+                            placeholder="action"
+                            on-change="updateAction($index)"
+                            is-selected = "selectActionFunc()"
+                            event-data="goal">
+                    </event-dropdown>
+                    &nbsp;FOR A TOTAL OF&nbsp;
+                    <metric-input
+                            goal="goal">
+                    </metric-input>
+                </div>
+            </h2>
+            <h2>WITHIN <duration-input
+                    event-form="eventFormData"
+                    on-change="updateDuration()"
+                    ></duration-input>
+            </h2>
+            <h2>STARTING <date-input event-form="eventFormData"></date-input></h2>
+            <h2>TO SUPPORT <select-patient patients="patients" event-form="eventFormData"></select-patient></h2>
+            <button type="submit" class="btn btn-primary impact-submit">I COMMIT</button>
+        </form>
+    </div>
+</div>

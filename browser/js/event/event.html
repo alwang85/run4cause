@@ -56,9 +56,10 @@
                     <h5>{{event.sponsor[0].user}}</h5>
                 </div>
             </div>
+
             <div class="creatorFunctionalities btn-group btn-group-justified col-xs-12">
                 <div class="btn-group" ng-if="event.creator._id===currentUser._id" role="group">
-                    <button class='btn btn-default' ng-click="editEvent(event._id)">edit</button>
+                    <button class='btn btn-default' ui-sref="impactForm.edit({ eventID : event._id })">edit</button>
                 </div>
                 <div class="btn-group"  ng-if="event.creator._id===currentUser._id" role="group">
                     <button class='btn btn-default' ng-click="deleteEvent(event)">delete</button>

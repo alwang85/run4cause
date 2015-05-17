@@ -10,14 +10,14 @@ var deepPopulate = require('mongoose-deep-populate');
 
 router.post('/', function (req,res,next){
     var body = req.body;
+    if (!req.user) return next(new Error('Forbidden: You Must Be Logged In'));
+
     Event.create(body, function(err, savedEvent){
         if (err) return next(err);
-        User.findOne({_id:req.user._id}, function(err, foundUser){
-            savedEvent.creator = foundUser._id;
-            savedEvent.challengers.push({user:foundUser._id, individualProgress: 0});
-            savedEvent.save(function(err,saved){
-                res.send(saved);
-            });
+        savedEvent.creator = req.user;
+        savedEvent.challengers.push({user:req.user, individualProgress: 0});
+        savedEvent.save(function(err,saved){
+            res.json(saved);
         });
     })
 });
@@ -27,14 +27,12 @@ router.get('/', function (req,res,next){
         var promises = events.map(function(eachEvent){
             return new Promise(function(resolve,reject) {
                 resolve(eachEvent.calculateProgress());
-            })
+            });
         });
+
         return Promise.all(promises).then(function(){
-            console.log(events);
             res.send(events);
-        });
-      //    if (err) return next(err);
-      //    res.send(events);
+        }).catch(next);
     });
 });
 
@@ -42,8 +40,8 @@ router.get('/:eventId', function (req,res,next){
     Event.findById(req.params.eventId).deepPopulate('creator challengers.user nonProfit').exec(function(err, foundEvent){
         if (err) return next(err);
         foundEvent.calculateProgress().then(function(result){
-            res.send(result);
-        })
+            res.json(result);
+        }).catch(next);
     });
 });
 
@@ -59,57 +57,65 @@ router.put('/:eventId', function(req,res,next){
         if(err) return next(err);
         _.extend(foundEvent, req.body);
         foundEvent.save(function(err,saved){
+            if (err) return next(err);
             res.send(saved);
         });
     });
 });
 
 router.post('/:eventId/join', function(req,res,next){
+    if (!req.user) return next(new Error('Forbidden: You Must Be Logged In'));
+
     Event.findById(req.params.eventId, function(err,event){
         var exists = false;
         _.forEach(event.challengers, function(challenger){
-            if(challenger.user.toString()==req.body.userId.toString()){
+            if(challenger.user.toString()==req.user._id.toString()){
                 console.log('user already exists');
                 exists = true;
             }
         });
        if(!exists) {
            event.challengers.push({
-               user: req.body.userId,
+               user: req.user,
                individualProgress: 0
            });
            event.save(function(err,saved){
-               if(err) console.log(err);
-               res.send(saved);
+               if(err) return next(err);
+               res.json(saved);
            });
-       }else {
+       } else {
            res.sendStatus('409');
        }
 
     });
 });
 
-router.put('/:eventId/join', function(req,res,next){
+router.delete('/:eventId/leave', function(req,res,next){
+    if (!req.user) return next(new Error('Forbidden: You Must Be Logged In'));
+
     Event.findById(req.params.eventId, function(err,event){
         var filtered = _.filter(event.challengers, function(challenger){
-            return challenger.user.toString()!==req.body.userId.toString()
+            return challenger.user.toString()!==req.user._id.toString()
         });
         if(event.challengers.length!==filtered.length){
             event.challengers = filtered;
             event.save(function(err,saved){
-                res.send(saved);
+                if (err) return next(err);
+                res.json(saved);
             });
         } else {
             res.sendStatus('409');
         }
 
     });
-
 });
+
 router.put('/:eventId/sponsor', function(req,res,next){
-  Event.findById(req.params.eventId, function(err,event){
+    if (!req.user) return next(new Error('Forbidden: You Must Be Logged In'));
+
+    Event.findById(req.params.eventId, function(err,event){
       var filtered = _.filter(event.sponsor, function(eachSponsor){
-          return eachSponsor.user.toString()!==req.body.userId.toString()
+          return eachSponsor.user.toString()!==req.user._id.toString()
       });
       if(event.sponsor.length == filtered.length){
           event.sponsor.push({
@@ -117,13 +123,13 @@ router.put('/:eventId/sponsor', function(req,res,next){
               details: req.body.details
           });
           event.save(function(err,saved){
-              console.log('saved', saved.sponsor[0]);
+              if (err) return next(err);
+              //console.log('saved', saved.sponsor[0]);
               res.send(saved);
           });
       } else {
           console.log('already sponsored');
           res.sendStatus('409'); //You already sponsored!
       }
-  });
-
+    });
 });

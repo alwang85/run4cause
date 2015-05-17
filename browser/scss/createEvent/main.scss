@@ -1,11 +1,196 @@
-#createEvent {
-  margin-top: 60px;
-  .plusSign {
-    width: 70%;
-    height: 50vh;
-  }
-  .challengePick {
-    //height:60px;
-  }
-}
+.event-form-container {
+    .event-form {
+        text-align: center;
+        form {
+            text-transform: uppercase;
+        }
 
+        h1 {
+            font-size: ($h1-font-size * 2);
+        }
+
+        h2 {
+            font-size: ($h2-font-size * 1.5);
+        }
+
+        .goal-form {
+            display: inline-block;
+            position: relative;
+            .goal-quantity {
+                display: inline-block;
+                line-height: 100%;
+                input {
+                    display: inline-block;
+                    vertical-align: bottom;
+                    height: 45px;
+                    width: 120px;
+                    border: 2px solid $black-color;
+                    border-radius: 0;
+                    font-size: 36px;
+                    padding: 8px;
+                    text-align: center;
+
+                    @include placeholder {
+                        font-size: 36px;
+                        color: #CCC;
+                    }
+
+                    &:focus {
+                        outline: none;
+                    }
+
+                    &.selected {
+                        border-right:0;
+                    }
+                }
+
+                &.start-date input {
+                    border-right: 2px solid $black-color;
+                    width: 280px;
+                }
+
+                span.metric {
+                    display: inline-block;
+                    vertical-align: bottom;
+                    height: 45px;
+                    border: 2px solid #0c0c0c;
+                    min-width: 45px;
+                    padding: 0px 8px;
+                    border-left: 0;
+                    font-size: 24px;
+                }
+
+                .patient-cta {
+                    display: inline-block;
+                    height: 45px;
+                    min-width: 120px;
+                    border: 2px solid $black-color;
+                    font-size: 36px;
+                    padding: 0 8px;
+                    color: #CCC;
+
+                    &:hover {
+                        color: #CCC;
+                    }
+
+                    &.selected {
+                        color: $black-color;
+                    }
+                }
+
+                .patient-select-container {
+                    .dropdown-menu {
+                        top: 100%;
+                        right: 0;
+                        left: auto;
+                        display: block;
+                        max-width: 0;
+                        width: auto;
+                        min-width: 440px;
+                        padding: 0;
+                        max-height: 300px;
+                        overflow: auto;
+                        text-transform: none;
+                        font-family: "Open Sans", sans-serif;
+                        li {
+                            @include clearfix();
+                            border-bottom: 1px solid #CCC;
+                            padding: 8px;
+                            display: table;
+                            .patient-thumbnail {
+                                float: left;
+                                display: block;
+                                width: 175px;
+                                overflow: hidden;
+                                img {
+                                    display: block;
+                                    width: 100%;
+                                }
+                            }
+
+                            .patient-detail {
+                                position: relative;
+                                padding-left: 8px;
+                                line-height: 110%;
+                                display: table-cell;
+                                vertical-align: middle;
+
+                                .title {
+                                    width: 100%;
+                                    font-size: 18px;
+                                }
+
+                                a.patient-option {
+                                    //float:left;
+                                    display: inline-block;
+                                    clear: both;
+                                    font-size: 16px;
+                                    padding: 8px;
+                                    background: $blue-color;
+                                    border-radius: 4px;
+                                    color: #FFF;
+                                    margin-bottom: 4px;
+                                    font-weight: 300;
+
+                                    &:hover {
+                                        background: lighten($blue-color, 10%);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } // end goal-quantity
+        } // end goal-form
+
+        .impact-submit {
+            margin: 8px auto;
+            width: 50%;
+            min-width: 300px;
+            padding: 16px;
+            font-size: 24px;
+        }
+    } // end event-form
+} // event-form-container
+
+.event-action {
+    display: inline-block;
+    background: transparent;
+    margin: 0;
+    padding: 0;
+    line-height: 100%;
+
+    button.dropdown-toggle {
+        display: inline-block;
+        vertical-align: bottom;
+        background: transparent;
+        border: 2px solid $black-color;
+        border-radius: 0;
+        margin: 0;
+        padding: 0 8px;
+        -webkit-appearance: none;
+        height: 45px;
+        min-width: 160px;
+        text-align: center;
+        font-size: $h1-font-size;
+        color: $black-color;
+        line-height: 100%;
+        outline: none;
+        text-transform: uppercase;
+
+        &:hover, &:active, .active {
+            background-color: transparent;
+            border-color: $black-color;
+            outline: none;
+        }
+
+        &.dropdown-toggle.btn-default {
+            background-color: transparent;
+            border-color: $black-color;
+        }
+
+        .selected {
+            color: #CCC;
+        }
+    }
+}

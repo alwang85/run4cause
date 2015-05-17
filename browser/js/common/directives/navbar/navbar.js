@@ -44,12 +44,11 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
             $rootScope.$on(AUTH_EVENTS.sessionTimeout, removeUser);
 
             $rootScope.$on('$stateChangeStart', function(event, toState) {
-                scope.validState = $state.$current.includes.home;
+                scope.isHome = $state.$current.includes.home;
             });
 
             $rootScope.$on('$viewContentLoaded', function(event) {
-                console.log('loaded');
-                scope.validState = $state.$current.includes.home;
+                scope.isHome = $state.$current.includes.home;
             });
         }
 
