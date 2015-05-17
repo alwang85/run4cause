@@ -8,6 +8,7 @@ app.directive('eventForm', function (Event, NonProfitFactory) {
         },
         templateUrl : 'js/common/directives/event-form/event-form.html',
         link: function(scope, element, attr) {
+            // get available action lists
             scope.actionList = Event.getActions();
 
             var options = scope.event || {
@@ -68,35 +69,16 @@ app.directive('eventForm', function (Event, NonProfitFactory) {
                 }
             });
 
-            submitEvent
-
-            scope.postEvent = function(anewEvent){
-                Event.addEvent(anewEvent).then(function(savedEvent){
-                    console.log(savedEvent);
-                });
-            };
-
-            scope.editEvent = function(newEvent, eventId){
-                Event.editEvent(newEvent, eventId).then(function(savedEvent){
-                    console.log(savedEvent);
-                });
-            };
-
-            scope.addGoal = function(newGoal){
-                newGoal.category = 'total';
-                newGoal.metrics.progress = 0;
-                scope.newEvent.goals.push(newGoal);
-                scope.newGoal = null;
-            };
-
-            scope.getAllPatients = function(){
-               return NonProfitFactory.getNonprofits().then(function(patients){
-                   scope.patients = patients
-               });
-            };
-
-            scope.selectPatient = function(selectedPatient){
-                scope.newEvent.patient = selectedPatient;
+            scope.submitEvent = function(impactData) {
+                if (scope.event) {
+                    Event.editEvent(impactData, scope.event._id).then(function(savedEvent){
+                        console.log(savedEvent);
+                    });
+                } else {
+                    Event.addEvent(impactData).then(function(savedEvent){
+                        console.log(savedEvent);
+                    });
+                }
             };
         }
     };

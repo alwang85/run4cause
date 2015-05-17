@@ -14,6 +14,7 @@ app.factory("Event", function($http, AuthService){
 
     var actionList = [
         {name : 'Run', value : 'distance', unit : 'miles'},
+        {name : 'Step', value : 'steps', unit : 'steps'},
         {name : 'Burn', value : 'calories', unit : 'cal'}
     ];
 
