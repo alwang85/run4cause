@@ -73,7 +73,7 @@ module.exports = function() {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(savedData);
+                    resolve(log);
                 }
             });
         });

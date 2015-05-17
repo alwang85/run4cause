@@ -34,7 +34,7 @@ app.controller('ProfileController', function($scope, AuthService, UserFactory) {
 
         $scope.updateLogs = function() {
             UserFactory.updateLogs().then(function(logs) {
-                console.log(logs);
+                $scope.user_log = logs;
             });
         };
 
