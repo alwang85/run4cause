@@ -4,7 +4,6 @@ var request = require('superagent');
 var _ = require('lodash');
 var moment = require('moment-range');
 var APImap = require('./apiMap');
-var util = require('util');
 moment().format();
 
 var findBySourcesAndChangeDuration = function(activeDevices, lastLogUpdate) {
@@ -24,8 +23,6 @@ var findBySourcesAndChangeDuration = function(activeDevices, lastLogUpdate) {
 
         return src;
     });
-
-    console.log(util.inspect(updatedSources, { depth: null }));
 
     return updatedSources;
 };
