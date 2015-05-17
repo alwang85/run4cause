@@ -4,6 +4,8 @@ app.service('InitialLoadService', function($rootScope, $q, $timeout, AuthService
     service.loadList = [];
     service.serviceUpdater = null;
     service.callback = null;
+    service.user = null;
+    service.beforeAsyncCallbacks = [];
 
     service.registerLoadCallback = function(cb) {
         service.callback = cb;
@@ -18,26 +20,20 @@ app.service('InitialLoadService', function($rootScope, $q, $timeout, AuthService
     };
 
     service.loadInit = function() {
-
-        // Step 1: check user is logged in
-        service.registerLoadSteps(function() {
-            return AuthService.getLoggedInUser().then(function(user) {
-                var status = "Checking to Sync User...";
-                service.serviceUpdater(status);
-
-                return user;
-
-            });
-        });
-
-        // Step 2: get/check last Log update & the user's active devices
+        // Step 1: get/check last Log update & the user's active devices
         // returns true if its time to update
-        service.registerLoadSteps(function(user) {
-            var lastUpdateTime = Math.round((new Date(user.lastLogUpdate)).getTime()/1000);
-            var currentTime = Math.round((new Date()).getTime()/1000);
-            var timeGapLimit = 0; // might want to increase after debug;
-
-            return user.active.length > 0 && currentTime - lastUpdateTime > timeGapLimit;
+        service.registerLoadSteps(function() {
+            var user = service.user;
+            var status = "Checking User Devices...";
+            service.serviceUpdater(status);
+            if (user) {
+                var lastUpdateTime = Math.round((new Date(user.lastLogUpdate)).getTime()/1000);
+                var currentTime = Math.round((new Date()).getTime()/1000);
+                var timeGapLimit = 60 * 60; // might want to increase after debug;
+                return user.active.length > 0 && currentTime - lastUpdateTime > timeGapLimit;
+            } else {
+                service.callback(null, null);
+            }
         });
 
         // Step 3: if it's time to update, refresh token first
@@ -45,6 +41,9 @@ app.service('InitialLoadService', function($rootScope, $q, $timeout, AuthService
         service.registerLoadSteps(function(timeToUpdate) {
             if (timeToUpdate) {
                 return UserFactory.refreshTokens()
+            } else { // skip over;
+                console.log("not time to update yet");
+                service.callback(null, null);
             }
         });
 
@@ -64,8 +63,28 @@ app.service('InitialLoadService', function($rootScope, $q, $timeout, AuthService
         return _.reduce(service.loadList, function(chain, loadFunc) {
             return chain.then(loadFunc);
         }, $q.when()).then(function(response) {
-            $timeout(service.callback, 2000); // debug mimic laggy server
+            service.callback(null, response);
+
             return response;
         });
     };
+
+    service.onBeforeRequestSync = function(cb) {
+        service.beforeAsyncCallbacks.push(cb);
+    };
+
+    service.requestSync = function(user) {
+        service.user = user;
+        return $q.when().then(function() {
+            _.forEach(service.beforeAsyncCallbacks, function(fn) {
+                fn();
+            });
+        }).then(function() {
+            if (service.loadList.length > 0) {
+                return service.runLoad();
+            } else {
+                return service.loadInit().runLoad();
+            }
+        });
+    }
 });

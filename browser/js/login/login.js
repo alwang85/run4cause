@@ -17,11 +17,9 @@ app.controller('LoginCtrl', function ($scope, AuthService, $state, $stateParams)
 
         $scope.error = null;
 
-        AuthService.login(loginInfo, $stateParams.redirect).then(function () {
+        AuthService.login(loginInfo, $stateParams.redirect).then(function (user) {
             if ($stateParams.redirect) {
                 var redirectState = $state.get($stateParams.redirect);
-
-                $state.go($stateParams.redirect);
 
             } else {
                 $state.go('home');

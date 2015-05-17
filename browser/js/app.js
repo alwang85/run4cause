@@ -52,16 +52,12 @@ app.config(function($authProvider, Client) {
 });
 
 // This app.run is for controlling access to specific states.
-app.run(function ($rootScope, AuthService, InitialLoadService, UserFactory, $state) {
+app.run(function ($rootScope, AuthService, $state) {
 
     // The given state requires an authenticated user.
     var destinationStateRequiresAuth = function (state) {
         return state.data && state.data.authenticate;
     };
-
-    InitialLoadService.loadInit().runLoad().then(function(logs) {
-        console.log(logs);
-    });
 
     // $stateChangeStart is an event fired
     // whenever the process of changing a state begins.
@@ -76,7 +72,6 @@ app.run(function ($rootScope, AuthService, InitialLoadService, UserFactory, $sta
         if (AuthService.isAuthenticated()) {
             // The user is authenticated.
             // Short circuit with return.
-
             return;
         }
 
@@ -87,6 +82,7 @@ app.run(function ($rootScope, AuthService, InitialLoadService, UserFactory, $sta
             // If a user is retrieved, then renavigate to the destination
             // (the second time, AuthService.isAuthenticated() will work)
             // otherwise, if no user is logged in, go to "login" state.
+
             if (user) {
                 $state.go(toState.name, toParams);
             } else {
@@ -94,6 +90,7 @@ app.run(function ($rootScope, AuthService, InitialLoadService, UserFactory, $sta
                 if (toState.name) {
                     redirectTo.redirect = toState.name;
                 }
+
                 $state.go('login', redirectTo);
             }
         });
