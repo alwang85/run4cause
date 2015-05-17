@@ -59,10 +59,6 @@ app.run(function ($rootScope, AuthService, InitialLoadService, UserFactory, $sta
         return state.data && state.data.authenticate;
     };
 
-    InitialLoadService.loadInit().runLoad().then(function(logs) {
-        console.log(logs);
-    });
-
     // $stateChangeStart is an event fired
     // whenever the process of changing a state begins.
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
@@ -76,7 +72,6 @@ app.run(function ($rootScope, AuthService, InitialLoadService, UserFactory, $sta
         if (AuthService.isAuthenticated()) {
             // The user is authenticated.
             // Short circuit with return.
-
             return;
         }
 
@@ -87,6 +82,7 @@ app.run(function ($rootScope, AuthService, InitialLoadService, UserFactory, $sta
             // If a user is retrieved, then renavigate to the destination
             // (the second time, AuthService.isAuthenticated() will work)
             // otherwise, if no user is logged in, go to "login" state.
+
             if (user) {
                 $state.go(toState.name, toParams);
             } else {
@@ -94,6 +90,7 @@ app.run(function ($rootScope, AuthService, InitialLoadService, UserFactory, $sta
                 if (toState.name) {
                     redirectTo.redirect = toState.name;
                 }
+
                 $state.go('login', redirectTo);
             }
         });
