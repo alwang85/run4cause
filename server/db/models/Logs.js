@@ -37,6 +37,7 @@ LogSchema.method('mergeFetchData', function(dateObj) {
             log.logData[dateIndex].metrics = dateObj[dateString].metrics;
 
             _.forEach(dateObj[dateString].metrics, function(fetchedDataMetric) {
+
                 var matchedMetric = _.find(log.logData[dateIndex].metrics, function(userDataMetric) {
                     return userDataMetric.measurement === fetchedDataMetric.measurement;
                 });

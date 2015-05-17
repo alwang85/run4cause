@@ -44,6 +44,24 @@ module.exports = function(app) {
         .catch(next);
     });
 
+    // disconnect device
+    router.delete('/device/:provider', function(req, res, next) {
+        var provider = req.params.provider;
+        var user = req.user.toObject();
+
+        _.pull(user.active, provider);
+
+        var updateObj = {
+            active : user.active
+        };
+        updateObj[provider] = null;
+
+        User.findByIdAndUpdate(user._id, updateObj, function(err, data) {
+            if (err) return next(err);
+            res.json(_.omit(data.toJSON(), ['password', 'salt', 'jawbone', 'fitbit']));
+        });
+    });
+
     // refresh tokens
     router.put('/tokens', function(req,res,next) {
         var user_id = req.user.id;
