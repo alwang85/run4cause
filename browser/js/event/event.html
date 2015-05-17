@@ -1,7 +1,7 @@
 <div id="event" class="header-padding">
     <h1 class="impactTitle">IMPACT MISSIONS</h1>
     <div class="col-xs-3">
-
+        <a ng-if="currentUser" ui-sref="impactForm.create" class="btn btn-primary">Create Event Test</a>
     </div>
     <div class="eventList col-xs-6">
         <div class="eachEvent" ng-repeat="event in events">
