@@ -37,7 +37,6 @@ app.factory('UserFactory', function($http, $q, $auth) {
 
     var refreshTokens = function() {
         return $http.put('/api/user/tokens/').then(function(response) {
-            console.log(response.data);
             return response.data;
         });
     };

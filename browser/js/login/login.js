@@ -1,14 +1,14 @@
 app.config(function ($stateProvider) {
 
     $stateProvider.state('login', {
-        url: '/login',
+        url: '/login?redirect',
         templateUrl: 'js/login/login.html',
         controller: 'LoginCtrl'
     });
 
 });
 
-app.controller('LoginCtrl', function ($scope, AuthService, $state, $auth) {
+app.controller('LoginCtrl', function ($scope, AuthService, $state, $stateParams) {
 
     $scope.login = {};
     $scope.error = null;
@@ -17,21 +17,20 @@ app.controller('LoginCtrl', function ($scope, AuthService, $state, $auth) {
 
         $scope.error = null;
 
-        AuthService.login(loginInfo).then(function () {
-            $state.go('home');
-        }).catch(function () {
+        AuthService.login(loginInfo, $stateParams.redirect).then(function () {
+            if ($stateParams.redirect) {
+                var redirectState = $state.get($stateParams.redirect);
+
+                $state.go($stateParams.redirect);
+
+            } else {
+                $state.go('home');
+            }
+        }).catch(function (error) {
+            console.log(error);
             $scope.error = 'Invalid login credentials.';
         });
-    };
 
-    $scope.authenticate = function(provider) {
-        $auth.authenticate(provider)
-            .then(function(data) {
-                console.log(data);
-            })
-            .catch(function(err) {
-                console.log(err);
-            })
     };
 
 });
