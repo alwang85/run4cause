@@ -1,6 +1,5 @@
 app.factory("Event", function($http, AuthService){
     var eventForm = {
-        category : null,
         goals : [],
         group : true,
         startDate : null,
@@ -8,7 +7,7 @@ app.factory("Event", function($http, AuthService){
         name : null,
         description : null,
         patient : null,
-        sponsor : null,
+        sponsor : [],
         pledgedAmount : null,
         progress : 0
     };
@@ -20,7 +19,7 @@ app.factory("Event", function($http, AuthService){
 
     return {
         formInit : function(options) {
-            return angular.extend({}, eventForm, options);
+            return _.merge({}, eventForm, options);
         },
         getActions : function() {
             return actionList;
@@ -29,28 +28,32 @@ app.factory("Event", function($http, AuthService){
         addEvent: function (event) {
           return $http.post('/api/event', event).then(function (res) {
             return res.data;
-          }, function (err) {
+          }).catch(function (err) {
             console.log(err);
           });
         },
         editEvent: function (newEvent, eventId) {
           return $http.put('/api/event/' + eventId, newEvent).then(function (res) {
             return res.data;
-          }, function (err) {
+          }).catch(function (err) {
             console.log(err);
           });
         },
         getEvent: function (eventId) {
           return $http.get('/api/event/' + eventId).then(function (res) {
             return res.data
-          }, function (err) {
+          }).then(function(event) {
+              event.startDate = new Date(event.startDate);
+              event.endDate = new Date(event.endDate);
+              return event;
+          }).catch(function (err) {
             console.log(err);
-          })
+          });
         },
         getAllEvents: function () {
           return $http.get('/api/event').then(function (res) {
             return res.data;
-          }, function (err) {
+          }).catch(function (err) {
             console.log(err);
           });
         },

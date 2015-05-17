@@ -7,7 +7,9 @@
                     <event-dropdown
                             droplist="actionList"
                             placeholder="action"
-                            on-change="updateAction($index)">
+                            on-change="updateAction($index)"
+                            is-selected = "selectActionFunc()"
+                            event-data="goal">
                     </event-dropdown>
                     &nbsp;FOR A TOTAL OF&nbsp;
                     <metric-input
@@ -15,11 +17,14 @@
                     </metric-input>
                 </div>
             </h2>
-            <h2>WITHIN <duration-input event-form="eventFormData" on-change="updateDuration()"></duration-input>
+            <h2>WITHIN <duration-input
+                    event-form="eventFormData"
+                    on-change="updateDuration()"
+                    ></duration-input>
             </h2>
             <h2>STARTING <date-input event-form="eventFormData"></date-input></h2>
-            <h2>TO SUPPORT <select-patient event-form="eventFormData"></select-patient></h2>
-            <button type="submit" class="btn btn-primary impact-submit">Create IMPACT</button>
+            <h2>TO SUPPORT <select-patient patients="patients" event-form="eventFormData"></select-patient></h2>
+            <button type="submit" class="btn btn-primary impact-submit">I COMMIT</button>
         </form>
     </div>
 </div>

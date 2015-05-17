@@ -3,13 +3,14 @@ app.directive('eventForm', function (Event, NonProfitFactory) {
     return {
         restrict: 'E',
         scope: {
-            event: '='
+            event: '=',
+            patients: '='
         },
         templateUrl : 'js/common/directives/event-form/event-form.html',
         link: function(scope, element, attr) {
             scope.actionList = Event.getActions();
 
-            scope.eventFormData = Event.formInit({
+            var options = scope.event || {
                 goals : [{
                     category : "total",
                     metrics  : {
@@ -17,7 +18,21 @@ app.directive('eventForm', function (Event, NonProfitFactory) {
                     }
                 }],
                 startDate : new Date()
-            });
+            };
+
+            scope.eventFormData = Event.formInit(options);
+
+            scope.selectActionFunc = function() {
+                return {
+                    actUpon : function(listItem, goal) {
+                        if (listItem.value === goal.metrics.measurement) {
+                            goal.metrics.unit = listItem.unit;
+                            return true;
+                        }
+                        return false;
+                    }
+                };
+            };
 
             scope.updateAction = function(index) {
                 return {
@@ -41,7 +56,6 @@ app.directive('eventForm', function (Event, NonProfitFactory) {
             scope.updateDuration = function() {
                 return {
                     actUpon : function(duration) {
-                        console.log(scope.eventFormData.startTime);
                         scope.eventFormData.duration = duration;
                         scope.eventFormData.endDate = new Date(scope.eventFormData.startDate.getTime() + scope.eventFormData.duration);
                     }
@@ -49,18 +63,12 @@ app.directive('eventForm', function (Event, NonProfitFactory) {
             };
 
             scope.$watch('eventFormData.startDate', function(value) {
-                scope.eventFormData.endDate = new Date(value.getTime() + scope.eventFormData.duration);
+                if (scope.eventFormData.duration) {
+                    scope.eventFormData.endDate = new Date(value.getTime() + scope.eventFormData.duration);
+                }
             });
 
-            // steve and alex's code starts here
-            if(scope.event){
-                Event.getEvent(scope.event).then(function(event){
-                    event.startDate = new Date(event.startDate);
-                    event.endDate = new Date(event.endDate);
-                    console.log(event)
-                    if(event) scope.newEvent = event;
-                });
-            }
+            submitEvent
 
             scope.postEvent = function(anewEvent){
                 Event.addEvent(anewEvent).then(function(savedEvent){
@@ -89,7 +97,6 @@ app.directive('eventForm', function (Event, NonProfitFactory) {
 
             scope.selectPatient = function(selectedPatient){
                 scope.newEvent.patient = selectedPatient;
-                console.log(selectedPatient);
             };
         }
     };

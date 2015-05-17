@@ -4,17 +4,21 @@ app.directive('selectPatient', function(NonProfitFactory) {
         replace : true,
         templateUrl : 'js/common/directives/event-form/select-patient/select-patient.html',
         scope    : {
-            eventForm : '='
+            eventForm : '=',
+            patients  : '='
         },
         link : function(scope) {
             scope.placeholder = "WHO ?";
             scope.selectedPatient = null;
             scope.patientSelectToggle = false;
 
-            scope.patients = [];
-            NonProfitFactory.getNonprofits().then(function(patients){
-                scope.patients = patients;
-            });
+            if (scope.eventForm.patient && scope.eventForm.patient.name) {
+                scope.selectedPatient = _.find(scope.patients, function(patient) {
+                    return patient.name === scope.eventForm.patient.name;
+                });
+
+                scope.placeholder = scope.selectedPatient.name;
+            }
 
             scope.togglePatientWindow = function() {
                 scope.patientSelectToggle = scope.patientSelectToggle ? false : true;

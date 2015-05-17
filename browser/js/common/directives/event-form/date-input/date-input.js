@@ -2,12 +2,15 @@ app.directive('dateInput', function() {
     return {
         restrict : 'E',
         scope    : {
-            eventForm : '='
+            eventForm : '=',
+            onChange  : '&'
         },
         replace : true,
         templateUrl : 'js/common/directives/event-form/date-input/date-input.html',
         link : function(scope, element, attr) {
             function parseDate(dateObj) {
+                dateObj = dateObj.constructor.name === "Date" ? dateObj : new Date(dateObj);
+
                 var month = dateObj.getMonth();
                 month = month + 1 > 9 ?  (month + 1).toString() : "0" + (month + 1).toString();
 
