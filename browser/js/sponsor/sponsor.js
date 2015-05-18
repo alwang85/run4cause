@@ -8,13 +8,18 @@ app.config(function($stateProvider){
   });
 });
 
-app.controller('SponsorController', function($modalInstance, $state, $scope, Event){
-  $scope.sponsorEvent = function(sponsor){
-    //console.log('sponsor', sponsor);
-    Event.sponsorEvent(Event.editing.id, sponsor.details).then(function(savedEvent){
-      $modalInstance.close();
-      //$sate.go('') to the event detail page
+app.controller('SponsorController', function($modalInstance, $state, $scope, AuthService){
+    AuthService.getLoggedInUser().then(function(user) {
+        $scope.user = user;
     });
-  };
+
+    $scope.sponsorEvent = function(sponsor){
+        console.log('sponsor', sponsor);
+        console.log('user',$scope.user._id);
+        //Event.sponsorEvent(Event.editing.id, sponsor.details).then(function(savedEvent){
+        //  $modalInstance.close();
+          //$sate.go('') to the event detail page
+        //});
+    };
 
 });
