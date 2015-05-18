@@ -18,6 +18,11 @@ app.directive('chartBox', function () {
                 else scope.event.showParticipants = false;
             };
 
+            scope.showSponsors = function(){
+                if(!scope.event.showSponsors) scope.event.showSponsors = true;
+                else scope.event.showSponsors = false;
+            };
+
             transclude(function (clone) {
                 element.append(clone);
             });

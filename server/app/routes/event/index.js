@@ -23,7 +23,7 @@ router.post('/', function (req,res,next){
 });
 
 router.get('/', function (req,res,next){
-    Event.find({}).deepPopulate('creator challengers.user nonProfit').exec(function(err, events){
+    Event.find({}).deepPopulate('creator challengers.user nonProfit sponsors.user').exec(function(err, events){
         var promises = events.map(function(eachEvent){
             return new Promise(function(resolve,reject) {
                 resolve(eachEvent.calculateProgress());
@@ -37,7 +37,7 @@ router.get('/', function (req,res,next){
 });
 
 router.get('/:eventId', function (req,res,next){
-    Event.findById(req.params.eventId).deepPopulate('creator challengers.user nonProfit').exec(function(err, foundEvent){
+    Event.findById(req.params.eventId).deepPopulate('creator challengers.user nonProfit sponsors.user').exec(function(err, foundEvent){
         if (err) return next(err);
         foundEvent.calculateProgress().then(function(result){
             res.json(result);
@@ -53,7 +53,7 @@ router.delete('/:eventId', function(req,res,next){
 });
 
 router.put('/:eventId', function(req,res,next){
-    Event.findById(req.params.eventId).deepPopulate('creator challengers.user nonProfit').exec(function(err,foundEvent){
+    Event.findById(req.params.eventId).deepPopulate('creator challengers.user nonProfit sponsors.user').exec(function(err,foundEvent){
         if(err) return next(err);
         _.extend(foundEvent, req.body);
         foundEvent.save(function(err,saved){
@@ -114,12 +114,16 @@ router.put('/:eventId/sponsor', function(req,res,next){
     if (!req.user) return next(new Error('Forbidden: You Must Be Logged In'));
 
     Event.findById(req.params.eventId, function(err,event){
-      var filtered = _.filter(event.sponsors, function(eachSponsor){
-          return eachSponsor.user.toString()!==req.user._id.toString()
-      });
-      if(event.sponsors.length == filtered.length){
+        var filtered;
+        if(!event.sponsors.length) filtered = [];
+        else {
+            filtered = _.filter(event.sponsors, function(eachSponsor){
+                return eachSponsor.user.toString()!==req.user._id.toString();
+            });
+        }
+      if(event.sponsors.length === filtered.length){
           event.sponsors.push({
-              user: req.user,
+              user: req.user._id,
               details: req.body.details
           });
           event.save(function(err,saved){

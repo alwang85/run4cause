@@ -19,6 +19,17 @@
                     </div>
                 </div>
             </div>
+            <div class="participantsBox animated" ng-class="{'showBox slideInRight': event.showSponsors,'flipOutX hideBox': !event.showSponsors}">
+                <div class="eachParticipant col-xs-12" ng-repeat="sponsor in event.sponsors">
+                    <div class="col-xs-6">
+                        <img src="http://cdn.patch.com/assets/contrib/images/placeholder-user-photo.png">
+                    </div>
+                    <div class="col-xs-6">
+                        <h6>{{sponsor.user.email}}</h6>
+                        <h6 class="participantsTitle">{{sponsor.details['100'] | currency}}</h6>
+                    </div>
+                </div>
+            </div>
             <div class="oneRow col-xs-12">
                 <h5 class="patientInfo">{{event.patient.name}} from {{event.patient.country}}</h5>
                 <div class="info col-xs-8">
