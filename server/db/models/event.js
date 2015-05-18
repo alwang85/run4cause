@@ -77,7 +77,6 @@ schema.methods.calculateProgress = function() {
          });
      });
     });
-    User.findOne({email: 'admin@admin.com'}, function(err, foundUser) {
       return Promise.all(promises).then(function () {
         var totalProgress = 0;
         _.map(that.goals, function (eachGoal) {
@@ -96,7 +95,6 @@ schema.methods.calculateProgress = function() {
           });
         });
       });//ends Promise.all
-    });//ends User.findOne
 };
 
 mongoose.model('Event', schema);
