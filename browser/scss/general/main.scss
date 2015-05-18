@@ -45,7 +45,9 @@ a {
 .header-tight-padding {
     padding-top: 50px;
 }
-
+.eachProfileEvent {
+    display:block;
+}
 .box-container {
     @include clearfix();
     background: #FFF;
@@ -124,6 +126,7 @@ a {
         }
 
         .event-name {
+            //display: none;
             margin: 8px 0 0 0px;
             font-size: 16px;
             width: 100%;

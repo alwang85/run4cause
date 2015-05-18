@@ -12,7 +12,7 @@ app.config(function($stateProvider){
                }).then(function (allEvents) {
                    return Event.getMoreInfoForNonProfits(allEvents).then(function (events) {
                        return events;
-                   })
+                   });
                });
            },
            user: function (AuthService) {
@@ -29,6 +29,13 @@ app.controller('EventController', function(user, events, $modal, $state, $scope,
     $scope.editEvent = function(eventId) {
         Event.editing.id = eventId;
         $state.go('editEvent');
+    };
+    $scope.currentEventMetrics = function(event){
+        var metrics = [];
+        event.goals.forEach(function(goal){
+            metrics.push(goal.metrics.measurement)
+        });
+        return metrics;
     };
     $scope.checkParticipation = function(event){
         var participating = false;
