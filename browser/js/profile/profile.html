@@ -1,19 +1,47 @@
 <div class="profile header-padding">
     <div class="container">
-        <pre> {{ user | json }}</pre>
+        <h1>My Profile</h1>
+        <div class="col-md-5">
 
-        <div class="inactive">
-            <a ng-repeat="device in link_devices" ng-click="linkDevice(device)" class="btn btn-default">Link To {{device}}</a>
-            <a ng-repeat="device in link_devices" ng-click="disconnectDevice(device)" class="btn btn-default">Disconnect {{device}}</a>
-            <a ng-click="refreshTokens()" class="btn btn-default">Refresh Tokens</a>
-            <a ng-click="updateLogs()" class="btn btn-default">Update Logs</a>
+            <h3>First Name:</h3>
+            <h4>{{user.firstName}}</h4>
+
+            <h3>Last Name:</h3>
+            <h4>{{user.lastName}}</h4>
+
+            <h3>Email:</h3>
+            <h4>{{user.email}}</h4>
+
+            <h3>Active Device:</h3>
+            <h4>{{user.active[0]}}</h4>
+
+            <div class="inactive">
+                <a ng-repeat="device in link_devices" ng-click="linkDevice(device)" class="btn btn-default">Link To {{device}}</a>
+                <a ng-repeat="device in link_devices" ng-click="disconnectDevice(device)" class="btn btn-default">Disconnect {{device}}</a>
+                <a ng-click="refreshTokens()" class="btn btn-default">Refresh Tokens</a>
+                <a ng-click="updateLogs()" class="btn btn-default">Update Logs</a>
+                <a ng-click="getUserLogs()" class="btn btn-default">Get Logs</a>
+            </div>
+
         </div>
+
+        <div ng-if="user_log" class="col-md-offset-6">
+            <h3>Dates:</h3>
+            <div class="userLogs" ng-repeat="log in user_log.logData">
+                <h3 ng-click="showDate = !showDate">{{log.date | date}}</h3>
+                <div class="logMetrics col-md-3" ng-repeat="metric in log.metrics" ng-if="showDate">
+                    <br/>
+                    <h4>{{metric.measurement | uppercase}}:</h4>
+                    <h4>{{metric.qty}}</h4><br/>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <div class="container">
-        <pre>
-            {{ user_log | json }}
-        </pre>
-        <a ng-click="getUserLogs()" class="btn btn-default">Get Logs</a>
+
+
+
     </div>
+
 </div>
