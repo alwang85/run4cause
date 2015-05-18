@@ -1,18 +1,17 @@
 <div class="header-padding container patientDetail" ng-cloak>
     <h1 ng-bind="patient.header"></h1><br/>
-    <div class="col-md-4">
+    <div class="col-md-5">
         <img alt={{patient.name}} ng-src={{patient.profile_url}}>
+        <h4>Description:</h4>
+        <p ng-bind="patient.description"></p>
     </div>
 
-    <div class="col-md-offset-5">
+    <div class="col-md-offset-6 patient-details">
         <h4>Age:</h4>
-        <p ng-bind="patient.age"></p>
+        <p>{{patient.age}}</p>
 
         <h4>Country:</h4>
         <p ng-bind="patient.country"></p>
-
-        <h4>Description:</h4>
-        <p ng-bind="patient.description"></p>
 
         <h4>Target:</h4>
         <p ng-bind="patient.target"></p>

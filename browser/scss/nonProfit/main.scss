@@ -15,17 +15,13 @@
     font-weight: lighter;
   }
 
-  //.link {
-  //  padding-bottom: 3%;
-  //}
-
-  .sponsorPatient {
-    padding-left: 50%;
-  }
-
   .sponsorPatient-btn {
     margin-bottom: 5%;
   }
+}
+
+.patientInfo {
+  padding-left: 2%;
 }
 
 .patientDetail {
@@ -37,6 +33,7 @@
     width: 95%;
     color:$blue-color;
   }
+
 
   img {
     width: auto;
