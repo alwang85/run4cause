@@ -76,14 +76,19 @@ app.service('InitialLoadService', function($rootScope, $q, $timeout, AuthService
     service.requestSync = function(user) {
         service.user = user;
         return $q.when().then(function() {
-            _.forEach(service.beforeAsyncCallbacks, function(fn) {
-                fn();
-            });
-        }).then(function() {
-            if (service.loadList.length > 0) {
-                return service.runLoad();
-            } else {
-                return service.loadInit().runLoad();
+            return _.reduce(service.beforeAsyncCallbacks, function(chain, fn) {
+                return chain.then(fn);
+            }, $q.when());
+        }).catch(function(err){
+            console.log(err);
+            return false;
+        }).then(function(permissionToRun) {
+            if (permissionToRun) {
+                if (service.loadList.length > 0) {
+                    return service.runLoad();
+                } else {
+                    return service.loadInit().runLoad();
+                }
             }
         });
     }

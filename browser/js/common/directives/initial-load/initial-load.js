@@ -19,6 +19,9 @@ app.directive('initialLoad', function($rootScope, InitialLoadService, $timeout, 
                 if (AuthService.isAuthenticated()) {
                     scope.loadPermitted = true;
                     scope.loaded = false;
+                    return true;
+                } else {
+                    throw new Error("User Not Authenticated");
                 }
             });
 
