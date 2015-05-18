@@ -16,7 +16,6 @@ app.config(function ($stateProvider) {
         url: '/:nonProfitToken',
         templateUrl: 'js/nonprofit/partial/detail.html',
         controller: function($scope, NonProfitFactory, $state, $stateParams){
-            $scope.loaded = false;
             NonProfitFactory.getNonprofit($stateParams.nonProfitToken).then(function(patient){
                 $scope.patient = patient;
             });
