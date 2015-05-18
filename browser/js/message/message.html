@@ -11,7 +11,7 @@
                 <td class=" col-xs-3"><h4>Recipient</h4></td>
                 <td class=" col-xs-6"><h4>Title</h4></td>
             </tr>
-            <tr class="eachEvent" ng-click="readMessage(message._id)" ng-repeat="message in messages | orderBy:'timestamp' : true">
+            <tr class="eachEvent" ng-style="{ 'font-weight': (message.read) ? 'normal' : 'bold' }" ng-click="readMessage(message._id)" ng-repeat="message in messages | orderBy:'timestamp' : true">
                 <td class=" col-xs-3">
                     <p>{{message.sender.email}}</p>
                 </td>

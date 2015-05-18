@@ -18,6 +18,7 @@ app.controller('MessageController', function($scope, $state, Message){
     $scope.getAllMessages();
     $scope.readMessage = function(messageId){
       Message.currentMessage._id = messageId;
+      Message.markRead(messageId);
       $state.go('messageDetail');
     }
 });
