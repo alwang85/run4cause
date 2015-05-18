@@ -84,10 +84,13 @@ var seedEvents = function(nonprofits){
     .then(function(users) {
       //console.log('users inside new seed events', users);
       var Events = [{
-        category: 1,
         group: true,
         contest: false,
         progress: 0,
+        patient: {
+          name: "Dennis",
+          token: '624a9a25eef7'
+        },
         goals:[{
             metrics: {
                 measurement: 'sleep',
@@ -104,6 +107,16 @@ var seedEvents = function(nonprofits){
             category: 'total'
         }],
         creator: users[0],
+        sponsors: [{
+          user: users[0],
+          details: {
+            '0': 10,
+            '25': 20,
+            '50': 30,
+            '75': 40,
+            '100': 50
+          }
+        }],
         challengers: [{
             user: users[0],
             individualProgress: 0
@@ -118,10 +131,13 @@ var seedEvents = function(nonprofits){
         name: "Walk."
       },
       {
-          category: 1,
           group: true,
           contest: false,
           progress: 0,
+          patient: {
+            name: "Yoon",
+            token: '38453c4bb6a2'
+          },
           goals:[{
               metrics: {
                   measurement: 'sleep',
@@ -146,6 +162,16 @@ var seedEvents = function(nonprofits){
               category: 'total'
           }],
           creator: users[0],
+          sponsors: [{
+            user: users[1],
+            details: {
+              '0': 50,
+              '25': 40,
+              '50': 30,
+              '75': 20,
+              '100': 10
+            }
+          }],
           challengers: [{
               user: users[0],
               individualProgress: 0

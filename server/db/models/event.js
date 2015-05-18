@@ -77,42 +77,24 @@ schema.methods.calculateProgress = function() {
          });
      });
     });
-    //User.findOne({email: 'admin@admin.com'}, function(err, foundUser){
-      return Promise.all(promises).then(function(){
+      return Promise.all(promises).then(function () {
         var totalProgress = 0;
-        _.map(that.goals, function(eachGoal){
-          for(var key in totalProgressObj){
-            if(key===eachGoal.metrics.measurement) {
+        _.map(that.goals, function (eachGoal) {
+          for (var key in totalProgressObj) {
+            if (key === eachGoal.metrics.measurement) {
               eachGoal.metrics.progress = totalProgressObj[key];
-              totalProgress += (eachGoal.metrics.progress)/(Object.keys(totalProgressObj).length)
+              totalProgress += (eachGoal.metrics.progress) / (Object.keys(totalProgressObj).length)
             }
           }
           return eachGoal;
         });
         that.progress = totalProgress;
-      //  var message = {};
-      //  if (totalProgress >= 1 && that.status !== 'achieved') {
-      //      async.forEach(that.sponsor, function(sponsor){
-      //      message.recipient = sponsor.user;
-      //      message.sender = foundUser._id;
-      //      message.title = 'the event goals you sponsored have been reached!';
-      //      message.content = 'you owe some monies';
-      //      message.date = new Date;
-      //      Message.create(message, function(err, savedMessage){
-      //        savedMessage.save();
-      //      });
-      //
-      //    }, function(err){
-      //      if (err) {
-      //        console.log(err);
-      //        next()
-      //      }
-      //      that.status = 'achieved';
-      //    });
-      //  }
-        that.save();
-        return that;
-      });
+        that.save(function(err, savedEvent){
+          Message.eventSuccess(savedEvent, function(err, emailedEvent){
+            return emailedEvent;
+          });
+        });
+      });//ends Promise.all
 };
 
 mongoose.model('Event', schema);

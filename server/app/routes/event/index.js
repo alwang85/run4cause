@@ -128,7 +128,7 @@ router.put('/:eventId/sponsor', function(req,res,next){
           });
           event.save(function(err,saved){
               if (err) return next(err);
-              //console.log('saved', saved.sponsor[0]);
+              console.log('saved', saved.sponsor[0]);
               res.send(saved);
           });
       } else {
