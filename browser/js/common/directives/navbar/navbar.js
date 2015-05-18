@@ -29,9 +29,9 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state, 
 
             var checkUnread = function(){
               Message.getAllMessages().then(function(messages){
-                scope.unread = messages.some(function(message){
+                scope.unread = messages.filter(function(message){
                   return message.read === false;
-                });
+                }).length;
               });
             };
             checkUnread();
