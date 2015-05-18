@@ -5,6 +5,9 @@
         </a>
         <div ng-show="patientSelectToggle" class="patient-select-container">
             <ul class="dropdown-menu">
+                <li ng-if="!patients" class="patient-loading">
+                    <font-awesome font="spinner fa-spin"></font-awesome>
+                </li>
                 <li ng-repeat="patient in patients track by $index">
                     <span class="patient-thumbnail lg-">
                         <img ng-src="{{patient.profile_url}}">

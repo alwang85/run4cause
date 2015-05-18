@@ -4,6 +4,14 @@
             <h1>Impact Mission:</h1>
             <h2>
                 <div class="goal-form" ng-repeat="goal in eventFormData.goals track by $index">
+                    <div class="goal-control">
+                        <a ng-show="$index == eventFormData.goals.length - 1" ng-click="addGoal()" class="goal-button add">
+                            <font-awesome font="plus"></font-awesome>
+                        </a>
+                        <a ng-show="$index != 0 && eventFormData.goals.length > 1" ng-click="removeGoal($index)" class="goal-button minus">
+                            <font-awesome font="minus"></font-awesome>
+                        </a>
+                    </div>
                     <event-dropdown
                             droplist="actionList"
                             placeholder="action"
@@ -12,18 +20,14 @@
                             event-data="goal">
                     </event-dropdown>
                     &nbsp;FOR A TOTAL OF&nbsp;
-                    <metric-input
-                            goal="goal">
-                    </metric-input>
+                    <metric-input goal="goal"></metric-input>
                 </div>
             </h2>
-            <h2>WITHIN <duration-input
-                    event-form="eventFormData"
-                    on-change="updateDuration()"
-                    ></duration-input>
+            <h2>WITHIN
+                <duration-input event-form="eventFormData" on-change="updateDuration()"></duration-input>
             </h2>
             <h2>STARTING <date-input event-form="eventFormData"></date-input></h2>
-            <h2>TO SUPPORT <select-patient patients="patients" event-form="eventFormData"></select-patient></h2>
+            <h2>TO SUPPORT <select-patient event-form="eventFormData"></select-patient></h2>
             <button type="submit" class="btn btn-primary impact-submit">I COMMIT</button>
         </form>
     </div>
