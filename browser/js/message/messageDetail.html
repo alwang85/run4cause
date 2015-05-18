@@ -1,27 +1,22 @@
 <div id="messages">
-    <h1>this is the users single message page</h1>
+    <!--<h1>this is the users single message page</h1>-->
     <div class="col-xs-2">
-        left
+        <!--left-->
     </div>
     <div class="eventList col-xs-8">
-        <h3>Single Message</h3>
+        <!--<h3>Single Message</h3>-->
         <div class="message">
-            <div class="info col-xs-3">
-                <p>From: {{message.sender.email}}</p>
-            </div>
-            <div class="info col-xs-3">
-                <p>To: {{message.recipient.email}}</p>
-            </div>
-            <div class="info col-xs-6">
-                <p>Title: {{message.title}}{{message.timestamp}}</p>
-            </div>
-            <div class="info col-xs-12">
-                <p>Content: {{message.content}}</p>
-            </div>
+            <table style="width: 90vw; height:90vh;"class="table">
+                <tr class="col-xs-12" >
+                    <td  style="width: 64vw;"><strong>From:</strong> {{message.sender.email}}<strong>  To:</strong> {{message.recipient.email}}</td>
+                    </tr>
+                <tr class="col-xs-12"><td style="width: 64vw;"><strong>Title:</strong> {{message.title}}{{message.timestamp}}</td></tr>
+                <tr class="col-xs-12"><td style="width: 64vw;"><strong>Content:</strong> {{message.content}}</td></tr>
+            </table>
         </div>
 
     </div>
     <div class="col-xs-2">
-        right
+        <!--right-->
     </div>
 </div>

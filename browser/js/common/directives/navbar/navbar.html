@@ -13,8 +13,8 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li ng-repeat="item in items" ng-show="!item.auth || isLoggedIn()">
-                        <a ui-sref-active="active" ui-sref="{{ item.state }}">{{ item.label }}</a>
+                    <li ng-repeat="item in items" ng-style="{ 'font-weight': (item.label === 'Inbox' && user && unread >= 1) ? 'bold' : 'normal' }" ng-show="!item.auth || isLoggedIn()">
+                        <a ui-sref-active="active" ui-sref="{{ item.state }}">{{ item.label }}<span ng-if="item.label === 'Inbox' && unread >= 1" class="badge">{{unread}}</span></a>
                     </li>
                     <li ng-show="!user"><a ui-sref="login">Login</a></li>
                     <li ng-show="user">

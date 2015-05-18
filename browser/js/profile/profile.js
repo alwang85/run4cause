@@ -12,6 +12,7 @@ app.config(function ($stateProvider) {
 
 app.controller('ProfileController', function($scope, AuthService, UserFactory) {
     $scope.user = null;
+    $scope.showDate = false;
     AuthService.getLoggedInUser().then(function(user){
         $scope.user = user;
 
@@ -52,5 +53,6 @@ app.controller('ProfileController', function($scope, AuthService, UserFactory) {
                 $scope.user_log = log;
             });
         };
+
     });
 });

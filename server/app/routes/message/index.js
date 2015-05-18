@@ -19,14 +19,23 @@ router.post('/', function (req,res,next){
       console.log('message created', savedMessage);
       res.send('success');
     });
-  })
-
+  });
 });
 
 router.get('/:userId', function (req,res,next){
-  console.log('here')
+  console.log('getting user messages');
   Message.find({$or: [{recipient: req.params.userId},{sender: req.params.userId}] }).deepPopulate('recipient sender').exec(function (err, messages){
     res.send(messages);
   });
 });
 
+router.post('/:messageId', function (req,res,next){
+  console.log('found message id', req.params.messageId);
+  Message.findById(req.params.messageId, function(err, foundMsg){
+    if (err) next();
+    foundMsg.read = true;
+    foundMsg.save(function(err, savedMsg){
+      res.send(savedMsg);
+    });
+  })
+});
