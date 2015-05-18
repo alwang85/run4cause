@@ -16,13 +16,23 @@
       border-radius: 5px;
     }
   }
+  .showBox {
+    display:block;
+  }
+
+  .hideBox {
+    display:none;
+  }
   .participantsBox {
     width:220px;
     position: absolute;
     top:0;
     right:-210px;
+    @include forceGpu();
+    transition: all 0.2s linear;
     .eachParticipant {
       margin-bottom: 15px;
+      color: white;
     }
     .participantsTitle {
       color: white;
@@ -59,6 +69,10 @@
     }
   }
   .mission{
+    text-align: center;
+    span {
+      font-weight: bold;
+    }
     .missionTitle{
       text-align: center;
       color: $off-grey-color;
@@ -66,6 +80,11 @@
     }
     .missionStatement{
       color: navy;
+    }
+    img {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 10px;
     }
   }
   .info{

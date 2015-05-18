@@ -8,21 +8,14 @@
             <div class="creatorBox">
                 <img src="https://scontent-lga.xx.fbcdn.net/hphotos-xtp1/v/t1.0-9/10402536_848562865184461_80417573342618318_n.jpg?oh=6fcac3c583c855aa17ec55dcd30ccaaa&oe=560250B5">
             </div>
-            <div class="participantsBox">
-                <div class="eachParticipant col-xs-12">
+            <div class="participantsBox animated" ng-class="{'showBox slideInRight': event.showParticipants,'flipOutX hideBox': !event.showParticipants}">
+                <div class="eachParticipant col-xs-12" ng-repeat="challenger in event.challengers | orderBy:'-individualProgress'" >
                     <div class="col-xs-6">
-                        <img src="https://scontent-lga.xx.fbcdn.net/hphotos-xtp1/v/t1.0-9/10402536_848562865184461_80417573342618318_n.jpg?oh=6fcac3c583c855aa17ec55dcd30ccaaa&oe=560250B5">
+                        <img src="http://cdn.patch.com/assets/contrib/images/placeholder-user-photo.png">
                     </div>
                     <div class="col-xs-6">
-                        <h6 class="participantsTitle">5%</h6>
-                    </div>
-                </div>
-                <div class="eachParticipant col-xs-12">
-                    <div class="col-xs-6">
-                        <img src="https://scontent-iad.xx.fbcdn.net/hphotos-xfp1/v/t1.0-9/1476599_10152931858347316_765901485_n.jpg?oh=78ba26957743804b7284c8c9dbe966a7&oe=560DA39A">
-                    </div>
-                    <div class="col-xs-6">
-                        <h6 class="participantsTitle">5%</h6>
+                        <h6>{{challenger.user.email}}</h6>
+                        <h6 class="participantsTitle">{{(challenger.individualProgress*100).toFixed(1)}}%</h6>
                     </div>
                 </div>
             </div>
@@ -38,7 +31,17 @@
                 </div>
                 <div class="mission col-xs-4">
                     <h3 class="missionTitle">MISSION</h3>
-                    <h5 class="missionStatement">I am going to run for 12 miles between 1/1/2015 and 4/1/2016 for this patient.</h5>
+                    <div>
+                        <img ng-if="currentEventMetrics(event).indexOf('distance')!==-1" src="http://www.pittsburghtriathlonclub.com/wp-content/uploads/2014/07/running.png">
+                        <img ng-if="currentEventMetrics(event).indexOf('calories')!==-1" src="https://d13yacurqjgara.cloudfront.net/users/76939/screenshots/758710/flame-icon.png">
+                        <img ng-if="currentEventMetrics(event).indexOf('steps')!==-1" src="http://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Footsteps_icon.svg/1024px-Footsteps_icon.svg.png">
+                        <h5>FROM {{event.startDate.slice(0,10)}}</h5>
+                        <h5>TO {{event.endDate.slice(0,10)}}</h5>
+                        <span>{{event.goals[1].metrics.target}}</span>
+                        <span ng-if="currentEventMetrics(event).indexOf('distance')!==-1">miles</span>
+                        <span ng-if="currentEventMetrics(event).indexOf('calories')!==-1">calories</span>
+                        <span ng-if="currentEventMetrics(event).indexOf('steps')!==-1">steps</span>
+                    </div>
                 </div>
             </div>
             <div class="twoRow col-xs-12">
