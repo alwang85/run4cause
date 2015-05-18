@@ -1,10 +1,40 @@
-<box-container>
-    <div class="box-absolute-center-container">
-        <a class="create-button">
-            <font-awesome font="plus"></font-awesome>
-            <span>Create New Event</span>
-        </a>
+<div class="col-xs-12 dashboardView">
+    <box-container>
+        <div class="box-absolute-center-container">
+            <a class="create-button">
+                <font-awesome font="plus" ui-sref="impactForm.create"></font-awesome>
+                <span>Create New Event</span>
+            </a>
+        </div>
+    </box-container>
+    <div ng-repeat="event in events">
+        <chart-box class="eachProfileEvent col-xs-12">
+        </chart-box>
+        <div class="participantsBox animated" ng-class="{'showBox slideInLeft': event.showParticipants,'flipOutX hideBox': !event.showParticipants}">
+            <div class="eachParticipant" ng-repeat="challenger in event.challengers | orderBy:'-individualProgress'" >
+                <div class="col-xs-6">
+                    <img src="http://cdn.patch.com/assets/contrib/images/placeholder-user-photo.png">
+                </div>
+                <div class="col-xs-6">
+                    <h6>{{challenger.user.email}}</h6>
+                    <h6 class="participantsTitle">{{(challenger.individualProgress*100).toFixed(1)}}%</h6>
+                </div>
+            </div>
+        </div>
+        <div class="participantsBox animated" ng-class="{'showBox slideInLeft': event.showSponsors,'flipOutX hideBox': !event.showSponsors}">
+            <div class="eachParticipant col-xs-12" ng-repeat="sponsor in event.sponsors" >
+                <div class="col-xs-6">
+                    <img src="http://cdn.patch.com/assets/contrib/images/placeholder-user-photo.png">
+                </div>
+                <div class="col-xs-6">
+                    <h6>{{sponsor.user.email}}</h6>
+                    <h6 class="participantsTitle">{{(sponsor.details['100']) | currency}}</h6>
+                </div>
+            </div>
+        </div>
     </div>
-</box-container>
 
-<chart-box class="eachProfileEvent col-xs-12" ng-repeat="event in events"></chart-box>
+</div>
+<div class="col-xs-12 statusBar">
+
+</div>
