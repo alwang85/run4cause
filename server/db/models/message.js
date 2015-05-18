@@ -24,8 +24,8 @@ schema.plugin(deepPopulate);
 
 schema.statics.messageSponsors = function (event, sender, title, content, cb){
     var that = this;
-    if (event.progress >= 1 && event.status !== 'achieved' && event.sponsor && event.sponsor.length >= 1) {
-      async.forEach(event.sponsor, function (sponsor, done) {
+    if (event.progress >= 1 && event.status !== 'achieved' && event.sponsors && event.sponsors.length >= 1) {
+      async.forEach(event.sponsors, function (sponsor, done) {
         User.findById(sponsor.user, function(err, foundSponsor){
           console.log('foundSponsor', foundSponsor);
           var message = new that();

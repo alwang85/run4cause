@@ -114,12 +114,12 @@ router.put('/:eventId/sponsor', function(req,res,next){
     if (!req.user) return next(new Error('Forbidden: You Must Be Logged In'));
 
     Event.findById(req.params.eventId, function(err,event){
-      var filtered = _.filter(event.sponsor, function(eachSponsor){
+      var filtered = _.filter(event.sponsors, function(eachSponsor){
           return eachSponsor.user.toString()!==req.user._id.toString()
       });
-      if(event.sponsor.length == filtered.length){
-          event.sponsor.push({
-              user: req.user._id,
+      if(event.sponsors.length == filtered.length){
+          event.sponsors.push({
+              user: req.user,
               details: req.body.details
           });
           event.save(function(err,saved){

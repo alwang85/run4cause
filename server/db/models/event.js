@@ -32,7 +32,7 @@ var schema = new mongoose.Schema({
         user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
         individualProgress: Number
     }],
-    sponsor: [{
+    sponsors: [{
       user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
       details: {
         '0': {type: Number, default: 0},

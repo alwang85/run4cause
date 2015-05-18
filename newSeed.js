@@ -107,7 +107,7 @@ var seedEvents = function(nonprofits){
             category: 'total'
         }],
         creator: users[0],
-        sponsor: [{
+        sponsors: [{
           user: users[0],
           details: {
             '0': 10,
@@ -162,7 +162,7 @@ var seedEvents = function(nonprofits){
               category: 'total'
           }],
           creator: users[0],
-          sponsor: [{
+          sponsors: [{
             user: users[1],
             details: {
               '0': 50,
