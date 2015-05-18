@@ -1,34 +1,31 @@
 <div id="messages">
-    <h1>this is the users messages page</h1>
     <div class="col-xs-2">
-        left
+        <!--left-->
     </div>
     <div class="eventList col-xs-8">
-        <h3>List of messages</h3><a ui-sref="messageCompose">Compose Message</a>
-        <div>
-            <div class="info col-xs-3">
-                <h4>Sender</h4>
-            </div>
-            <div class="info col-xs-3">
-                <h4>Recipient</h4>
-            </div>
-            <div class="info col-xs-6">
-                <h4>Title</h4>
-            </div>
-        </div>
-        <div class="eachEvent" ng-click="readMessage(message._id)" ng-repeat="message in messages | orderBy:'timestamp' : true">
-            <div class="info col-xs-3">
-                <p>{{message.sender.email}}</p>
-            </div>
-            <div class="info col-xs-3">
-                <p>{{message.recipient.email}}</p>
-            </div>
-            <div class="info col-xs-6">
-                <p>{{message.title}}{{message.timestamp}}</p>
-            </div>
-        </div>
+        <h1>Inbox</h1>
+        <h3><span class="glyphicon glyphicon-pencil"></span><a ui-sref="messageCompose" style="text-align:right">Compose Message</a></h3>
+        <table class="table">
+            <tr>
+                <td class=" col-xs-3"><h4>Sender</h4></td>
+                <td class=" col-xs-3"><h4>Recipient</h4></td>
+                <td class=" col-xs-6"><h4>Title</h4></td>
+            </tr>
+            <tr class="eachEvent" ng-click="readMessage(message._id)" ng-repeat="message in messages | orderBy:'timestamp' : true">
+                <td class=" col-xs-3">
+                    <p>{{message.sender.email}}</p>
+                </td>
+                <td class=" col-xs-3">
+                    <p>{{message.recipient.email}}</p>
+                </td>
+                <td class=" col-xs-6">
+                    <p>{{message.title}}{{message.timestamp}}</p>
+                </td>
+            </tr>
+        </table>
+
     </div>
     <div class="col-xs-2">
-        right
+        <!--right-->
     </div>
 </div>
