@@ -42,7 +42,7 @@ app.directive('chartDonut', function ($rootScope, $state, $timeout) {
                 showScale: true,
                 scaleShowLabels: true,
                 scaleFontSize: 20,
-                percentageInnerCutout : 90
+                percentageInnerCutout : 80
             };
         }
     };
