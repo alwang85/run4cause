@@ -32,7 +32,7 @@ var schema = new mongoose.Schema({
         user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
         individualProgress: Number
     }],
-    sponsor: {
+    sponsor: [{
       user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
       details: {
         '0': {type: Number, default: 0},
@@ -41,7 +41,7 @@ var schema = new mongoose.Schema({
         '75': {type: Number, default: 0},
         '100': {type: Number, default: 0}
       }
-    },
+    }],
     description: String,
     name: String
 });
@@ -90,37 +90,11 @@ schema.methods.calculateProgress = function() {
           return eachGoal;
         });
         that.progress = totalProgress;
-        var message = {};
-        if (totalProgress >= 1 && that.status !== 'achieved' && that.sponsor && that.sponsor.length >= 1 && foundUser && foundUser._id) {
-          console.log('totalProgress', totalProgress >= 1);
-          console.log('that.status', that.status !== 'achieved');
-          console.log('that.sponsor', that.sponsor);
-          console.log('that.sponsor.length', that.sponsor.length >= 1);
-          console.log('foundUser', foundUser);
-          console.log('foundUser._id', foundUser._id);
-          async.forEach(that.sponsor, function (sponsor, done) {
-            message.recipient = sponsor.user;
-            message.sender = foundUser._id;
-            message.title = 'The event goals you sponsored have been reached!';
-            message.content = 'Hello ' + foundUser.firstName + ', the event you sponsored has ended! ' + that.challengers.length + 'challengers worked ferociously to meet the criteria you have set. Please click here to view the details on event, and then proceed to the patients page to fulfill your promise!';
-            message.date = new Date;
-            Message.create(message, function (err, savedMessage) {
-              done();
-            });
-
-          }, function (err) {
-            if (err) {
-              console.log('error', err);
-              next()
-            }
-            that.status = 'achieved';
-            that.save();
-            return that;
+        that.save(function(err, savedEvent){
+          Message.eventSuccess(savedEvent, function(err, emailedEvent){
+            return emailedEvent;
           });
-        } else {
-          that.save();
-          return that;
-        }
+        });
       });//ends Promise.all
     });//ends User.findOne
 };

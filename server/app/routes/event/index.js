@@ -119,12 +119,12 @@ router.put('/:eventId/sponsor', function(req,res,next){
       });
       if(event.sponsor.length == filtered.length){
           event.sponsor.push({
-              user: req.body.userId,
+              user: req.user._id,
               details: req.body.details
           });
           event.save(function(err,saved){
               if (err) return next(err);
-              //console.log('saved', saved.sponsor[0]);
+              console.log('saved', saved.sponsor[0]);
               res.send(saved);
           });
       } else {
