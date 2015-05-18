@@ -82,10 +82,16 @@ app.run(function ($rootScope, AuthService, $state) {
             // If a user is retrieved, then renavigate to the destination
             // (the second time, AuthService.isAuthenticated() will work)
             // otherwise, if no user is logged in, go to "login" state.
+
             if (user) {
                 $state.go(toState.name, toParams);
             } else {
-                $state.go('login');
+                var redirectTo = {};
+                if (toState.name) {
+                    redirectTo.redirect = toState.name;
+                }
+
+                $state.go('login', redirectTo);
             }
         });
 

@@ -7,24 +7,25 @@ app.config(function($stateProvider){
        controller: 'EventController',
        resolve: {
            events: function (Event) {
-               return Event.getAllEvents().then(function(allEvents){
+               return Event.getAllEvents().then(function (allEvents) {
                    return allEvents;
-               }).then(function(allEvents){
-                   return Event.getMoreInfoForNonProfits(allEvents).then(function(events){
-                       console.log(events);
+               }).then(function (allEvents) {
+                   return Event.getMoreInfoForNonProfits(allEvents).then(function (events) {
                        return events;
-                   })
+                   });
                });
-               }
+           },
+           user: function (AuthService) {
+                return AuthService.getLoggedInUser();
            }
+       }
    });
 });
 
-app.controller('EventController', function(AuthService, events, $modal, $state, $scope, Event){
+app.controller('EventController', function(user, events, $modal, $state, $scope, Event){
     $scope.events = events;
-    AuthService.getLoggedInUser().then(function(user){
-            $scope.currentUser = user
-        });
+    $scope.currentUser = user;
+
     $scope.editEvent = function(eventId) {
         Event.editing.id = eventId;
         $state.go('editEvent');
@@ -39,7 +40,7 @@ app.controller('EventController', function(AuthService, events, $modal, $state, 
     $scope.checkParticipation = function(event){
         var participating = false;
         event.challengers.forEach(function(challenger){
-            if(challenger.user._id===$scope.currentUser._id) participating = true;
+            if($scope.currentUser && challenger.user._id === $scope.currentUser._id) participating = true;
         });
         return participating
     };
