@@ -14,10 +14,11 @@ app.controller('MessageController', function($scope, $state, Message){
       Message.getAllMessages().then(function(messages){
         $scope.messages = messages;
       });
-    }
+    };
     $scope.getAllMessages();
     $scope.readMessage = function(messageId){
       Message.currentMessage._id = messageId;
+      Message.markRead(messageId);
       $state.go('messageDetail');
-    }
+    };
 });

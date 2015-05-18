@@ -1,5 +1,5 @@
 'use strict';
-app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) {
+app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state, Message) {
 
     return {
         restrict: 'E',
@@ -27,6 +27,15 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
                 });
             };
 
+            var checkUnread = function(){
+              Message.getAllMessages().then(function(messages){
+                scope.unread = messages.filter(function(message){
+                  return message.read === false;
+                }).length;
+              });
+            };
+            checkUnread();
+
             var setUser = function () {
                 AuthService.getLoggedInUser().then(function (user) {
                     if (user) {
@@ -40,13 +49,13 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
             };
 
             setUser();
-
             $rootScope.$on(AUTH_EVENTS.loginSuccess, setUser);
             $rootScope.$on(AUTH_EVENTS.logoutSuccess, removeUser);
             $rootScope.$on(AUTH_EVENTS.sessionTimeout, removeUser);
 
             $rootScope.$on('$stateChangeStart', function(event, toState) {
                 scope.isHome = $state.$current.includes.home;
+                checkUnread();
             });
 
             $rootScope.$on('$viewContentLoaded', function(event) {

@@ -20,7 +20,6 @@ router.post('/', function (req,res,next){
       res.send('success');
     });
   });
-
 });
 
 router.get('/:userId', function (req,res,next){
@@ -30,3 +29,13 @@ router.get('/:userId', function (req,res,next){
   });
 });
 
+router.post('/:messageId', function (req,res,next){
+  console.log('found message id', req.params.messageId);
+  Message.findById(req.params.messageId, function(err, foundMsg){
+    if (err) next();
+    foundMsg.read = true;
+    foundMsg.save(function(err, savedMsg){
+      res.send(savedMsg);
+    });
+  })
+});

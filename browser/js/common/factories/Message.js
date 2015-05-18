@@ -20,6 +20,11 @@ app.factory("Message", function($http, AuthService){
 
         return res.data;
       })
+    },
+    markRead : function(messageId) {
+      return $http.post('/api/message/'+messageId, {messageId: messageId}).then(function (res) {
+        return res.data;
+      })
     }
   };
 });
