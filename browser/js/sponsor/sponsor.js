@@ -16,5 +16,8 @@ app.controller('SponsorController', function($modalInstance, $state, $scope, Aut
         });
     };
 
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
 
 });

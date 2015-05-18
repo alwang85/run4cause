@@ -1,3 +1,14 @@
 #newSponsor {
-  margin-top: 60px;
+  margin: 10%;
+  margin-top: 15%;
+  h3 {
+    color: $blue-color;
+  }
+
+  input {
+    width: 35%;
+  }
+  label {
+    font-weight: 600;
+  }
 }
