@@ -3,7 +3,10 @@ app.config(function ($stateProvider) {
     $stateProvider.state('profile', {
         url: '/profile',
         templateUrl: 'js/profile/profile.html',
-        controller: 'ProfileController'
+        controller: 'ProfileController',
+        data : {
+            authenticate : true
+        }
     });
 });
 
@@ -13,21 +16,28 @@ app.controller('ProfileController', function($scope, AuthService, UserFactory) {
         $scope.user = user;
 
         //$scope.link_devices = _.difference(UserFactory.availableDevices, user.active);
-        $scope.link_devices = ['jawbone', 'fitbit'];
+        $scope.link_devices = UserFactory.availableDevices;
 
         $scope.linkDevice = function(provider) {
             UserFactory
             .linkDevice(provider, user._id)
             .then(function(user) {
                 $scope.user = user;
-                // to filter out which devices are already linked
-                $scope.link_devices = _.difference(UserFactory.availableDevices, user.active);
+            });
+        };
+
+        $scope.disconnectDevice = function(provider) {
+            UserFactory
+            .disconnectDevice(provider)
+            .then(function(user) {
+                    console.log(user);
+                $scope.user = user;
             });
         };
 
         $scope.updateLogs = function() {
             UserFactory.updateLogs().then(function(logs) {
-                console.log(logs);
+                $scope.user_log = logs;
             });
         };
 

@@ -23,6 +23,12 @@ app.factory('UserFactory', function($http, $q, $auth) {
         });
     };
 
+    var disconnectDevice = function(provider) {
+        return $http.delete('/api/user/device/' + provider).then(function(response) {
+            return response.data;
+        });
+    };
+
     var updateLogs = function() {
         return $http.put('/api/user/logs/').then(function(response) {
             return response.data;
@@ -31,7 +37,6 @@ app.factory('UserFactory', function($http, $q, $auth) {
 
     var refreshTokens = function() {
         return $http.put('/api/user/tokens/').then(function(response) {
-            console.log(response.data);
             return response.data;
         });
     };
@@ -48,6 +53,7 @@ app.factory('UserFactory', function($http, $q, $auth) {
         createNewUser : createNewUser,
         availableDevices : availableDevices,
         linkDevice : linkDevice,
+        disconnectDevice: disconnectDevice,
         refreshTokens : refreshTokens,
         updateLogs : updateLogs,
         getUserLogs : getUserLogs

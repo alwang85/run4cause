@@ -1,0 +1,21 @@
+<div class="goal-form">
+    <div class="goal-quantity">
+        <a ng-click="togglePatientWindow()" class="patient-cta" ng-class="{ selected : selectedPatient}">
+            <span>{{ placeholder }}</span>
+        </a>
+        <div ng-show="patientSelectToggle" class="patient-select-container">
+            <ul class="dropdown-menu">
+                <li ng-repeat="patient in patients track by $index">
+                    <span class="patient-thumbnail lg-">
+                        <img ng-src="{{patient.profile_url}}">
+                    </span>
+                    <div class="patient-detail">
+                        <p class="title">{{patient.name}}</p>
+                        <a class="patient-option" ng-click="selectPatient($index)">Select Patient</a>
+                        <a class="patient-option" href="{{patient.url}}" target="_blank">About Patient</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

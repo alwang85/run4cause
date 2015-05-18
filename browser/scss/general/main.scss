@@ -45,12 +45,13 @@ a {
 .header-tight-padding {
     padding-top: 50px;
 }
-
+.eachProfileEvent {
+    display:block;
+}
 .box-container {
     @include clearfix();
     background: #FFF;
-    border-radius: 8px;
-    border: 4px solid $panel-background;
+    border: 1px solid $blue-color;
     overflow: hidden;
     display: table;
     padding: 0;
@@ -125,6 +126,7 @@ a {
         }
 
         .event-name {
+            //display: none;
             margin: 8px 0 0 0px;
             font-size: 16px;
             width: 100%;
@@ -136,7 +138,7 @@ a {
 
     .box-back {
         position: absolute;
-        padding: 15px;
+        padding: 5px;
         width: 100%;
         z-index: 1;
         top: 0;

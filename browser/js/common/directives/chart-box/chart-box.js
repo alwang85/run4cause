@@ -13,6 +13,10 @@ app.directive('chartBox', function () {
             scope.boxToggle = function() {
                 scope.flipped = !scope.flipped;
             };
+            scope.showParticipants = function(){
+                if(!scope.event.showParticipants) scope.event.showParticipants = true;
+                else scope.event.showParticipants = false;
+            };
 
             transclude(function (clone) {
                 element.append(clone);
@@ -23,6 +27,9 @@ app.directive('chartBox', function () {
 
 app.directive('boxContainer', function() {
     return {
+        scope: {
+            event: '='
+        },
         restrict : 'E',
         transclude: true,
         replace : true,

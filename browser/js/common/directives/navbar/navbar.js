@@ -9,8 +9,8 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
 
             scope.items = [
                 { label: 'Events', state: 'event'},
-                { label: 'Patients', state: 'nonProfit.leaderboard'},
-                { label: 'Dashboard', state: 'dashboard.events', auth: true },                                { label: 'Inbox', state: 'message', auth: true },
+                { label: 'Dashboard', state: 'dashboard.events', auth: true },
+                { label: 'Inbox', state: 'message', auth: true },
                 { label: 'Profile', state: 'profile', auth: true},
                 { label: 'Patients', state: 'nonProfit.leaderboard'}
             ];
@@ -29,7 +29,9 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
 
             var setUser = function () {
                 AuthService.getLoggedInUser().then(function (user) {
-                    scope.user = user;
+                    if (user) {
+                        scope.user = user;
+                    }
                 });
             };
 
@@ -44,12 +46,11 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
             $rootScope.$on(AUTH_EVENTS.sessionTimeout, removeUser);
 
             $rootScope.$on('$stateChangeStart', function(event, toState) {
-                scope.validState = $state.$current.includes.home;
+                scope.isHome = $state.$current.includes.home;
             });
 
             $rootScope.$on('$viewContentLoaded', function(event) {
-                console.log('loaded');
-                scope.validState = $state.$current.includes.home;
+                scope.isHome = $state.$current.includes.home;
             });
         }
 

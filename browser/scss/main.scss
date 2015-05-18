@@ -16,6 +16,12 @@
     transform: translate3d(0,0,0);
 }
 
+@mixin placeholder {
+  &::-webkit-input-placeholder {@content}
+  &:-moz-placeholder           {@content}
+  &::-moz-placeholder          {@content}
+  &:-ms-input-placeholder      {@content}
+}
 
 @import 'variables/main';
 @import 'general/main';
@@ -27,6 +33,8 @@
 @import 'createChallenge/main';
 @import 'event/main';
 @import 'editEvent/main';
+@import 'nonProfit/main';
 @import 'message/main';
 @import 'sponsor/main';
+
 

@@ -26,7 +26,7 @@ module.exports = function(app) {
             req.logIn(returnedUser, function (err) {
                 if (err) return next(err);
                 // We respond with a reponse object that has user with _id and email.
-                res.json({ user : _.omit(savedUser.toJSON(), ['password', 'salt', 'jawbone', 'fitbit'])});
+                res.json({ user : _.omit(returnedUser.toJSON(), ['password', 'salt', 'jawbone', 'fitbit'])});
             });
         });
     });
@@ -42,6 +42,24 @@ module.exports = function(app) {
             res.json({ user : _.omit(savedUser.toJSON(), ['password', 'salt', 'jawbone', 'fitbit']) });
         })
         .catch(next);
+    });
+
+    // disconnect device
+    router.delete('/device/:provider', function(req, res, next) {
+        var provider = req.params.provider;
+        var user = req.user.toObject();
+
+        _.pull(user.active, provider);
+
+        var updateObj = {
+            active : user.active
+        };
+        updateObj[provider] = null;
+
+        User.findByIdAndUpdate(user._id, updateObj, function(err, data) {
+            if (err) return next(err);
+            res.json(_.omit(data.toJSON(), ['password', 'salt', 'jawbone', 'fitbit']));
+        });
     });
 
     // refresh tokens

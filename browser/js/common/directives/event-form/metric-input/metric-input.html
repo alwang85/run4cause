@@ -1,0 +1,4 @@
+<div class="goal-quantity">
+    <input type="text" ng-class="{selected : goal.metrics.unit}" ng-model="goal.metrics.target" ng-disabled="!goal.metrics.unit" placeholder="Qty." numbers-only><!--
+    --><span ng-if="goal.metrics.unit" class="metric">{{goal.metrics.unit}}</span>
+</div>

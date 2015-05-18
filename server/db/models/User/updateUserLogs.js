@@ -1,5 +1,6 @@
 var Promise = require('bluebird');
-var request = Promise.promisifyAll(require('request'));
+var request = require('superagent');
+//var nocache = require('superagent-no-cache');
 var _ = require('lodash');
 var moment = require('moment-range');
 var APImap = require('./apiMap');
@@ -34,21 +35,24 @@ module.exports = function() {
 
     var allRequests = _.map(apis, function(provider) {
 
-        var tokenHeader = {
-            Authorization : 'Bearer ' + user[provider.source].token
-        };
-
-        var promises = [];
-
-        _.forEach(provider.metrics, function(api) {
-            promises.push(request.getAsync({
-                url : api.apiRoute,
-                headers : tokenHeader
-            }));
-        });
+        //var tokenHeader = {
+        //    Authorization : 'Bearer ' + user[provider.source].token
+        //};
 
         return Promise
-        .all(promises)
+        .map(provider.metrics, function(api) {
+            return new Promise(function(resolve, reject) {
+                request
+                    .get(api.apiRoute)
+                    //.use(nocache)
+                    .set('Authorization', 'Bearer ' + user[provider.source].token)
+                    .on('error', reject)
+                    .end(function(err, res) {
+                        if (err) reject(err);
+                        else resolve(res);
+                    });
+            });
+        })
         .then(function(results) {
             results = APImap[provider.source].collect(results);
 
@@ -69,7 +73,7 @@ module.exports = function() {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(savedData);
+                    resolve(log);
                 }
             });
         });

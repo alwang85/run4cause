@@ -7,7 +7,7 @@ app.config(function ($stateProvider) {
         controller: 'NonProfitController'
     });
 
-    $stateProvider.state('nonProfit.leaderboard', {
+    $stateProvider.state('nonProfit.home', {
         url: '',
         templateUrl: 'js/nonprofit/partial/leaderboard.html'
     });

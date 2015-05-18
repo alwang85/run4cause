@@ -19,7 +19,7 @@ module.exports = {
 function collectIterate (results, cb) {
     return _.chain(results)
         .map(function(item) {
-            return JSON.parse(item[1]);
+            return item.body;
         })
         .reduce(function(objResult, jsonParsedItem) {
             return cb(objResult, jsonParsedItem);
@@ -70,7 +70,7 @@ function fitbitQueryStr(startTime, endTime) {
     var queryString = '';
 
     if (duration.asHours() <= 24) {
-        queryString = "/today/1d.json";
+        queryString = '/' + endTime.format('YYYY-MM-DD') + '/' + endTime.format('YYYY-MM-DD') + ".json";
     } else {
         var startTimeString = startTime.format('YYYY-MM-DD');
         var endTimeString = endTime.format('YYYY-MM-DD');
@@ -138,11 +138,13 @@ function jawboneQueryStr(startTime, endTime) {
     var duration = moment.duration(endTime.diff(startTime));
     var queryString = '';
     if (duration.asHours() <= 24) {
-        queryString = "?date=" + endTime.format('YYYYMMDD');
+        queryString = "/?date=" + endTime.format('YYYYMMDD');
     } else {
         var startEpoch = startTime.hour(0).minute(0).second(0).format('X');
         var endEpoch = endTime.format('X');
         queryString = "?start_time=" + startEpoch + "&end_time=" + endEpoch;
     }
+
+    console.log(queryString);
     return queryString;
 }
