@@ -19,12 +19,12 @@ router.post('/', function (req,res,next){
       console.log('message created', savedMessage);
       res.send('success');
     });
-  })
+  });
 
 });
 
 router.get('/:userId', function (req,res,next){
-  console.log('here')
+  console.log('getting user messages');
   Message.find({$or: [{recipient: req.params.userId},{sender: req.params.userId}] }).deepPopulate('recipient sender').exec(function (err, messages){
     res.send(messages);
   });
