@@ -3,17 +3,21 @@
     text-align: center;
     color: $blue-color;
     padding-bottom: 5%;
+    font-weight: 400;
   }
 
   h4, h3, h5 {
     font-weight: 400;
   }
 
-  h3 {
-    color: $blue-color;
-  }
 
   h4 {
     padding-left: 1%;
+  }
+
+  .title {
+    h3 {
+      color: $blue-color;
+    }
   }
 }
