@@ -11,7 +11,7 @@
                     <td  style="width: 64vw;"><strong>From:</strong> {{message.sender.email}}<strong>  To:</strong> {{message.recipient.email}}</td>
                     </tr>
                 <tr class="col-xs-12"><td style="width: 64vw;"><strong>Title:</strong> {{message.title}}{{message.timestamp}}</td></tr>
-                <tr class="col-xs-12"><td style="width: 64vw;"><strong>Content:</strong> {{message.content}}</td></tr>
+                <tr class="col-xs-12" ><td style="width: 64vw;" ng-bind-html="message.content"><strong>Content:</strong></td></tr>
             </table>
         </div>
 
