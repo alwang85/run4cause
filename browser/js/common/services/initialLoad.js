@@ -29,7 +29,7 @@ app.service('InitialLoadService', function($rootScope, $q, $timeout, AuthService
             if (user) {
                 var lastUpdateTime = Math.round((new Date(user.lastLogUpdate)).getTime()/1000);
                 var currentTime = Math.round((new Date()).getTime()/1000);
-                var timeGapLimit = 60 * 60; // might want to increase after debug;
+                var timeGapLimit = 60 * 30; // might want to increase after debug;
                 return user.active.length > 0 && currentTime - lastUpdateTime > timeGapLimit;
             } else {
                 service.callback(null, null);
@@ -40,7 +40,7 @@ app.service('InitialLoadService', function($rootScope, $q, $timeout, AuthService
         // TODO: Backend to monitor when to refresh the token or not
         service.registerLoadSteps(function(timeToUpdate) {
             if (timeToUpdate) {
-                return UserFactory.refreshTokens()
+                //return UserFactory.refreshTokens();
             } else { // skip over;
                 console.log("not time to update yet");
                 service.callback(null, null);
@@ -90,6 +90,8 @@ app.service('InitialLoadService', function($rootScope, $q, $timeout, AuthService
                     return service.loadInit().runLoad();
                 }
             }
+        }).catch(function(err) {
+            service.callback(err);
         });
     }
 });

@@ -15,7 +15,8 @@ app.directive('eventForm', function (Event, NonProfitFactory) {
                 goals : [{
                     category : "total",
                     metrics  : {
-                        unit     : ''
+                        measurement : '',
+                        target     : 0
                     }
                 }],
                 startDate : new Date()
@@ -79,6 +80,19 @@ app.directive('eventForm', function (Event, NonProfitFactory) {
                         console.log(savedEvent);
                     });
                 }
+            };
+
+            scope.addGoal = function() {
+                scope.eventFormData.goals.push({
+                    category : "total",
+                    metrics  : {
+                        unit     : ''
+                    }
+                });
+            };
+
+            scope.removeGoal = function(index) {
+                scope.eventFormData.goals.splice(index, 1);
             };
         }
     };
