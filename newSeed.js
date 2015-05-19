@@ -54,7 +54,7 @@ var seedUsers = function () {
 
 };
 
-var seedEvents = function(nonprofits){
+var seedEvents = function(){
   return User.find({}).exec()
     .then(function(users) {
       //console.log('users inside new seed events', users);
@@ -101,7 +101,6 @@ var seedEvents = function(nonprofits){
         }],
         startDate: new Date('2015-03-11'),
         endDate: new Date('2015-06-18'),
-        nonProfit: nonprofits,
         description: "Lets walk lots of miles.",
         name: "Walk."
       },
@@ -148,7 +147,6 @@ var seedEvents = function(nonprofits){
           }],
           startDate: new Date('2015-03-11'),
           endDate: new Date('2015-06-18'),
-          nonProfit: nonprofits,
           description: "many things",
           name: "Walk Sleep."
       }
@@ -184,16 +182,13 @@ connectToDb.then(function () {
       console.log('assuming users already exist with activity data!');
     }).then(function(users) {
         //console.log('before seedNonProfit');
-        return seedNonProfit(users).then(function(nonprofits) {
+        return seedEvents().then(function() {
           //console.log('before seedAPI');
-                return seedEvents(nonprofits).then(function(nonprofits) {
-                  //console.log('before seedAPI');
-                  return seedMessages().then(function () {
-                    console.log(chalk.green('Seed successful!'));
-                    process.kill(0);
-                  });
-                });
-          })
+          return seedMessages().then(function () {
+            console.log(chalk.green('Seed successful!'));
+            process.kill(0);
+          });
+        });
     }).catch(function (err) {
         console.error(err);
         process.kill(1);

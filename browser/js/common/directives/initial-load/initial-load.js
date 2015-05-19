@@ -1,4 +1,4 @@
-app.directive('initialLoad', function($window, $rootScope, $q, AuthService, AUTH_EVENTS, UserFactory) {
+app.directive('initialLoad', function($rootScope, AuthService, AUTH_EVENTS, LoadService) {
     return {
         restrict : 'E',
         scope    : {},
@@ -8,78 +8,50 @@ app.directive('initialLoad', function($window, $rootScope, $q, AuthService, AUTH
             scope.loaded = false;
             scope.linkDeviceRequired = false;
             scope.loadPause = false;
-            scope.user = null;
-            scope.status = "Initializing...";
+            scope.status = "Initializing";
 
-            var promise;
+            $rootScope.$on(LoadService.events.loadInit, function(event) {
+                scope.loadingTime = true;
+            });
 
-            var fetchLogData = function() {
-                return $q.when().then(function() {
-                    scope.status = "Fetching Device Data...";
-                    return  UserFactory.updateLogs();
-                }).then(function(logs) {
-                    scope.status = "Done!";
-                    scope.loaded = true;
-                });
-            };
+            $rootScope.$on(LoadService.events.fetchingData, function(event) {
+                scope.status = "Fetching Device Data";
+            });
 
-            scope.initLoad = function(user) {
-                if (user) {
-                    scope.user = user;
-                    var lastUpdateTime = new Date(user.lastLogUpdate).getTime();
-                    var currentTime = new Date().getTime();
-                    var timeGapLimit = 60 * 30 * 1000; // might want to increase after debug;
+            $rootScope.$on(LoadService.events.loadingComplete, function(event, logs) {
+                console.log(logs);
+                scope.status = "Done!";
+                scope.loaded = true;
+            });
 
-                    if (user.active.length > 0 && currentTime - lastUpdateTime > timeGapLimit) {
-                        scope.loadingTime = true;
+            $rootScope.$on(LoadService.events.loadingError, function(event, error) {
+                console.log(error);
+                scope.loaded = true;
+            });
 
-                        promise = $q.when().then(function() {
-                            return UserFactory.refreshTokens();
-                        }).catch(function(err) {
-                            scope.linkDeviceRequired = true;
-                            scope.loadPause = true;
-                            return false;
-                        }).then(function(permissionToUpdate) {
-                            if (permissionToUpdate) {
-                                return fetchLogData();
-                            }
-                        }).catch(function(err) {
-                            console.log(err);
-                            scope.loaded = true;
-                        });
-                    }
-                }
-            };
+            $rootScope.$on(LoadService.events.loadPause, function(event, error) {
+                console.log(error);
+                scope.status = "Device Link Error";
+                scope.linkDeviceRequired = true;
+                scope.loadPause = true;
+            });
+
+            $rootScope.$on(LoadService.events.loadResume, function(event) {
+                scope.loadPause = false;
+                scope.linkDeviceRequired = false;
+            });
 
             scope.reLinkDevice = function() {
-                if (scope.user && scope.user.active.length > 0) {
-                    promise.then(function() {
-                        scope.loadPause = false;
-                        scope.linkDeviceRequired = false;
-
-                        return _.reduce(scope.user.active, function(chain, provider) {
-                             return chain.then(function() {
-                                 return UserFactory.linkDevice(provider, scope.user._id);
-                             });
-                        }, $q.when());
-                    }).then(function(user) {
-                        scope.user = user;
-                        return  fetchLogData();
-                    }).catch(function(err) {
-                        console.log(err);
-                        scope.loaded = true;
-                    });
-                }
+                LoadService.reLinkDevice();
             };
 
-
             AuthService.getLoggedInUser().then(function (user) {
-                scope.initLoad(user);
+                LoadService.initLoad(user);
             });
 
             $rootScope.$on(AUTH_EVENTS.loginPostSuccess, function(event, user) {
                 console.log(user);
-                scope.initLoad(user);
+                LoadService.initLoad(user);
             });
         }
     };

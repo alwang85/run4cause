@@ -1,10 +1,8 @@
 <div ng-if="loadingTime" class="initial-load-container box-container" ng-class="{loadenabled : !loaded}">
     <div class="box-absolute-center-container">
         <h1>{{ status }}</h1>
-        <br>
         <font-awesome font="spinner fa-spin" ng-hide="loadPause"></font-awesome>
         <div ng-if="linkDeviceRequired">
-            <br>
             <p>There has been an error with your sync</p>
             <button ng-click="reLinkDevice()" class="btn btn-primary">Re-Link your device</button>
         </div>
