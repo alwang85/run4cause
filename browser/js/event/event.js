@@ -22,7 +22,7 @@ app.config(function($stateProvider){
    });
 });
 
-app.controller('EventController', function(user, events, $modal, $state, $scope, Event, Message){
+app.controller('EventController', function(UserFactory, user, events, $modal, $state, $scope, Event, Message){
     $scope.events = events;
     $scope.currentUser = user;
     $scope.sendMessage = function(creatorEmail){

@@ -1,16 +1,16 @@
 'use strict';
-app.config(function ($stateProvider) {
-    $stateProvider.state('dashboard', {
-        url: '/dashboard',
-        abstract : true,
-        templateUrl: 'js/dashboard/dashboard.html',
-        controller: 'DashboardController'
-    });
-    $stateProvider.state('dashboard.events', {
-        url: '',
-        templateUrl: 'js/dashboard/events/events.html',
-        controller: 'EventsController'
-    });
+//app.config(function ($stateProvider) {
+//    $stateProvider.state('dashboard', {
+//        url: '/dashboard',
+//        abstract : true,
+//        templateUrl: 'js/dashboard/dashboard.html',
+//        controller: 'DashboardController'
+//    });
+//    $stateProvider.state('dashboard.events', {
+//        url: '',
+//        templateUrl: 'js/dashboard/events/events.html',
+//        controller: 'EventsController'
+//    });
     //$stateProvider.state('dashboard.organizations', {
     //    url: '/dashboard',
     //    templateUrl: 'js/dashboard/dashboard.html',
@@ -21,7 +21,7 @@ app.config(function ($stateProvider) {
     //    templateUrl: 'js/dashboard/dashboard.html',
     //    controller: 'DashboardController'
     //});
-});
+//});
 
 app.controller('DashboardController', function($modal, $http, $scope){
     $scope.modalOpen = function(){

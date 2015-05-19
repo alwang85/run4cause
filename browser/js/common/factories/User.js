@@ -1,4 +1,11 @@
 app.factory('UserFactory', function($http, $q, $auth) {
+    var currentUserLogs = {
+        distance: 0,
+        calories: 0,
+        steps: 0,
+        startDate: null,
+        endDate: null
+    };
     var createNewUser = function(newUser) {
         return $http.post('/api/user/signup', newUser)
             .then(function(response) {
@@ -50,6 +57,7 @@ app.factory('UserFactory', function($http, $q, $auth) {
     var availableDevices = ['jawbone', 'fitbit'];
 
     return {
+        currentUserLogs: currentUserLogs,
         createNewUser : createNewUser,
         availableDevices : availableDevices,
         linkDevice : linkDevice,
