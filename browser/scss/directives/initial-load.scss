@@ -1,9 +1,25 @@
 .initial-load-container.box-container {
     position: fixed;
-    top:0;
-    left: 0;
+    top:50vh;
+    left: 50%;
     z-index: 9999;
-    width: 100%;
-    height: 100vh;
+    width: 0%;
+    height: 0vh;
+    opacity: 0;
+    border: 0;
     background: #FAFAFA;
+    transform: translate3d(0,0,0);
+    transition: all 0.2s linear;
+
+    .fa-spinner {
+        font-size: 28px;
+    }
+
+    &.loadenabled {
+        top:0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        opacity: 1;
+    }
 }

@@ -70,7 +70,7 @@ module.exports = function(app) {
             if (err) return next(err);
 
             user.refreshTokens(config).then(function(refreshedUser){
-                res.json({ user : _.omit(refreshedUser.toJSON(), ['password', 'salt', 'jawbone', 'fitbit'])});
+                res.sendStatus(200);
             }).catch(next);
         });
     });
