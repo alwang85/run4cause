@@ -1,9 +1,47 @@
 .profile {
-  h1 {
+  @include clearfix;
+  background: #36465d;
+  .statusContainer {
+    height: 200px;
+    border: 1px solid $off-blue-color;
+    border-bottom: none;
+    display: table;
+    .box-absolute-center-container {
+      display: table-cell;
+      text-align: center;
+      vertical-align: middle;
+      margin-right: 20px;
+      h3 {
+        margin: 0 auto;
+        width: 100%;
+      }
+    }
+  }
+  .lastRow {
+    margin-bottom: 200px;
+  }
+  .profileTitle {
     text-align: center;
-    color: $blue-color;
-    padding-bottom: 5%;
+    color: skyblue;
+    padding-bottom: 20px;
     font-weight: 400;
+  }
+
+  .creatorBox {
+    padding: 0;
+    img{
+      height: 100px;
+      width: 100px;
+      margin-bottom: 10px;
+
+    }
+    .profilePic {
+      padding: 0;
+    }
+    button {
+      width: 100%;
+      margin-bottom: 10px;
+    }
   }
 
   h4, h3, h5 {
@@ -16,8 +54,47 @@
   }
 
   .title {
+    border: 1px solid $off-blue-color;
+    border-top: none;
+    padding:0;
+    margin: 0;
     h3 {
       color: $blue-color;
     }
+  }
+  .right {
+    color: white;
+    margin:20px;
+    padding: 0;
+    width:20%;
+    .profileName {
+      padding-top: 10px;
+      padding-right: 20px;
+      text-align: center;
+    }
+  }
+  .middle {
+    border: 2px solid $off-blue-color;
+    broder-top:none;
+    broder-bottom:none;
+    padding:0;
+    margin: 0;
+    height: 80px;
+    display: table;
+    .middleWrapper {
+      display: table-cell;
+      text-align: center;
+      vertical-align: middle;
+    }
+    select {
+      width: 60%;
+      margin: 0 auto;
+    }
+  }
+  .top {
+    padding:0;
+    border: 1px solid $off-blue-color;
+    margin: 20px;
+    background-color: white;
   }
 }
