@@ -55,7 +55,7 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state, 
 
             $rootScope.$on('$stateChangeStart', function(event, toState) {
                 scope.isHome = $state.$current.includes.home;
-                checkUnread();
+                if (scope.user) checkUnread();
             });
 
             $rootScope.$on('$viewContentLoaded', function(event) {

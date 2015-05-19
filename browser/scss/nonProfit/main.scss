@@ -15,12 +15,17 @@
     font-weight: lighter;
   }
 
-  .link {
-    padding-bottom: 3%;
+  .sponsorPatient-btn {
+    margin-bottom: 15%;
   }
+}
 
-  .patientInfo {
-    padding-left: 2%;
+.patientInfo {
+  padding-left: 0%;
+
+  p {
+    font-size: 1.15em;
+    line-height: 110%;
   }
 }
 
@@ -28,14 +33,15 @@
   h1 {
     font-weight: 400;
     line-height: 125%;
-    padding-bottom: 5%;
-    padding-top: 3%;
+    padding-bottom: 3%;
+    padding-top: 1%;
     width: 95%;
     color:$blue-color;
   }
 
   img {
-    width: auto;
+    width: 85%;
+
   }
 
   h3, h4 {
@@ -44,8 +50,27 @@
   }
 
   p {
-    font-size: 1.15em;
+    font-size: 1.5em;
     line-height: 175%;
   }
 
+  h3 {
+    float: left;
+    display: inline;
+    padding-right: 2%;
+  }
+
+}
+
+.patient-description {
+  padding-top: 3%;
+  padding-bottom: 3%;
+
+  p {
+    font-size: 1.25em;
+  }
+
+  h3 {
+    float: none;
+  }
 }
