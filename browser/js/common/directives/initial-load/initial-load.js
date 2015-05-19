@@ -1,4 +1,4 @@
-app.directive('initialLoad', function($window, $rootScope, $q, AuthService, UserFactory) {
+app.directive('initialLoad', function($window, $rootScope, $q, AuthService, AUTH_EVENTS, UserFactory) {
     return {
         restrict : 'E',
         scope    : {},
@@ -23,7 +23,7 @@ app.directive('initialLoad', function($window, $rootScope, $q, AuthService, User
                 });
             };
 
-            AuthService.getLoggedInUser().then(function (user) {
+            scope.initLoad = function(user) {
                 if (user) {
                     scope.user = user;
                     var lastUpdateTime = new Date(user.lastLogUpdate).getTime();
@@ -49,7 +49,7 @@ app.directive('initialLoad', function($window, $rootScope, $q, AuthService, User
                         });
                     }
                 }
-            });
+            };
 
             scope.reLinkDevice = function() {
                 if (scope.user && scope.user.active.length > 0) {
@@ -71,6 +71,16 @@ app.directive('initialLoad', function($window, $rootScope, $q, AuthService, User
                     });
                 }
             };
+
+
+            AuthService.getLoggedInUser().then(function (user) {
+                scope.initLoad(user);
+            });
+
+            $rootScope.$on(AUTH_EVENTS.loginPostSuccess, function(event, user) {
+                console.log(user);
+                scope.initLoad(user);
+            });
         }
     };
 });
