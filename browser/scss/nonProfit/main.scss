@@ -33,7 +33,7 @@
   h1 {
     font-weight: 400;
     line-height: 125%;
-    padding-bottom: 5%;
+    padding-bottom: 3%;
     padding-top: 1%;
     width: 95%;
     color:$blue-color;
@@ -49,8 +49,14 @@
   }
 
   p {
-    font-size: 1.25em;
+    font-size: 1.5em;
     line-height: 175%;
+  }
+
+  h3 {
+    float: left;
+    display: inline;
+    padding-right: 2%;
   }
 
 }
@@ -58,4 +64,12 @@
 .patient-description {
   padding-top: 3%;
   padding-bottom: 3%;
+
+  p {
+    font-size: 1.25em;
+  }
+
+  h3 {
+    float: none;
+  }
 }
