@@ -29,7 +29,7 @@ app.config(function ($stateProvider) {
 
 });
 
-app.controller('ProfileController', function(logs, $scope, AuthService, UserFactory) {
+app.controller('ProfileController', function(logs, $scope, AuthService, UserFactory, LoadService) {
     $scope.user = null;
     $scope.showDate = false;
     $scope.user_log = logs;
@@ -50,7 +50,7 @@ app.controller('ProfileController', function(logs, $scope, AuthService, UserFact
             UserFactory
             .linkDevice(provider, user._id)
             .then(function(user) {
-                $scope.user = user;
+                LoadService.initLoad(user);
             });
         };
 

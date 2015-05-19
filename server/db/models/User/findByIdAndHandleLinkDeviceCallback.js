@@ -1,5 +1,6 @@
 var Promise = require('bluebird');
 var _ = require('lodash');
+var moment = require('moment-range');
 var OAuth2 = require('oauth').OAuth2;
 
 module.exports = function(authInfo, config) {
@@ -51,7 +52,7 @@ module.exports = function(authInfo, config) {
                 }
 
                 user[authInfo.provider].refresh_token = refreshToken || params.refresh_token;
-
+                user.lastLogUpdate = moment().subtract(1, 'days').toDate();
                 user.save(function(err, savedUser) {
                     if (err) return reject(err);
 

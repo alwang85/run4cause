@@ -29,3 +29,11 @@
         <p ng-bind="patient.description"></p>
     </div>
 </div>
+
+<div ng-if="!patient.name" class="initial-load-container box-container" ng-class="{loadenabled : !loaded}">
+    <div class="box-absolute-center-container">
+        <h1>Loading Patient...</h1>
+        <br>
+        <font-awesome font="spinner fa-spin"></font-awesome>
+    </div>
+</div>
