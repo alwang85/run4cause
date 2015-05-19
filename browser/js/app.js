@@ -35,14 +35,14 @@ app.constant("Server", {
 });
 
 // base auth provider
-app.config(function($authProvider, Client, Server, $location) {
+app.config(function($authProvider, Client, Server) {
     $authProvider.oauth2({
         url  : '/api/user/device',
         name : 'jawbone',
-        clientId: ($location.host() == 'localhost') ? Client.jawbone.client_id : Server.jawbone.client_id,
-        authorizationEndpoint : ($location.host() == 'localhost') ? Client.jawbone.authorizationURL : Server.jawbone.authorizationURL,
+        clientId: (window.location.hostname == 'localhost') ? Client.jawbone.client_id : Server.jawbone.client_id,
+        authorizationEndpoint : (window.location.hostname == 'localhost') ? Client.jawbone.authorizationURL : Server.jawbone.authorizationURL,
         redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
-        scope: ($location.host() == 'localhost') ? Client.jawbone.scope : Server.jawbone.scope,
+        scope: (window.location.hostname == 'localhost') ? Client.jawbone.scope : Server.jawbone.scope,
         requiredUrlParams: ['scope'],
         scopeDelimiter: ' '
     });
@@ -50,10 +50,10 @@ app.config(function($authProvider, Client, Server, $location) {
     $authProvider.oauth2({
         url  : '/api/user/device',
         name : 'fitbit',
-        clientId: ($location.host() == 'localhost') ? Client.fitbit.client_id : Server.fitbit.client_id,
-        authorizationEndpoint : ($location.host() == 'localhost') ? Client.fitbit.authorizationURL : Server.fitbit.authorizationURL,
+        clientId: (window.location.hostname == 'localhost') ? Client.fitbit.client_id : Server.fitbit.client_id,
+        authorizationEndpoint : (window.location.hostname == 'localhost') ? Client.fitbit.authorizationURL : Server.fitbit.authorizationURL,
         redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
-        scope: ($location.host() == 'localhost') ? Client.fitbit.scope : Server.fitbit.scope,
+        scope: (window.location.hostname == 'localhost') ? Client.fitbit.scope : Server.fitbit.scope,
         requiredUrlParams: ['scope'],
         scopeDelimiter: ' ',
         popupOptions: { width: 527, height: 582 }
