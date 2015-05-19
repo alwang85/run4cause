@@ -4,13 +4,13 @@ app.directive('selectPatient', function(NonProfitFactory) {
         replace : true,
         templateUrl : 'js/common/directives/event-form/select-patient/select-patient.html',
         scope    : {
-            eventForm : '=',
-            patients  : '='
+            eventForm : '='
         },
         link : function(scope) {
             scope.placeholder = "WHO ?";
             scope.selectedPatient = null;
             scope.patientSelectToggle = false;
+            var gettingPatients = false;
 
             if (scope.eventForm.patient && scope.eventForm.patient.name) {
                 scope.selectedPatient = _.find(scope.patients, function(patient) {
@@ -22,6 +22,11 @@ app.directive('selectPatient', function(NonProfitFactory) {
 
             scope.togglePatientWindow = function() {
                 scope.patientSelectToggle = scope.patientSelectToggle ? false : true;
+                if (!gettingPatients && !scope.patients) {
+                    gettingPatients = NonProfitFactory.getNonprofits().then(function(patients) {
+                        scope.patients = patients;
+                    });
+                }
             };
 
             scope.selectPatient = function(index) {
