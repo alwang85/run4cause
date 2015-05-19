@@ -23,5 +23,22 @@ module.exports = {
         "clientID": process.env.GOOGLE_CLIENT_ID,
         "clientSecret": process.env.GOOGLE_CLIENT_SECRET,
         "callbackURL": process.env.CALLBACK_URL
-    }
+    },
+  "FITBIT": {
+    "consumerKey" : process.env.FITBIT_KEY,
+    "clientID": process.env.FITBIT_CLIENT,
+    "clientSecret": process.env.FITBIT_CLIENT_SECRET,
+    "authorizationURL": 'https://www.fitbit.com/oauth2/authorize',
+    "tokenURL": 'https://api.fitbit.com/oauth2/token',
+    "refreshTokenURL" : "https://api.fitbit.com/oauth2/token",
+    "callbackURL": '/auth/fitbit/callback'
+  },
+  "JAWBONE" : {
+    "clientID": process.env.JAWBONE_CLIENT,
+    "clientSecret": process.env.JAWBONE_CLIENT_SECRET,
+    "authorizationURL": 'https://jawbone.com/auth/oauth2/auth',
+    "tokenURL": 'https://jawbone.com/auth/oauth2/token',
+    "refreshTokenURL" : "https://jawbone.com/auth/oauth2/token",
+    "callbackURL": '/auth/jawbone/callback'
+  }
 };
