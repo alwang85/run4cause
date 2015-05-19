@@ -61,7 +61,7 @@ schema.methods.calculateProgress = function() {
                         _.forEach(that.goals, function(goal){
                             if(goal.metrics.measurement === eachMetric.measurement){
                                 if(!progressObj[goal.metrics.measurement]) progressObj[goal.metrics.measurement] = 0;
-                                progressObj[goal.metrics.measurement] += (eachMetric.qty/goal.metrics.target);
+                                progressObj[goal.metrics.measurement] += (eachMetric.qty/(goal.metrics.target*1609.34));
                             }
                         })
                     })

@@ -68,6 +68,9 @@
       font-size: 20px;
       margin: 0 10px;
     }
+    .creatorEmail{
+      margin-top: 10px;
+    }
   }
   .mission{
     text-align: center;
@@ -121,7 +124,7 @@
     border-bottom: 1px solid skyblue;
     .patientInfo{
       text-align: center;
-      color: #a1a1a1;
+      color: $off-grey-color;
       padding: 15px 0;
       border-bottom: 1px solid skyblue;
       font-size: 18px;
@@ -130,6 +133,7 @@
   .twoRow{
     display: table;
   }
+
   .eventProgress {
     margin: 10px auto;
     text-align: right;
@@ -142,6 +146,9 @@
     text-align: center;
     margin : 0;
     padding: 0;
+    .messageCreator {
+      border: 1px solid skyblue;
+    }
     button{
       @include forceGpu();
       transition: all 0.2s linear;

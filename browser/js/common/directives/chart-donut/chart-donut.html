@@ -1,4 +1,9 @@
 <div class="progress-preview">
     <canvas class="chart"></canvas>
-    <span class="progress-indication">{{event.progress*100 | number : 0}}%</span>
+    <div class="infoContainer">
+        <div class="progress-indication">
+            <h3>{{event.progress*100 | number : 0}}%</h3>
+        </div>
+    </div>
+
 </div>

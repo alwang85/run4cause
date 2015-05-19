@@ -8,10 +8,17 @@ app.config(function($stateProvider){
   });
 });
 
-app.controller('MessageComposeController', function($scope, $state, Message){
+app.controller('MessageComposeController', function($modalInstance, $scope, $state, Message){
+  $scope.message = {
+    recipient : {
+      email: null
+    }
+  };
+  if(Message.currentRecipient.email) $scope.message.recipient.email = Message.currentRecipient.email;
   $scope.sendMessage = function(message) {
     Message.sendMessage(message).then(function(){
       $state.go('message');
+      $modalInstance.close();
     })
   };
 });
