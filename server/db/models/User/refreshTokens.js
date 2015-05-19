@@ -39,7 +39,7 @@ module.exports = function(config) {
                 }
 
                 user[provider].token = response.access_token;
-                user[provider].expires_in = response.expires_in < 10000 ? Math.round((new Date()).getTime()/1000 + response.expires_in) : Math.round(response.expires_in);
+                user[provider].expires_in = response.expires_in < 10000 ? Math.round((new Date()).getTime() + response.expires_in * 1000) : Math.round(response.expires_in);
             } else {
                 throw response.errors;
             }
