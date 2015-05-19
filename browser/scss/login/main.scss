@@ -1,4 +1,21 @@
-#login-form {
-  width: 60%;
-  margin: 60px auto 0;
+#login-form, #signUp-form {
+  width: 25%;
+  margin: 2% auto 0;
+
+  .form-group {
+    label {
+      font-size: 1.25em;
+      color: $blue-color;
+      padding-bottom: 1%;
+    }
+
+    //input {
+    //  margin-bottom: 5%;
+    //}
+  }
 }
+
+//#signUp-form {
+//  width: 50%;
+//  margin: 2% auto 0;
+//}

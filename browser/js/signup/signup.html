@@ -8,34 +8,52 @@
         </div>
 
         <div class="form-group">
-            <label for="firstName">First Name</label>
+            <label for="firstName">First Name:</label>
             <input name="firstName" type="text" ng-model="signUp.firstName" class="form-control" id="firstName" placeholder="Enter First Name" required>
-            <error ng-show="signUpForm.firstName.$error.required && signUpForm.$submitted">First name is required</error>
+            <div class="alert alert-danger" ng-show="signUpForm.firstName.$error.required && signUpForm.$submitted">
+                <span class="glyphicon glyphicon-exclamation-sign"></span>
+                <error>Error: First Name is required</error>
+            </div>
         </div>
 
         <div class="form-group">
-            <label for="lastName">Last Name</label>
+            <label for="lastName">Last Name:</label>
             <input name="lastName" type="text" ng-model="signUp.lastName" class="form-control" id="lastName" placeholder="Enter Last Name" required>
-            <error ng-show="signUpForm.lastName.$error.required && signUpForm.$submitted">Last name is required</error>
+            <div class="alert alert-danger" ng-show="signUpForm.lastName.$error.required && signUpForm.$submitted">
+                <span class="glyphicon glyphicon-exclamation-sign"></span>
+                <error>Error: Last name is required</error>
+            </div>
         </div>
 
         <div class="form-group">
-            <label for="email">Email address</label>
+            <label for="email">Email address:</label>
             <input name="email" type="text" ng-model="signUp.email" class="form-control" id="email" placeholder="Enter email" required>
-            <error ng-show="signUpForm.email.$error.required && signUpForm.$submitted">Last name is required</error>
+
+            <div class="alert alert-danger" ng-show="signUpForm.email.$error.required && signUpForm.$submitted">
+                <span class="glyphicon glyphicon-exclamation-sign"></span>
+                <error>Error: Email address is required</error>
+            </div>
         </div>
 
         <div class="form-group">
-            <label for="signup-password">Enter Password</label>
+            <label for="signup-password">Enter Password:</label>
             <input name="password" type="password" ng-model="signUp.password" class="form-control" id="signup-password" placeholder="Password" required>
-            <error ng-show="signUpForm.password.$error.required && signUpForm.$submitted">Last name is required</error>
+
+            <div class="alert alert-danger" ng-show="signUpForm.password.$error.required && signUpForm.$submitted">
+                <span class="glyphicon glyphicon-exclamation-sign"></span>
+                <error>Error: Password is required</error>
+            </div>
         </div>
         <div class="form-group">
-            <label for="signup-password-confirm">Confirm Password</label>
+            <label for="signup-password-confirm">Confirm Password:</label>
             <input name="passwordConfirm" type="password" ng-model="signUp.passwordConfirm" class="form-control" id="signup-password-confirm" placeholder="Confirm Password" required>
-            <error ng-show="signUpForm.passwordConfirm.$error.required && signUpForm.$submitted">Last name is required</error>
+
+            <div class="alert alert-danger" ng-show="signUp.password !== signUp.passwordConfirm && signUpForm.passwordConfirm.$touched">
+                <span class="glyphicon glyphicon-exclamation-sign"></span>
+                <error>Error: Passwords do not match</error>
+            </div>
 
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-success">Submit</button>
     </form>
 </div>
