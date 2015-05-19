@@ -5,7 +5,13 @@
 
     <div ng-repeat="event in events">
         <chart-box class="eachProfileEvent col-xs-12">
+            <div class="eventInfo col-xs-12">
+                <h5>Patient: {{event.patient.name}}</h5>
+                <h5>Mission: {{event.goals[0].metrics.measurement}}</h5>
+                <h5>{{event.startDate.slice(0,10)}} ~ {{event.endDate.slice(0,10)}}</h5>
+            </div>
         </chart-box>
+
         <div class="participantsBox animated" ng-class="{'showBox slideInLeft': event.showParticipants,'flipOutX hideBox': !event.showParticipants}">
             <div class="eachParticipant" ng-repeat="challenger in event.challengers | orderBy:'-individualProgress'" >
                 <div class="col-xs-6">
