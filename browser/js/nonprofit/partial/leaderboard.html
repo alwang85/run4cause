@@ -19,3 +19,11 @@
         </div>
     </div>
 </div>
+
+<div ng-if="nonprofits.length === 0" class="initial-load-container box-container" ng-class="{loadenabled : !loaded}">
+    <div class="box-absolute-center-container">
+        <h1>Loading Patients...</h1>
+        <br>
+        <font-awesome font="spinner fa-spin"></font-awesome>
+    </div>
+</div>
