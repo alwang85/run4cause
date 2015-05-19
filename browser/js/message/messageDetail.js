@@ -16,6 +16,7 @@ app.controller('MessageDetailController', function($scope, $state, Message){
       $scope.message = messages.filter(function(eachMessage){
         return eachMessage._id === targetMessage;
       })[0];
+      $scope.message.content = decodeURIComponent($scope.message.content);
     });
   }
   $scope.getMessage();

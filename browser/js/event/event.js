@@ -22,10 +22,18 @@ app.config(function($stateProvider){
    });
 });
 
-app.controller('EventController', function(user, events, $modal, $state, $scope, Event){
+app.controller('EventController', function(user, events, $modal, $state, $scope, Event, Message){
     $scope.events = events;
     $scope.currentUser = user;
+    $scope.sendMessage = function(creatorEmail){
+        Message.currentRecipient.email = creatorEmail;
+        var modalInstance = $modal.open({
+            templateUrl: '/js/message/sendMessage.html',
+            controller: 'MessageComposeController',
+            size:'md'
 
+        });
+    };
     $scope.editEvent = function(eventId) {
         Event.editing.id = eventId;
         $state.go('editEvent');

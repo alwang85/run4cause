@@ -16,6 +16,37 @@
         .goal-form {
             display: inline-block;
             position: relative;
+
+            .goal-control {
+                @include clearfix();
+                position: absolute;
+                right: calc(100% + 5px);
+                line-height: 100%;
+                top: 50%;
+                margin-top: -10px;
+                min-width: 100px;
+
+                .goal-button {
+                    line-height: 100%;
+                    border: 0;
+                    background: transparent;
+                    font-size: 20px;
+                    padding: 0;
+                    display: inline-block;
+                    vertical-align: middle;
+                    float: right;
+                    margin-left: 5px;
+
+                    &.add {
+                        color: green;
+                    }
+
+                    &.minus {
+                        color: red;
+                    }
+                }
+            }
+
             .goal-quantity {
                 display: inline-block;
                 line-height: 100%;
@@ -80,7 +111,8 @@
 
                 .patient-select-container {
                     .dropdown-menu {
-                        top: 100%;
+                        bottom: 100%;
+                        top: auto;
                         right: 0;
                         left: auto;
                         display: block;
@@ -92,6 +124,15 @@
                         overflow: auto;
                         text-transform: none;
                         font-family: "Open Sans", sans-serif;
+                        .patient-loading {
+                            padding: 8px;
+                            width: 100%;
+                            text-align: center;
+                            i {
+                                font-size: 25px;
+                            }
+                        }
+
                         li {
                             @include clearfix();
                             border-bottom: 1px solid #CCC;

@@ -2,25 +2,17 @@ app.config(function ($stateProvider) {
     $stateProvider.state('impactForm', {
         url: '/impactForm',
         abstract : true,
-        templateUrl: 'js/impactForm/impactForm.html',
-        resolve   : {
-            patients : function(NonProfitFactory) {
-                return NonProfitFactory.getNonprofits();
-            }
-        },
-        controller: function($scope, patients) {
-            $scope.patients = patients;
-        }
+        templateUrl: 'js/impactForm/impactForm.html'
     });
 
     $stateProvider.state('impactForm.create', {
         url: '',
-        template: '<event-form patients="patients"></event-form>'
+        template: '<event-form></event-form>'
     });
 
     $stateProvider.state('impactForm.edit', {
         url: '/:eventID',
-        template: '<event-form event="event" patients="patients"></event-form>',
+        template: '<event-form event="event"></event-form>',
         resolve : {
             event : function(Event, $stateParams) {
                 var eventID = $stateParams.eventID;

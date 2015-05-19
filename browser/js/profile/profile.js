@@ -6,13 +6,22 @@ app.config(function ($stateProvider) {
         controller: 'ProfileController',
         data : {
             authenticate : true
+        },
+        resolve : {
+            logs: function(UserFactory){
+                    return UserFactory.getUserLogs().then(function(log) {
+                       return log;
+                    });
+
+            }
         }
     });
 });
 
-app.controller('ProfileController', function($scope, AuthService, UserFactory) {
+app.controller('ProfileController', function(logs, $scope, AuthService, UserFactory) {
     $scope.user = null;
     $scope.showDate = false;
+    $scope.user_log = logs;
     AuthService.getLoggedInUser().then(function(user){
         $scope.user = user;
 
@@ -51,8 +60,8 @@ app.controller('ProfileController', function($scope, AuthService, UserFactory) {
         $scope.getUserLogs = function() {
             UserFactory.getUserLogs().then(function(log) {
                 $scope.user_log = log;
+
             });
         };
-
     });
 });

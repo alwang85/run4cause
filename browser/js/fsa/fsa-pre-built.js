@@ -27,6 +27,7 @@
     // broadcast and listen from and to the $rootScope
     // for important events about authentication flow.
     app.constant('AUTH_EVENTS', {
+        loginPostSuccess : 'auth-login-post-success',
         loginSuccess: 'auth-login-success',
         loginFailed: 'auth-login-failed',
         logoutSuccess: 'auth-logout-success',

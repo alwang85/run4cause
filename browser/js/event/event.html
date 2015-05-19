@@ -67,10 +67,11 @@
                         <font-awesome class='quote' font="quote-right">
                         </font-awesome>
                     </h5>
-                    <h5>{{event.sponsor[0].user}}</h5>
+                    <div class="col-xs-12">
+                        <h5 class="creatorEmail">- {{event.creator.email}}</h5>
+                    </div>
                 </div>
             </div>
-
             <div class="creatorFunctionalities btn-group btn-group-justified col-xs-12">
                 <div class="btn-group" ng-if="event.creator._id===currentUser._id" role="group">
                     <button class='btn btn-default' ui-sref="impactForm.edit({ eventID : event._id })">edit</button>
@@ -86,6 +87,11 @@
                 </div>
                 <div class="btn-group"  role="group">
                     <button class='btn btn-default' ng-click="sponsorEvent(event)">sponsor</button>
+                </div>
+            </div>
+            <div class="creatorFunctionalities threeRow btn-group btn-group-justified col-xs-12">
+                <div class="btn-group" role="group">
+                    <button ng-click="sendMessage(event.creator.email)" class='messageCreator btn btn-default'>Send Message to Event Creator</button>
                 </div>
             </div>
         </div>

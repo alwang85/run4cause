@@ -1,5 +1,8 @@
 app.factory("Message", function($http, AuthService){
   return{
+    currentRecipient:{
+      email: null
+    },
     currentMessage:{},
     getAllMessages : function(){
       return AuthService.getLoggedInUser().then(function(currentUser){
