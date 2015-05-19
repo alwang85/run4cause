@@ -52,6 +52,22 @@ a {
 }
 .eachProfileEvent {
     display:block;
+    text-align: center;
+    margin: 0 auto;
+    .eventInfo{
+        display: inline-block;
+        font-size: 16px;
+        width: 100%;
+        text-align: center;
+        border: 1px solid $blue-color;
+        border-right: none;
+        border-left: none;
+        color:$blue-color;
+        margin: 0 auto;
+        padding:10px 0;
+
+    }
+
 }
 .dashboardView {
     h2{
@@ -97,6 +113,7 @@ a {
     .hideBox {
         display:none;
     }
+
 }
 .box-container {
     @include clearfix();

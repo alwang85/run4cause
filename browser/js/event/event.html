@@ -63,7 +63,7 @@
                     <h5>
                         <font-awesome class='quote' font="quote-left">
                         </font-awesome>
-                        {{event.description.slice(0,100)}}
+                        {{event.description}}
                         <font-awesome class='quote' font="quote-right">
                         </font-awesome>
                     </h5>
@@ -98,5 +98,13 @@
     </div>
     <div class="col-xs-3">
 
+    </div>
+
+    <div ng-if="!events" class="initial-load-container box-container" ng-class="{loadenabled : !loaded}">
+        <div class="box-absolute-center-container">
+            <h1>Loading Events...</h1>
+            <br>
+            <font-awesome font="spinner fa-spin"></font-awesome>
+        </div>
     </div>
 </div>
