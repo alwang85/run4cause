@@ -8,6 +8,9 @@ app.directive('eventForm', function (Event, NonProfitFactory) {
         },
         templateUrl : 'js/common/directives/event-form/event-form.html',
         link: function(scope, element, attr) {
+            /*
+                TODO: Could have used ng-model for many of these custom directives
+            */
             // get available action lists
             scope.actionList = Event.getActions();
 
