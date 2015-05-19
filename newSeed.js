@@ -54,31 +54,6 @@ var seedUsers = function () {
 
 };
 
-var seedNonProfit = function() {
-    return User.find({}).exec()
-        .then(function(users) {
-            var nonprofits = [{
-                creator     : users[0]._id,
-                name        : "Non Profit 1",
-                description : "Non Profit Description",
-                url         : "http://nonprofit1.com",
-                followers   : users
-            },
-                {
-                    creator     : users[0]._id,
-                    name        : "Non Profit 2",
-                    description : "Non Profit Description",
-                    url         : "http://nonprofit1.com",
-                    followers   : []
-                }];
-
-            return q.invoke(Nonprofit, 'create', nonprofits);
-        });
-};
-
-
-
-
 var seedEvents = function(nonprofits){
   return User.find({}).exec()
     .then(function(users) {
@@ -93,18 +68,18 @@ var seedEvents = function(nonprofits){
         },
         goals:[{
             metrics: {
-                measurement: 'sleep',
-                target: 33,
+                measurement: 'distance',
+                target: 100000,
                 progress: 0
             },
             category: 'total'
         },{
-            metrics: {
-                measurement: 'distance',
-                target: 55,
-                progress: 0
-            },
-            category: 'total'
+          metrics: {
+            measurement: 'calories',
+            target: 200000,
+            progress: 0
+          },
+          category: 'total'
         }],
         creator: users[0],
         sponsors: [{
@@ -138,17 +113,9 @@ var seedEvents = function(nonprofits){
             name: "Yoon",
             token: '38453c4bb6a2'
           },
-          goals:[{
-              metrics: {
-                  measurement: 'sleep',
-                  target: 70,
-                  progress: 0
-              },
-              category: 'total'
-          },{
-              metrics: {
+          goals:[{  metrics: {
                   measurement: 'distance',
-                  target: 90,
+                  target: 50000,
                   progress: 0
               },
               category: 'total'
@@ -156,7 +123,7 @@ var seedEvents = function(nonprofits){
           {
               metrics: {
                   measurement: 'steps',
-                  target: 3000,
+                  target: 50000,
                   progress: 0
               },
               category: 'total'
@@ -198,16 +165,14 @@ var seedMessages = function(){
         sender: users[0],
         recipient: users[1],
         title: "welcome",
-        content: "this is a test email",
-        read: {type: Boolean, default: false}
+        content: "this is a test email"
       },
         {
           timestamp: new Date,
           sender: users[1],
           recipient: users[0],
           title: "goodbye",
-          content: "this is a test email2",
-          read: {type: Boolean, default: false}
+          content: "this is a test email2"
         }
       ];
       return q.invoke(Message, 'create', Messages);
