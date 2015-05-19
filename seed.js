@@ -36,33 +36,33 @@ var seedUsers = function () {
       username: 'admin',
       email: 'admin@impactmission.io',
       password: 'password',
-      lastLogDate: new Date((new Date()).getTime() - 15*24*60*60*1000),
+      lastLogUpdate: new Date((new Date()).getTime() - 15*24*60*60*1000),
       profile: 'https://media.licdn.com/media/p/4/005/026/095/0654ff7.png'
     },{
       username: 'Alex',
       email: 'alex@fsa.com',
       password: 'fullstack',
-      lastLogDate: new Date((new Date()).getTime() - 15*24*60*60*1000),
+      lastLogUpdate: new Date((new Date()).getTime() - 15*24*60*60*1000),
       profile: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAJEAAAAJDY4MDAzMWVlLTFmNmUtNDU3My04Mzc2LTFhYTQ3OTFhOTc1MQ.jpg'
     },
     {
       username: 'Sam',
       email: 'sam@fsa.com',
       password: 'fullstack',
-      lastLogDate: new Date((new Date()).getTime() - 15*24*60*60*1000),
+      lastLogUpdate: new Date((new Date()).getTime() - 15*24*60*60*1000),
       profile: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/8/005/07c/34b/0a3f4f0.jpg'
     },{
       username: 'Christian',
       email: 'christian@fsa.com',
       password: 'fullstack',
-      lastLogDate: new Date((new Date()).getTime() - 15*24*60*60*1000),
+      lastLogUpdate: new Date((new Date()).getTime() - 15*24*60*60*1000),
       profile: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAOPAAAAJDlmZjk3YWQ1LWQxNjgtNGQ0Ny04OWE1LTQyMThhZmQ0MGVjOA.jpg'
     },
     {
       username: 'Steve',
       email: 'steve@fsa.com',
       password: 'fullstack',
-      lastLogDate: new Date((new Date()).getTime() - 15*24*60*60*1000),
+      lastLogUpdate: new Date((new Date()).getTime() - 15*24*60*60*1000),
       profile: 'https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/2/005/0a6/3aa/3967988.jpg'
     }
 

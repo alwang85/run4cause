@@ -22,7 +22,6 @@
 var mongoose = require('mongoose');
 var connectToDb = require('./server/db');
 var User = mongoose.model('User');
-var Nonprofit = mongoose.model('Nonprofit');
 var Event = mongoose.model('Event');
 var Message = mongoose.model('Message');
 
@@ -35,7 +34,7 @@ var getCurrentUserData = function () {
     return q.ninvoke(User, 'find', {});
 };
 
-var seedEvents = function(nonprofits){
+var seedEvents = function(){
   return User.find({}).exec()
     .then(function(users) {
       //console.log('users inside new seed events', users);
@@ -50,7 +49,7 @@ var seedEvents = function(nonprofits){
         goals:[{
             metrics: {
                 measurement: 'distance',
-                target: 100000,
+                target: 100,
                 progress: 0
             },
             category: 'total'
@@ -76,11 +75,20 @@ var seedEvents = function(nonprofits){
           }
         }],
         challengers: [{
-            user: users[4],
-            individualProgress: 0
+          user: users[0],
+          individualProgress: 0
         },{
-            user: users[1],
-            individualProgress: 0
+          user: users[1],
+          individualProgress: 0
+        },{
+          user: users[2],
+          individualProgress: 0
+        },{
+          user: users[3],
+          individualProgress: 0
+        },{
+          user: users[4],
+          individualProgress: 0
         }],
         startDate: new Date('2015-03-11'),
         endDate: new Date('2015-06-18'),
@@ -97,7 +105,7 @@ var seedEvents = function(nonprofits){
           },
           goals:[{  metrics: {
                   measurement: 'distance',
-                  target: 50000,
+                  target: 300,
                   progress: 0
               },
               category: 'total'
@@ -105,7 +113,7 @@ var seedEvents = function(nonprofits){
           {
               metrics: {
                   measurement: 'steps',
-                  target: 50000,
+                  target: 5000,
                   progress: 0
               },
               category: 'total'
@@ -122,6 +130,12 @@ var seedEvents = function(nonprofits){
             }
           }],
           challengers: [{
+            user: users[0],
+            individualProgress: 0
+          },{
+            user: users[1],
+            individualProgress: 0
+          },{
               user: users[2],
               individualProgress: 0
           },{
@@ -202,15 +216,14 @@ connectToDb.then(function () {
       console.log('assuming users already exist with activity data!');
     }).then(function(users) {
         //console.log('before seedNonProfit');
-        return seedNonProfit(users).then(function(nonprofits) {
+
           //console.log('before seedAPI');
-                return seedEvents(nonprofits).then(function(nonprofits) {
+                return seedEvents().then(function(nonprofits) {
                   //console.log('before seedAPI');
                   return seedMessages().then(function () {
                     console.log(chalk.green('Seed successful!'));
                     process.kill(0);
                   });
-                });
           })
     }).catch(function (err) {
         console.error(err);
