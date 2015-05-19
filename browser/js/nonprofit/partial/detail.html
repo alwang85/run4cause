@@ -1,22 +1,31 @@
 <div class="header-padding container patientDetail" ng-cloak>
     <h1 ng-bind="patient.header"></h1><br/>
-    <div class="col-md-5">
-        <img alt={{patient.name}} ng-src={{patient.profile_url}}>
-        <h4>Description:</h4>
-        <p ng-bind="patient.description"></p>
+    <div class="row">
+        <div class="col-md-6">
+            <img alt={{patient.name}} ng-src={{patient.profile_url}}>
+
+        </div>
+        <div class="col-md-6">
+            <h3>Age:</h3>
+            <p>{{patient.age}}</p>
+
+            <h3>Country:</h3>
+            <p ng-bind="patient.country"></p>
+
+            <h3>Target:</h3>
+            <p ng-bind="patient.target"></p>
+
+            <h3>Target to go:</h3>
+            <p ng-bind="patient.target_to_go"></p>
+            <button class="btn btn-primary sponsorPatient-btn"
+                    ui-sref="impactForm.create">
+                Sponsor {{patient.name}}
+            </button>
+        </div>
     </div>
 
-    <div class="col-md-offset-6 patient-details">
-        <h4>Age:</h4>
-        <p>{{patient.age}}</p>
-
-        <h4>Country:</h4>
-        <p ng-bind="patient.country"></p>
-
-        <h4>Target:</h4>
-        <p ng-bind="patient.target"></p>
-
-        <h4>Target to go:</h4>
-        <p ng-bind="patient.target_to_go"></p>
+    <div class="row patient-description">
+        <h4>Description:</h4>
+        <p ng-bind="patient.description"></p>
     </div>
 </div>

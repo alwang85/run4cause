@@ -21,7 +21,12 @@
 }
 
 .patientInfo {
-  padding-left: 2%;
+  padding-left: 0%;
+
+  p {
+    font-size: 1.15em;
+    line-height: 110%;
+  }
 }
 
 .patientDetail {
@@ -29,11 +34,10 @@
     font-weight: 400;
     line-height: 125%;
     padding-bottom: 5%;
-    padding-top: 3%;
+    padding-top: 1%;
     width: 95%;
     color:$blue-color;
   }
-
 
   img {
     width: auto;
@@ -45,8 +49,13 @@
   }
 
   p {
-    font-size: 1.15em;
+    font-size: 1.25em;
     line-height: 175%;
   }
 
+}
+
+.patient-description {
+  padding-top: 3%;
+  padding-bottom: 3%;
 }
