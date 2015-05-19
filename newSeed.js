@@ -214,17 +214,16 @@ var seedMessages = function(){
 connectToDb.then(function () {
     getCurrentUserData().then(function (users) {
       console.log('assuming users already exist with activity data!');
-    }).then(function(users) {
-        //console.log('before seedNonProfit');
-
+    }).then(function() {
           //console.log('before seedAPI');
-                return seedEvents().then(function(nonprofits) {
+                return seedEvents().then(function() {
                   //console.log('before seedAPI');
                   return seedMessages().then(function () {
                     console.log(chalk.green('Seed successful!'));
                     process.kill(0);
                   });
           })
+
     }).catch(function (err) {
         console.error(err);
         process.kill(1);

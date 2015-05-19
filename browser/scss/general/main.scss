@@ -52,10 +52,26 @@ a {
 }
 .eachProfileEvent {
     display:block;
+    text-align: center;
+    margin: 0 auto;
+    .eventInfo{
+        display: inline-block;
+        font-size: 16px;
+        width: 100%;
+        text-align: center;
+        border: 1px solid $blue-color;
+        border-right: none;
+        border-left: none;
+        color:$blue-color;
+        margin: 0 auto;
+        padding:10px 0;
+
+    }
+
 }
 .dashboardView {
-    h1{
-        margin: 30px;
+    h2{
+        margin-bottom: 30px;
         color: skyblue;
         text-align: center;
     }
@@ -97,12 +113,12 @@ a {
     .hideBox {
         display:none;
     }
+
 }
 .box-container {
     @include clearfix();
     background: #FFF;
-    border: 1px solid $blue-color;
-    overflow: hidden;
+    border: 2px solid $off-blue-color;
     display: table;
     padding: 0;
 
@@ -122,7 +138,7 @@ a {
         text-align: center;
         vertical-align: middle;
         width: 100%;
-        height: 264px;
+        height: 200px;
         margin-right: 20px;
 
         .create-button {

@@ -1,55 +1,83 @@
 <div class="profile header-padding">
-    <div class="container">
-        <h1>MY PROFILE</h1>
-        <div class="col-xs-4">
-
-            <div class="title"><h3>FIRST NAME:</h3></div>
-            <h3>{{user.firstName}}</h3><br/>
-
-            <div class="title"><h3>LAST NAME:</h3></div>
-            <h3>{{user.lastName}}</h3><br/>
-
-            <div class="title"><h3>EMAIL:</h3></div>
-            <h3>{{user.email}}</h3><br/>
-
-            <div class="title"><h3>ACTIVE DEVICE:</h3></div>
-            <h3>{{user.active[0]}}</h3><br/>
-
-            <div class="inactive">
-                <a ng-repeat="device in link_devices" ng-click="linkDevice(device)" class="btn btn-default">Link To {{device}}</a>
-                <a ng-repeat="device in link_devices" ng-click="disconnectDevice(device)" class="btn btn-default">Disconnect {{device}}</a>
-                <a ng-click="refreshTokens()" class="btn btn-default">Refresh Tokens</a>
-                <a ng-click="updateLogs()" class="btn btn-default">Update Logs</a>
-                <a ng-click="getUserLogs()" class="btn btn-default">Get Logs</a>
+    <h1 class="profileTitle">{{user.email}}'s dashboard</h1>
+    <div class="col-xs-8 top">
+        <!--<h1>MY PROFILE</h1>-->
+        <!--<a class="create-button">-->
+        <!--<font-awesome font="plus" ui-sref="impactForm.create"></font-awesome>-->
+        <!--<span>Create New Event</span>-->
+        <!--</a>-->
+        <div class="statusContainer col-xs-4">
+            <div class="box-absolute-center-container">
+                <h3>DISTANCE</h3>
+                <h2>{{currentUserLogs.distance.toFixed(1)}}</h2>
+                <h4>miles</h4>
             </div>
-
         </div>
-
-        <div class="col-xs-8">
+        <div class="statusContainer col-xs-4">
+            <div class="box-absolute-center-container">
+                <h3>CALORIES</h3>
+                <h2>{{currentUserLogs.calories.toFixed(0)}}</h2>
+                <h4>calories</h4>
+            </div>
+        </div>
+        <div class="statusContainer col-xs-4">
+            <div class="box-absolute-center-container">
+                <h3>STEPS</h3>
+                <h2>{{currentUserLogs.steps.toFixed(0)}}</h2>
+                <h4>steps</h4>
+            </div>
+        </div>
+        <div class="middle col-xs-12">
+            <div class = 'middleWrapper'>
+                <div class="col-xs-6">
+                    <h3>
+                        FROM {{currentUserLogs.startDate}} TO {{currentUserLogs.endDate}}
+                    </h3>
+                </div>
+                <div class="col-xs-6">
+                    <select class="form-control" ng-change="refresh()" ng-model="currentMetric">
+                        <option value="distance" selected="selected">DISTANCE</option>
+                        <option value="calories">CALORIES</option>
+                        <option value="steps">STEPS</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="title col-xs-12">
             <div class="title">
-                <h4>DISTANCE (MILES)</h4>
-                <bar-chart log="user_log" metric="distance"></bar-chart>
-                <h4>DISTANCE (STEPS)</h4>
-                <bar-chart log="user_log" metric="steps"></bar-chart>
-                <h4>DISTANCE (CALORIES)</h4>
-                <bar-chart log="user_log" metric="calories"></bar-chart>
-            </div>
-            <div class="userLogs" ng-repeat="log in user_log.logData">
-
-                <!--<h3 ng-click="showDate = !showDate">{{log.date | date}}</h3>-->
-                <!--<div class="logMetrics col-md-3" ng-repeat="metric in log.metrics" ng-if="showDate">-->
-                    <!--<br/>-->
-                    <!--<h4>{{metric.measurement | uppercase}}:</h4>-->
-                    <!--<h4>{{metric.qty}}</h4><br/>-->
-                <!--</div>-->
+                <h4 ng-if="currentMetric==='distance'">DISTANCE (MILES)</h4>
+                <bar-chart ng-if="currentMetric==='distance'" log="user_log" metric="distance"></bar-chart>
+                <h4 ng-if="currentMetric==='steps'">STEPS (STEPS)</h4>
+                <bar-chart ng-if="currentMetric==='steps'" log="user_log" metric="steps"></bar-chart>
+                <h4 ng-if="currentMetric==='calories'">CALORIES (CALORIES)</h4>
+                <bar-chart ng-if="currentMetric==='calories'" log="user_log" metric="calories"></bar-chart>
             </div>
         </div>
-
     </div>
+    <div class="col-xs-4 right">
+        <div class="creatorBox col-xs-12">
+            <div class="profilePic col-xs-6">
+                <img src="https://scontent-lga.xx.fbcdn.net/hphotos-xtp1/v/t1.0-9/10402536_848562865184461_80417573342618318_n.jpg?oh=6fcac3c583c855aa17ec55dcd30ccaaa&oe=560250B5">
+            </div>
+            <div class="profileName col-xs-6">
+                <h4>Steve Kwak</h4>
+            </div>
+            <button class="btn btn-default">Send Message</button>
+        </div>
+        <!--<h3>{{user.email}}</h3><br/>-->
 
+        <div><h3>Current Device:</h3></div>
+        <h3 style="color:skyblue">{{user.active[0]}}</h3><br/>
 
-
-
+        <div class="inactive">
+            <a ng-repeat="device in link_devices" ng-click="linkDevice(device)" class="btn btn-default">Link To {{device}}</a>
+            <a ng-repeat="device in link_devices" ng-click="disconnectDevice(device)" class="btn btn-default">Disconnect {{device}}</a>
+            <a ng-click="refreshTokens()" class="btn btn-default">Refresh Tokens</a>
+            <a ng-click="updateLogs()" class="btn btn-default">Update Logs</a>
+            <a ng-click="getUserLogs()" class="btn btn-default">Get Logs</a>
+        </div>
     </div>
-
+        <div class="lastRow col-xs-12">
+            <ui-view></ui-view>
+        </div>
 </div>

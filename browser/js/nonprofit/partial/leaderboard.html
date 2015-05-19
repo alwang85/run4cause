@@ -4,13 +4,25 @@
         <a ng-click="getPatient(nonprofit.token)" class="clickable">
             <img alt={{nonprofit.name}} ng-src={{nonprofit.profile_url}}>
         </a>
-        <div class="container patientInfo">
+        <div class="patientInfo">
             <p>Name: {{nonprofit.name}}</p>
             <p>Country: {{nonprofit.country}}</p>
-            <a ng-click="getPatient(nonprofit.token)"
-               class="clickable">
+            <a ng-click="getPatient(nonprofit.token)">
                 <p class="link">Read More</p>
             </a>
+            <button class="btn btn-primary sponsorPatient-btn"
+                    ui-sref="impactForm.create">
+                Sponsor {{nonprofit.name}}
+            </button>
+
         </div>
+    </div>
+</div>
+
+<div ng-if="!nonprofits.length" class="initial-load-container box-container" ng-class="{loadenabled : !loaded}">
+    <div class="box-absolute-center-container">
+        <h1>Loading Patients...</h1>
+        <br>
+        <font-awesome font="spinner fa-spin"></font-awesome>
     </div>
 </div>

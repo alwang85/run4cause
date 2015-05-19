@@ -1,7 +1,9 @@
 'use strict';
 app.config(function ($stateProvider) {
+
     $stateProvider.state('profile', {
         url: '/profile',
+        abstract : true,
         templateUrl: 'js/profile/profile.html',
         controller: 'ProfileController',
         data : {
@@ -16,23 +18,39 @@ app.config(function ($stateProvider) {
             }
         }
     });
+    $stateProvider.state('profile.events', {
+        url: '',
+        templateUrl: 'js/dashboard/events/events.html',
+        controller: 'EventsController'
+    });
+    $stateProvider.state('profile.main', {
+        url: ''
+    });
+
 });
 
-app.controller('ProfileController', function(logs, $scope, AuthService, UserFactory) {
+app.controller('ProfileController', function(logs, $scope, AuthService, UserFactory, LoadService) {
     $scope.user = null;
     $scope.showDate = false;
     $scope.user_log = logs;
+    $scope.currentMetric = 'distance';
     AuthService.getLoggedInUser().then(function(user){
         $scope.user = user;
-
         //$scope.link_devices = _.difference(UserFactory.availableDevices, user.active);
         $scope.link_devices = UserFactory.availableDevices;
-
+        var userLog = UserFactory.currentUserLogs(logs.logData);
+        for(var metric in userLog){
+            userLog[metric] = UserFactory.sortArrayByDate(userLog[metric])
+            userLog[metric].forEach(function(each) {
+                each.date = each.date.toString().slice(4, 10);
+            });
+        };
+        $scope.currentUserLogs = UserFactory.aggregateUserLogByCategory(userLog);
         $scope.linkDevice = function(provider) {
             UserFactory
             .linkDevice(provider, user._id)
             .then(function(user) {
-                $scope.user = user;
+                LoadService.initLoad(user);
             });
         };
 
@@ -64,4 +82,15 @@ app.controller('ProfileController', function(logs, $scope, AuthService, UserFact
             });
         };
     });
+});
+
+app.controller('DashboardController', function($modal, $http, $scope) {
+    $scope.modalOpen = function () {
+        //$state.go('home');
+        var modalInstance = $modal.open({
+            templateUrl: '/js/createEvent/createEvent.html',
+            controller: 'CreateEventController',
+            size: 'lg'
+        });
+    };
 });

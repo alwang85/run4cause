@@ -1,5 +1,5 @@
 'use strict';
-app.directive('barChart', function($timeout){
+app.directive('barChart', function($timeout, UserFactory){
    return{
        restrict: 'E',
        scope: {
@@ -9,27 +9,15 @@ app.directive('barChart', function($timeout){
        templateUrl : "js/common/directives/bar-chart/bar-chart.html",
        link: function(scope, element, attr){
            var canvas = element[0];
-           //console.log(scope.log);
-           var filteredLog = [];
-           var filteredDate = [];
-           var filteredQty = [];
-           scope.log.logData.forEach(function(eachLog){
-               var filtered = eachLog.metrics.filter(function(eachMetric){
-                   return eachMetric.measurement === attr.metric;
-               });
-               filteredLog.push({date: new Date(eachLog.date), qty:filtered[0].qty});
-           });
-           var sortedFiltered = filteredLog.sort(function(a,b){
-               return a.date - b.date;
-           });
-           filteredDate = sortedFiltered.map(function(each){
-               return each.date.toString().slice(4,10);
-           });
-           filteredQty = sortedFiltered.map(function(each){
-               if(attr.metric==='distance') return (each.qty/1609.34);
-               else return each.qty
-           });
-           console.log(filteredDate,filteredQty);
+           var filteredLog;
+           var filteredDate;
+           var filteredQty;
+           var currentMetric = attr.metric;
+
+           filteredLog = UserFactory.currentUserLogs(scope.log.logData)[currentMetric];
+           filteredDate = UserFactory.sortAndSliceDate(filteredLog);
+           filteredQty = UserFactory.sortAndFilterQty(filteredLog, currentMetric);
+
            var context = canvas.getContext('2d');
            var data = {
                labels: filteredDate,

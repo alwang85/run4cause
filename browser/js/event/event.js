@@ -6,15 +6,6 @@ app.config(function($stateProvider){
        templateUrl: 'js/event/event.html',
        controller: 'EventController',
        resolve: {
-           events: function (Event) {
-               return Event.getAllEvents().then(function (allEvents) {
-                   return allEvents;
-               }).then(function (allEvents) {
-                   return Event.getMoreInfoForNonProfits(allEvents).then(function (events) {
-                       return events;
-                   });
-               });
-           },
            user: function (AuthService) {
                 return AuthService.getLoggedInUser();
            }
@@ -22,8 +13,14 @@ app.config(function($stateProvider){
    });
 });
 
-app.controller('EventController', function(user, events, $modal, $state, $scope, Event, Message){
-    $scope.events = events;
+app.controller('EventController', function(UserFactory, user, $modal, $state, $scope, Event, Message){
+    Event.getAllEvents().then(function (allEvents) {
+        return allEvents;
+    }).then(function (allEvents) {
+        return Event.getMoreInfoForNonProfits(allEvents).then(function (events) {
+            $scope.events = events;
+        });
+    });
     $scope.currentUser = user;
     $scope.sendMessage = function(creatorEmail){
         Message.currentRecipient.email = creatorEmail;
