@@ -69,5 +69,6 @@ schema.method('refreshTokens', require('./refreshTokens'));
 schema.method('parseLogData', require('./parseLogData'));
 schema.method('updateUserLogs', require('./updateUserLogs'));
 schema.method('getUserLogs', require('./getUserLogs'));
+schema.method('getOrCreateUserLogs', require('./getOrCreateUserLogs'));
 
 mongoose.model('User', schema);

@@ -9,7 +9,7 @@ module.exports = function(startDate, endDate) {
     };
 
     return new Promise (function(resolve, reject) {
-        user.model('Logs').find(query, function(err, log) {
+        user.model('Logs').findOrCreate(query, query, function(err, log) {
             if (err) {
                 reject(err);
             }
