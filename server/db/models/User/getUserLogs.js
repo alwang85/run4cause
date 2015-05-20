@@ -9,31 +9,37 @@ module.exports = function(startDate, endDate) {
     };
 
     return new Promise (function(resolve, reject) {
-        user.model('Logs').find(query, function(err, log) {
+        user.model('Logs').findOne(query, function(err, log) {
             if (err) {
                 reject(err);
             }
             else {
-                if (startDate) {
-                    endDate = endDate || moment();
+                if (log) {
+                    if (startDate) {
+                        endDate = endDate || moment();
 
-                    var range = moment().range(startDate, endDate);
-                    var querylogs = []
-                    range.by('days', function(moment) {
-                        var inRangeLogData = _.find(log.logData, function(logData) {
-                            return moment.isSame(logData.date);
+                        var range = moment().range(startDate, endDate);
+                        var querylogs = [];
+                        console.log("didn't error", log);
+                        range.by('days', function(moment) {
+                            var inRangeLogData = _.find(log.logData, function(logData) {
+                                if (logData)
+                                    return moment.isSame(logData.date);
+                            });
+
+                            if (inRangeLogData) {
+                                querylogs.push(inRangeLogData);
+                            }
                         });
 
-                        if (inRangeLogData) {
-                            querylogs.push(inRangeLogData);
-                        }
-                    });
+                        log = log.toObject();
+                        log.logData = querylogs;
+                    }
 
-                    log = log.toObject();
-                    log.logData = querylogs;
+                    resolve(log);
+                } else {
+                    reject(new Error("no log available"));
                 }
-
-                resolve(log);
             }
         });
     });

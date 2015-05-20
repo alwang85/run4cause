@@ -14,25 +14,6 @@ module.exports = function(startDate, endDate) {
                 reject(err);
             }
             else {
-                if (startDate) {
-                    endDate = endDate || moment();
-
-                    var range = moment().range(startDate, endDate);
-                    var querylogs = []
-                    range.by('days', function(moment) {
-                        var inRangeLogData = _.find(log.logData, function(logData) {
-                            return moment.isSame(logData.date);
-                        });
-
-                        if (inRangeLogData) {
-                            querylogs.push(inRangeLogData);
-                        }
-                    });
-
-                    log = log.toObject();
-                    log.logData = querylogs;
-                }
-
                 resolve(log);
             }
         });
