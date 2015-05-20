@@ -30,9 +30,7 @@
         <div class="middle col-xs-12">
             <div class = 'middleWrapper'>
                 <div class="col-xs-6">
-                    <h3>
-                        FROM {{currentUserLogs.startDate}} TO {{currentUserLogs.endDate}}
-                    </h3>
+                    <h3>{{currentUserLogs.startDate}} ~ {{currentUserLogs.endDate}}</h3>
                 </div>
                 <div class="col-xs-6">
                     <select class="form-control" ng-change="refresh()" ng-model="currentMetric">
@@ -46,21 +44,21 @@
         <div class="title col-xs-12">
             <div class="title">
                 <h4 ng-if="currentMetric==='distance'">DISTANCE (MILES)</h4>
-                <bar-chart class="barChart" ng-if="currentMetric==='distance'" log="user_log" metric="distance"></bar-chart>
+                <bar-chart class="barChart" ng-if="currentMetric==='distance' && user_log" log="user_log" metric="distance"></bar-chart>
                 <h4 ng-if="currentMetric==='steps'">STEPS (STEPS)</h4>
-                <bar-chart class="barChart" ng-if="currentMetric==='steps'" log="user_log" metric="steps"></bar-chart>
+                <bar-chart class="barChart" ng-if="currentMetric==='steps' && user_log" log="user_log" metric="steps"></bar-chart>
                 <h4 ng-if="currentMetric==='calories'">CALORIES (CALORIES)</h4>
-                <bar-chart class="barChart" ng-if="currentMetric==='calories'" log="user_log" metric="calories"></bar-chart>
+                <bar-chart class="barChart" ng-if="currentMetric==='calories' && user_log" log="user_log" metric="calories"></bar-chart>
             </div>
         </div>
     </div>
     <div class="col-xs-4 right">
         <div class="creatorBox col-xs-12">
             <div class="profilePic col-xs-6">
-                <img src="https://scontent-lga.xx.fbcdn.net/hphotos-xtp1/v/t1.0-9/10402536_848562865184461_80417573342618318_n.jpg?oh=6fcac3c583c855aa17ec55dcd30ccaaa&oe=560250B5">
+                <img src="{{user.profile}}">
             </div>
             <div class="profileName col-xs-6">
-                <h4>Steve Kwak</h4>
+                <h4>{{user.username}}</h4>
             </div>
             <button class="btn btn-default">Send Message</button>
         </div>
