@@ -27,6 +27,12 @@ var findBySourcesAndChangeDuration = function(activeDevices, lastLogUpdate) {
     return updatedSources;
 };
 
+var broadcastChanges = function(events) {
+    var io = require('../../../io')();
+
+    io.sockets.emit('eventsChange', events);
+};
+
 module.exports = function() {
     var user = this;
     var activeDevices = user.active;
@@ -68,11 +74,16 @@ module.exports = function() {
     })
     .then(function(log) {
         return new Promise(function(resolve, reject) {
-            user.lastLogUpdate = new Date();
-            user.save(function(err, savedData) {
+            user.lastLogUpdate = moment().toDate();
+            user.save(function(err, savedUser) {
                 if (err) {
                     reject(err);
                 } else {
+                    if(log.logData.length > 0) {
+                        user.getUserEvents().then(function(events) {
+                            broadcastChanges(events);
+                        });
+                    }
                     resolve(log);
                 }
             });
