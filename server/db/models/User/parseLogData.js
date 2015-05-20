@@ -18,7 +18,7 @@ module.exports = function(result) {
     var user = this;
 
     // get the user's log first
-    return user.getUserLogs()
+    return user.getOrCreateUserLogs()
     .then(function(log) {
         return log.mergeFetchData(dateObj);
     });
