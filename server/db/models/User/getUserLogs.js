@@ -35,11 +35,9 @@ module.exports = function(startDate, endDate) {
                         log = log.toObject();
                         log.logData = querylogs;
                     }
-
-                    resolve(log);
-                } else {
-                    reject(new Error("no log available"));
                 }
+
+                resolve(log);
             }
         });
     });

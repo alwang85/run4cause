@@ -54,25 +54,28 @@ schema.methods.calculateProgress = function() {
         return new Promise(function(resolve,reject){
             var results = [];
             challenger.user.getUserLogs(that.startDate, that.endDate).then(function(logs){
-                results = logs.logData;
-                var progressObj = {};
-                _.forEach(results, function(eachDayLog) {
-                    _.forEach(eachDayLog.metrics, function (eachMetric) {
-                        _.forEach(that.goals, function(goal){
-                            if(goal.metrics.measurement === eachMetric.measurement){
-                                if(!progressObj[goal.metrics.measurement]) progressObj[goal.metrics.measurement] = 0;
-                                progressObj[goal.metrics.measurement] += (eachMetric.qty/(goal.metrics.target*1609.34));
-                            }
+                if (logs) {
+                    results = logs.logData;
+                    var progressObj = {};
+                    _.forEach(results, function(eachDayLog) {
+                        _.forEach(eachDayLog.metrics, function (eachMetric) {
+                            _.forEach(that.goals, function(goal){
+                                if(goal.metrics.measurement === eachMetric.measurement){
+                                    if(!progressObj[goal.metrics.measurement]) progressObj[goal.metrics.measurement] = 0;
+                                    progressObj[goal.metrics.measurement] += (eachMetric.qty/(goal.metrics.target*1609.34));
+                                }
+                            })
                         })
-                    })
-                });
-                var total = 0;
-                for(var key in progressObj){
-                    total += progressObj[key];
-                    if(!totalProgressObj[key]) totalProgressObj[key] = 0;
-                    totalProgressObj[key] += progressObj[key];
+                    });
+                    var total = 0;
+                    for(var key in progressObj){
+                        total += progressObj[key];
+                        if(!totalProgressObj[key]) totalProgressObj[key] = 0;
+                        totalProgressObj[key] += progressObj[key];
+                    }
+                    challenger.individualProgress = ((total/(Object.keys(progressObj).length)) || 0);
                 }
-                challenger.individualProgress = ((total/(Object.keys(progressObj).length)) || 0);
+
                 resolve(challenger);
          });
      });
