@@ -1,4 +1,4 @@
-<div class="header-padding nonProfit container">
+<div class="header-padding nonProfit container" ng-if="nonprofits.length">
     <h1>LIST OF PATIENTS</h1><br/>
     <div class="info col-md-4" ng-repeat="nonprofit in nonprofits">
         <a ng-click="getPatient(nonprofit.token)" class="clickable">
@@ -14,15 +14,6 @@
                     ui-sref="impactForm.create">
                 Sponsor {{nonprofit.name}}
             </button>
-
         </div>
-    </div>
-</div>
-
-<div ng-if="!nonprofits.length" class="initial-load-container box-container" ng-class="{loadenabled : !loaded}">
-    <div class="box-absolute-center-container">
-        <h1>Loading Patients...</h1>
-        <br>
-        <font-awesome font="spinner fa-spin"></font-awesome>
     </div>
 </div>
