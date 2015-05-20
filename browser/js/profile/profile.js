@@ -38,16 +38,19 @@ app.controller('ProfileController', function(logs, $scope, AuthService, UserFact
         $scope.user = user;
         //$scope.link_devices = _.difference(UserFactory.availableDevices, user.active);
         $scope.link_devices = UserFactory.availableDevices;
-        var userLog = UserFactory.currentUserLogs(logs.logData);
+        if (user.logs) {
+          var userLog = UserFactory.currentUserLogs(logs.logData);
 
-        for(var metric in userLog){
+          for(var metric in userLog){
             userLog[metric] = UserFactory.sortArrayByDate(userLog[metric]);
             if (userLog[metric].length > 0) {
-                userLog[metric].forEach(function(each) {
-                    each.date = each.date.toString().slice(4, 10);
-                });
+              userLog[metric].forEach(function(each) {
+                each.date = each.date.toString().slice(4, 10);
+              });
             }
-        };
+          };
+        }
+
         $scope.currentUserLogs = UserFactory.aggregateUserLogByCategory(userLog);
         $scope.linkDevice = function(provider) {
             UserFactory
