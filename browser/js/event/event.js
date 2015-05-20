@@ -16,13 +16,16 @@ app.config(function($stateProvider){
 
 app.controller('EventController', function(user, $modal, $state, $scope, Event, Message, SocketFactory, UserFactory){
 
-    Event.getAllEvents().then(function (allEvents) {
+    $scope.getEvents = function(){
+      Event.getAllEvents().then(function (allEvents) {
         return allEvents;
-    }).then(function (allEvents) {
+      }).then(function (allEvents) {
         return Event.getMoreInfoForNonProfits(allEvents).then(function (events) {
-            $scope.events = events;
+          $scope.events = events;
         });
-    });
+      });
+    };
+    $scope.getEvents();
     $scope.currentUser = user;
     $scope.sendMessage = function(creatorEmail){
         Message.currentRecipient.email = creatorEmail;
@@ -109,6 +112,6 @@ app.controller('EventController', function(user, $modal, $state, $scope, Event, 
     var socket = SocketFactory.getSocket();
 
     socket.on('eventsChange', function(events) {
-        console.log(events);
+      $scope.getEvents();
     });
 });
