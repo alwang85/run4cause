@@ -14,23 +14,23 @@
 
         <div class="participantsBox animated" ng-class="{'showBox slideInLeft': event.showParticipants,'flipOutX hideBox': !event.showParticipants}">
             <div class="eachParticipant" ng-repeat="challenger in event.challengers | orderBy:'-individualProgress'" >
-                <div class="col-xs-6">
-                    <img src="http://cdn.patch.com/assets/contrib/images/placeholder-user-photo.png">
+                <div class="col-xs-5">
+                    <img src="{{challenger.user.profile}}">
                 </div>
-                <div class="col-xs-6">
-                    <h6>{{challenger.user.email}}</h6>
-                    <h6 class="participantsTitle">{{(challenger.individualProgress*100).toFixed(1)}}%</h6>
+                <div class="col-xs-7">
+                    <h5 class="challengerEmail">{{challenger.user.email}}</h5>
+                    <h5 class="participantsTitle">{{(challenger.individualProgress*100).toFixed(1)}}%</h5>
                 </div>
             </div>
         </div>
         <div class="participantsBox animated" ng-class="{'showBox slideInLeft': event.showSponsors,'flipOutX hideBox': !event.showSponsors}">
             <div class="eachParticipant col-xs-12" ng-repeat="sponsor in event.sponsors" >
                 <div class="col-xs-6">
-                    <img src="http://cdn.patch.com/assets/contrib/images/placeholder-user-photo.png">
+                    <img src="{{sponsor.user.profile}}">
                 </div>
                 <div class="col-xs-6">
-                    <h6>{{sponsor.user.email}}</h6>
-                    <h6 class="participantsTitle">{{(sponsor.details['100']) | currency}}</h6>
+                    <h5 class="challengerEmail">{{sponsor.user.email}}</h5>
+                    <h5 class="participantsTitle">{{(sponsor.details['100']) | currency}}</h5>
                 </div>
             </div>
         </div>

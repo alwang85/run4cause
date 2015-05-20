@@ -52,9 +52,13 @@ a {
 }
 .eachProfileEvent {
     display:block;
+    border:none;
     text-align: center;
-    margin: 0 auto;
+    margin-right: 10px;
+    margin-bottom: 20px;
+    width: 24%;
     .eventInfo{
+        background: #EDFAFF;
         display: inline-block;
         font-size: 16px;
         width: 100%;
@@ -72,7 +76,7 @@ a {
 .dashboardView {
     h2{
         margin-bottom: 30px;
-        color: skyblue;
+        color: #3B62A1;
         text-align: center;
     }
     position: relative;
@@ -86,15 +90,21 @@ a {
             text-align: center;
             width:100%;
             position: absolute;
-            bottom:-160px;
+            bottom:-170px;
             @include forceGpu();
             transition: all 0.2s linear;
             .eachParticipant {
                 float: left;
                 width: 220px;
                 margin-bottom: 15px;
-                color: white;
+                color: navy;
                 margin-right: 40px;
+                img {
+                    width:100%;
+                }
+            }
+            .challengerEmail {
+                margin-top: 20px;
             }
             .participantsTitle {
                 color: white;
