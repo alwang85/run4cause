@@ -1,5 +1,5 @@
 <div class="profile header-padding">
-    <h1 class="profileTitle">{{user.email}}'s dashboard</h1>
+    <h1 class="profileTitle">{{user.username}}'s dashboard</h1>
     <div class="col-xs-8 top">
         <!--<h1>MY PROFILE</h1>-->
         <!--<a class="create-button">-->
@@ -30,9 +30,7 @@
         <div class="middle col-xs-12">
             <div class = 'middleWrapper'>
                 <div class="col-xs-6">
-                    <h3>
-                        FROM {{currentUserLogs.startDate}} TO {{currentUserLogs.endDate}}
-                    </h3>
+                    <h3>{{currentUserLogs.startDate}} ~ {{currentUserLogs.endDate}}</h3>
                 </div>
                 <div class="col-xs-6">
                     <select class="form-control" ng-change="refresh()" ng-model="currentMetric">
@@ -46,35 +44,41 @@
         <div class="title col-xs-12">
             <div class="title">
                 <h4 ng-if="currentMetric==='distance'">DISTANCE (MILES)</h4>
-                <bar-chart ng-if="currentMetric==='distance'" log="user_log" metric="distance"></bar-chart>
+                <bar-chart class="barChart" ng-if="currentMetric==='distance' && user_log" log="user_log" metric="distance"></bar-chart>
                 <h4 ng-if="currentMetric==='steps'">STEPS (STEPS)</h4>
-                <bar-chart ng-if="currentMetric==='steps'" log="user_log" metric="steps"></bar-chart>
+                <bar-chart class="barChart" ng-if="currentMetric==='steps' && user_log" log="user_log" metric="steps"></bar-chart>
                 <h4 ng-if="currentMetric==='calories'">CALORIES (CALORIES)</h4>
-                <bar-chart ng-if="currentMetric==='calories'" log="user_log" metric="calories"></bar-chart>
+                <bar-chart class="barChart" ng-if="currentMetric==='calories' && user_log" log="user_log" metric="calories"></bar-chart>
             </div>
         </div>
     </div>
     <div class="col-xs-4 right">
         <div class="creatorBox col-xs-12">
             <div class="profilePic col-xs-6">
-                <img src="https://scontent-lga.xx.fbcdn.net/hphotos-xtp1/v/t1.0-9/10402536_848562865184461_80417573342618318_n.jpg?oh=6fcac3c583c855aa17ec55dcd30ccaaa&oe=560250B5">
+                <img src="{{user.profile}}">
             </div>
             <div class="profileName col-xs-6">
-                <h4>Steve Kwak</h4>
+                <h4>{{user.username}}</h4>
             </div>
             <button class="btn btn-default">Send Message</button>
         </div>
         <!--<h3>{{user.email}}</h3><br/>-->
 
-        <div><h3>Current Device:</h3></div>
-        <h3 style="color:skyblue">{{user.active[0]}}</h3><br/>
+        <div ng-if="user.active.length" ><h3>Current Device:</h3></div>
+        <h3 style="color:skyblue">{{user.active[0]}}</h3>
+        <h4 ng-if="!user.active.length" class="linkDevice" style="color:skyblue">Linke your device below</h4>
 
-        <div class="inactive">
-            <a ng-repeat="device in link_devices" ng-click="linkDevice(device)" class="btn btn-default">Link To {{device}}</a>
-            <a ng-repeat="device in link_devices" ng-click="disconnectDevice(device)" class="btn btn-default">Disconnect {{device}}</a>
-            <a ng-click="refreshTokens()" class="btn btn-default">Refresh Tokens</a>
-            <a ng-click="updateLogs()" class="btn btn-default">Update Logs</a>
-            <a ng-click="getUserLogs()" class="btn btn-default">Get Logs</a>
+        <div class="deviceAction">
+            <a ng-repeat="device in link_devices" ng-if="!user.active.length" ng-click="linkDevice(device)" class="btn btn-default">
+                <!--{{device}}-->
+                <img ng-if="device==='jawbone'" src="./images/jawbone.jpg">
+                <img ng-if="device==='fitbit'" src="./images/fitbit.png">
+            </a>
+            <a ng-repeat="device in link_devices" ng-if="user.active.length && device===user.active[0]" ng-click="disconnectDevice(device)" class="btn btn-default">Disconnect {{device}}</a>
+
+            <!--<a ng-click="refreshTokens()" class="btn btn-default">Refresh Tokens</a>-->
+            <!--<a ng-click="updateLogs()" class="btn btn-default">Update Logs</a>-->
+            <!--<a ng-click="getUserLogs()" class="btn btn-default">Get Logs</a>-->
         </div>
     </div>
         <div class="lastRow col-xs-12">

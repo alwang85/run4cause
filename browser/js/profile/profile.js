@@ -36,24 +36,37 @@ app.controller('ProfileController', function(logs, $scope, AuthService, UserFact
     $scope.currentMetric = 'distance';
     AuthService.getLoggedInUser().then(function(user){
         $scope.user = user;
+        console.log(user);
         //$scope.link_devices = _.difference(UserFactory.availableDevices, user.active);
         $scope.link_devices = UserFactory.availableDevices;
-        var userLog = UserFactory.currentUserLogs(logs.logData);
-
-        for(var metric in userLog){
-            userLog[metric] = UserFactory.sortArrayByDate(userLog[metric]);
-            if (userLog[metric].length > 0) {
-                userLog[metric].forEach(function(each) {
-                    each.date = each.date.toString().slice(4, 10);
-                });
+        function populateUserLogs(){
+            if(logs){
+                var userLog = UserFactory.currentUserLogs(logs.logData);
+                console.log('log after currentUserLogs',userLog);
+                for(var metric in userLog){
+                    userLog[metric] = UserFactory.sortArrayByDate(userLog[metric]);
+                    if (userLog[metric].length > 0) {
+                        userLog[metric].forEach(function(each) {
+                            each.date = each.date.toString().slice(4, 10);
+                        });
+                    }
+                };
+                $scope.currentUserLogs = UserFactory.aggregateUserLogByCategory(userLog);
+            } else {
+                return;
             }
         };
-        $scope.currentUserLogs = UserFactory.aggregateUserLogByCategory(userLog);
+
+        console.log("currentUserLogs", $scope.currentUserLogs);
         $scope.linkDevice = function(provider) {
             UserFactory
             .linkDevice(provider, user._id)
             .then(function(user) {
-                LoadService.initLoad(user);
+                if(user._id){
+                    $scope.user = user;
+                    populateUserLogs();
+                    LoadService.initLoad(user);
+                }
             });
         };
 
@@ -62,7 +75,9 @@ app.controller('ProfileController', function(logs, $scope, AuthService, UserFact
             .disconnectDevice(provider)
             .then(function(user) {
                     console.log(user);
-                $scope.user = user;
+                if(user._id){
+                    $scope.user = user;
+                }
             });
         };
 
@@ -84,7 +99,9 @@ app.controller('ProfileController', function(logs, $scope, AuthService, UserFact
 
             });
         };
+        populateUserLogs();
     });
+
 });
 
 app.controller('DashboardController', function($modal, $http, $scope) {
