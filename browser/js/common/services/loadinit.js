@@ -46,6 +46,8 @@ app.service("LoadService", function($q, $rootScope, UserFactory) {
                 });
             }
         }
+
+        return promise;
     };
 
     // Fitbit tends to fail at refreshing tokens, so create an option to re-link your devices

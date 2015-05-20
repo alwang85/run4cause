@@ -8,14 +8,6 @@ app.config(function ($stateProvider) {
         controller: 'ProfileController',
         data : {
             authenticate : true
-        },
-        resolve : {
-            logs: function(UserFactory){
-                    return UserFactory.getUserLogs().then(function(log) {
-                       return log;
-                    });
-
-            }
         }
     });
     $stateProvider.state('profile.events', {
@@ -29,26 +21,40 @@ app.config(function ($stateProvider) {
 
 });
 
-app.controller('ProfileController', function(logs, $scope, AuthService, UserFactory, LoadService) {
+app.controller('ProfileController', function($scope, AuthService, UserFactory, LoadService, $rootScope) {
     $scope.user = null;
     $scope.showDate = false;
-    $scope.user_log = logs;
     $scope.currentMetric = 'distance';
     AuthService.getLoggedInUser().then(function(user){
         $scope.user = user;
+        console.log(user);
         //$scope.link_devices = _.difference(UserFactory.availableDevices, user.active);
         $scope.link_devices = UserFactory.availableDevices;
-        var userLog = UserFactory.currentUserLogs(logs.logData);
 
-        for(var metric in userLog){
-            userLog[metric] = UserFactory.sortArrayByDate(userLog[metric]);
-            if (userLog[metric].length > 0) {
-                userLog[metric].forEach(function(each) {
-                    each.date = each.date.toString().slice(4, 10);
-                });
+
+          UserFactory.getUserLogs().then(function(log) {
+            $scope.logs = log;
+            populateUserLogs();
+          })
+
+        function populateUserLogs(){
+            if($scope.logs){
+                var userLog = UserFactory.currentUserLogs($scope.logs.logData);
+                console.log('log after currentUserLogs',userLog);
+                for(var metric in userLog){
+                    userLog[metric] = UserFactory.sortArrayByDate(userLog[metric]);
+                    if (userLog[metric].length > 0) {
+                        userLog[metric].forEach(function(each) {
+                            each.date = each.date.toString().slice(4, 10);
+                        });
+                    }
+                };
+                $scope.currentUserLogs = UserFactory.aggregateUserLogByCategory(userLog);
+            } else {
+                return;
             }
-        };
-        $scope.currentUserLogs = UserFactory.aggregateUserLogByCategory(userLog);
+        }
+
         $scope.linkDevice = function(provider) {
             UserFactory
             .linkDevice(provider, user._id)
@@ -57,18 +63,25 @@ app.controller('ProfileController', function(logs, $scope, AuthService, UserFact
             });
         };
 
+      $rootScope.$on(LoadService.events.loadingComplete, function(event, logs){
+        $scope.logs = logs;
+        populateUserLogs();
+      });
+
         $scope.disconnectDevice = function(provider) {
             UserFactory
             .disconnectDevice(provider)
             .then(function(user) {
                     console.log(user);
-                $scope.user = user;
+                if(user._id){
+                    $scope.user = user;
+                }
             });
         };
 
         $scope.updateLogs = function() {
             UserFactory.updateLogs().then(function(logs) {
-                $scope.user_log = logs;
+                $scope.logs = logs;
             });
         };
 
@@ -80,11 +93,12 @@ app.controller('ProfileController', function(logs, $scope, AuthService, UserFact
 
         $scope.getUserLogs = function() {
             UserFactory.getUserLogs().then(function(log) {
-                $scope.user_log = log;
+                $scope.logs = log;
 
             });
         };
     });
+
 });
 
 app.controller('DashboardController', function($modal, $http, $scope) {
