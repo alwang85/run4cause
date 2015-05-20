@@ -49,6 +49,7 @@ app.controller('ProfileController', function(logs, $scope, AuthService, UserFact
             }
         };
         $scope.currentUserLogs = UserFactory.aggregateUserLogByCategory(userLog);
+        console.log("currentUserLogs", $scope.currentUserLogs);
         $scope.linkDevice = function(provider) {
             UserFactory
             .linkDevice(provider, user._id)
