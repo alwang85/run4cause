@@ -65,8 +65,8 @@
         <!--<h3>{{user.email}}</h3><br/>-->
 
         <div ng-if="user.active.length" ><h3>Current Device:</h3></div>
-        <h3 style="color:skyblue">{{user.active[0]}}</h3>
-        <h4 ng-if="!user.active.length" class="linkDevice" style="color:skyblue">Linke your device below</h4>
+        <h3 class="currentDevice">{{user.active[0]}}</h3>
+        <h4 ng-if="!user.active.length" class="linkDevice">Link your device</h4>
 
         <div class="deviceAction">
             <a ng-repeat="device in link_devices" ng-if="!user.active.length" ng-click="linkDevice(device)" class="btn btn-default">
