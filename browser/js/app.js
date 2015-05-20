@@ -23,7 +23,7 @@ app.constant("Client", {
 });
 app.constant("Server", {
   "jawbone" : {
-    "client_id" : "jiASw9I4DB0",
+    "client_id" : "6C_7FWtTs9k",
     "authorizationURL": 'https://jawbone.com/auth/oauth2/auth',
     "scope" : ['basic_read', 'sleep_read', 'move_read']
   },
