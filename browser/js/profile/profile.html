@@ -44,11 +44,11 @@
         <div class="title col-xs-12">
             <div class="title">
                 <h4 ng-if="currentMetric==='distance'">DISTANCE (MILES)</h4>
-                <bar-chart class="barChart" ng-if="currentMetric==='distance' && user_log" log="user_log" metric="distance"></bar-chart>
+                <bar-chart class="barChart" ng-if="currentMetric==='distance' && logs" log="logs" metric="distance"></bar-chart>
                 <h4 ng-if="currentMetric==='steps'">STEPS (STEPS)</h4>
-                <bar-chart class="barChart" ng-if="currentMetric==='steps' && user_log" log="user_log" metric="steps"></bar-chart>
+                <bar-chart class="barChart" ng-if="currentMetric==='steps' && logs" log="logs" metric="steps"></bar-chart>
                 <h4 ng-if="currentMetric==='calories'">CALORIES (CALORIES)</h4>
-                <bar-chart class="barChart" ng-if="currentMetric==='calories' && user_log" log="user_log" metric="calories"></bar-chart>
+                <bar-chart class="barChart" ng-if="currentMetric==='calories' && logs" log="logs" metric="calories"></bar-chart>
             </div>
         </div>
     </div>

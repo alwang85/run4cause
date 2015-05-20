@@ -8,14 +8,6 @@ app.config(function ($stateProvider) {
         controller: 'ProfileController',
         data : {
             authenticate : true
-        },
-        resolve : {
-            logs: function(UserFactory){
-                    return UserFactory.getUserLogs().then(function(log) {
-                       return log;
-                    });
-
-            }
         }
     });
     $stateProvider.state('profile.events', {
@@ -29,19 +21,25 @@ app.config(function ($stateProvider) {
 
 });
 
-app.controller('ProfileController', function(logs, $scope, AuthService, UserFactory, LoadService) {
+app.controller('ProfileController', function($scope, AuthService, UserFactory, LoadService, $rootScope) {
     $scope.user = null;
     $scope.showDate = false;
-    $scope.user_log = logs;
     $scope.currentMetric = 'distance';
     AuthService.getLoggedInUser().then(function(user){
         $scope.user = user;
         console.log(user);
         //$scope.link_devices = _.difference(UserFactory.availableDevices, user.active);
         $scope.link_devices = UserFactory.availableDevices;
+
+
+          UserFactory.getUserLogs().then(function(log) {
+            $scope.logs = log;
+            populateUserLogs();
+          })
+
         function populateUserLogs(){
-            if(logs){
-                var userLog = UserFactory.currentUserLogs(logs.logData);
+            if($scope.logs){
+                var userLog = UserFactory.currentUserLogs($scope.logs.logData);
                 console.log('log after currentUserLogs',userLog);
                 for(var metric in userLog){
                     userLog[metric] = UserFactory.sortArrayByDate(userLog[metric]);
@@ -55,20 +53,20 @@ app.controller('ProfileController', function(logs, $scope, AuthService, UserFact
             } else {
                 return;
             }
-        };
+        }
 
-        console.log("currentUserLogs", $scope.currentUserLogs);
         $scope.linkDevice = function(provider) {
             UserFactory
             .linkDevice(provider, user._id)
             .then(function(user) {
-                if(user._id){
-                    $scope.user = user;
-                    populateUserLogs();
-                    LoadService.initLoad(user);
-                }
+                LoadService.initLoad(user);
             });
         };
+
+      $rootScope.$on(LoadService.events.loadingComplete, function(event, logs){
+        $scope.logs = logs;
+        populateUserLogs();
+      });
 
         $scope.disconnectDevice = function(provider) {
             UserFactory
@@ -83,7 +81,7 @@ app.controller('ProfileController', function(logs, $scope, AuthService, UserFact
 
         $scope.updateLogs = function() {
             UserFactory.updateLogs().then(function(logs) {
-                $scope.user_log = logs;
+                $scope.logs = logs;
             });
         };
 
@@ -95,11 +93,10 @@ app.controller('ProfileController', function(logs, $scope, AuthService, UserFact
 
         $scope.getUserLogs = function() {
             UserFactory.getUserLogs().then(function(log) {
-                $scope.user_log = log;
+                $scope.logs = log;
 
             });
         };
-        populateUserLogs();
     });
 
 });
