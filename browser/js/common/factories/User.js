@@ -47,14 +47,16 @@ app.factory('UserFactory', function($http, $q, $auth) {
             sleep: 0
         };
 
-        for(var metric in userLog){
-            objToReturn.startDate = userLog[metric][0].date;
-            objToReturn.endDate = userLog[metric][userLog[metric].length-1].date;
-            userLog[metric].forEach(function(eachDay){
-                if(metric === 'distance') objToReturn[metric] += (eachDay.qty/1609.34);
-                else objToReturn[metric] += +eachDay.qty;
-            });
-        };
+        if (userLog.length > 0) {
+            for(var metric in userLog){
+                objToReturn.startDate = userLog[metric][0].date;
+                objToReturn.endDate = userLog[metric][userLog[metric].length-1].date;
+                userLog[metric].forEach(function(eachDay){
+                    if(metric === 'distance') objToReturn[metric] += (eachDay.qty/1609.34);
+                    else objToReturn[metric] += +eachDay.qty;
+                });
+            }
+        }
         return objToReturn;
     };
 
