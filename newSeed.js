@@ -22,7 +22,6 @@
 var mongoose = require('mongoose');
 var connectToDb = require('./server/db');
 var User = mongoose.model('User');
-var Nonprofit = mongoose.model('Nonprofit');
 var Event = mongoose.model('Event');
 var Message = mongoose.model('Message');
 
@@ -33,25 +32,6 @@ var chalk = require('chalk');
 
 var getCurrentUserData = function () {
     return q.ninvoke(User, 'find', {});
-};
-
-var seedUsers = function () {
-
-    var users = [
-        {
-            email: 'testing@fsa.com',
-            password: 'password',
-            lastLogDate: new Date((new Date()).getTime() - 4*24*60*60*1000)
-        },
-        {
-            email: 'obama@gmail.com',
-            password: 'potus',
-            lastLogDate: new Date((new Date()).getTime() - 4*24*60*60*1000)
-        }
-
-    ];
-    return q.invoke(User, 'create', users);
-
 };
 
 var seedEvents = function(){
@@ -69,21 +49,14 @@ var seedEvents = function(){
         goals:[{
             metrics: {
                 measurement: 'distance',
-                target: 100000,
+                target: 100,
                 progress: 0
             },
             category: 'total'
-        },{
-          metrics: {
-            measurement: 'calories',
-            target: 200000,
-            progress: 0
-          },
-          category: 'total'
         }],
-        creator: users[0],
+        creator: users[2],
         sponsors: [{
-          user: users[0],
+          user: users[3],
           details: {
             '0': 10,
             '25': 20,
@@ -91,18 +64,36 @@ var seedEvents = function(){
             '75': 40,
             '100': 50
           }
+        },{
+          user: users[2],
+          details: {
+            '0': 10,
+            '25': 10,
+            '50': 10,
+            '75': 10,
+            '100': 10
+          }
         }],
         challengers: [{
-            user: users[0],
-            individualProgress: 0
+          user: users[0],
+          individualProgress: 0
         },{
-            user: users[1],
-            individualProgress: 0
+          user: users[1],
+          individualProgress: 0
+        },{
+          user: users[2],
+          individualProgress: 0
+        },{
+          user: users[3],
+          individualProgress: 0
+        },{
+          user: users[4],
+          individualProgress: 0
         }],
         startDate: new Date('2015-03-11'),
         endDate: new Date('2015-06-18'),
-        description: "Lets walk lots of miles.",
-        name: "Walk."
+        description: "Dennis is a student in Kenya. His family struggled to education him so that he could help them in the future, however a past injury prevents Dennis from walking without pain.",
+        name: "Walking for Dennis"
       },
       {
           group: true,
@@ -114,7 +105,7 @@ var seedEvents = function(){
           },
           goals:[{  metrics: {
                   measurement: 'distance',
-                  target: 50000,
+                  target: 300,
                   progress: 0
               },
               category: 'total'
@@ -122,12 +113,12 @@ var seedEvents = function(){
           {
               metrics: {
                   measurement: 'steps',
-                  target: 50000,
+                  target: 5000,
                   progress: 0
               },
               category: 'total'
           }],
-          creator: users[0],
+          creator: users[3],
           sponsors: [{
             user: users[1],
             details: {
@@ -139,16 +130,25 @@ var seedEvents = function(){
             }
           }],
           challengers: [{
-              user: users[0],
+            user: users[0],
+            individualProgress: 0
+          },{
+            user: users[1],
+            individualProgress: 0
+          },{
+              user: users[2],
               individualProgress: 0
           },{
-              user: users[1],
+              user: users[3],
               individualProgress: 0
+          },{
+            user: users[4],
+            individualProgress: 0
           }],
           startDate: new Date('2015-03-11'),
           endDate: new Date('2015-06-18'),
-          description: "many things",
-          name: "Walk Sleep."
+          description: "Yoon is a 12 year old girl from Burma, and has lacked in energy and appetite for her entire life due to a damaged heart valve. Her symptoms because so severe that she eventually had to drop out of 4th Grade. We strive to give her better options",
+          name: "Walking for Yoon."
       }
       ];
       return q.invoke(Event, 'create', Events);
@@ -160,17 +160,51 @@ var seedMessages = function(){
       //console.log('users inside new seed events', users);
       var Messages = [{
         timestamp: new Date,
-        sender: users[0],
+        sender: users[2],
         recipient: users[1],
-        title: "welcome",
-        content: "this is a test email"
+        title: "Thanks for helping Dennis!",
+        content: "I'd just like to say thank you for joining this event. It is heart breaking to hear how a family struggled to raise one of their children to become educated and their financial hope, and then disabled due to illness. We thank you for joining in physically to accomplish the challenge!"
       },
         {
           timestamp: new Date,
-          sender: users[1],
-          recipient: users[0],
-          title: "goodbye",
-          content: "this is a test email2"
+          sender: users[2],
+          recipient: users[4],
+          title: "Thanks for helping Dennis!",
+          content: "I'd just like to say thank you for joining this event. It is heart breaking to hear how a family struggled to raise one of their children to become educated and their financial hope, and then disabled due to illness. We thank you for joining in physically to accomplish the challenge!"
+        },
+        {
+          timestamp: new Date,
+          sender: users[2],
+          recipient: users[3],
+          title: "Thanks for helping Dennis!",
+          content: "I'd just like to say thank you for sponsoring this event. It is heart breaking to hear how a family struggled to raise one of their children to become educated and their financial hope, and then disabled due to illness. We thank you for sponsoring the other challenges for this event!"
+        },{
+          timestamp: new Date,
+          sender: users[3],
+          recipient: users[2],
+          title: "Thanks for helping Yoon!",
+          content: "I'd just like to say thank you for joining this event. It is heart breaking to hear how a child of just 12 years has dropped from 4th grade due to a heart disease. We thank you for joining in physically to accomplish the challenge!"
+        },
+        {
+          timestamp: new Date,
+          sender: users[3],
+          recipient: users[3],
+          title: "Thanks for helping Yoon!",
+          content: "I'd just like to say thank you for joining this event. It is heart breaking to hear how a child of just 12 years has dropped from 4th grade due to a heart disease. We thank you for joining in physically to accomplish the challenge!"
+        },
+        {
+          timestamp: new Date,
+          sender: users[3],
+          recipient: users[4],
+          title: "Thanks for helping Yoon!",
+          content: "I'd just like to say thank you for joining this event. It is heart breaking to hear how a child of just 12 years has dropped from 4th grade due to a heart disease. We thank you for joining in physically to accomplish the challenge!"
+        },
+        {
+          timestamp: new Date,
+          sender: users[3],
+          recipient: users[1],
+          title: "Thanks for helping Yoon!",
+          content: "I'd just like to say thank you for sponsoring this event. It is heart breaking to hear how a child of just 12 years has dropped from 4th grade due to a heart disease. We thank you for sponsoring the other challenges for this event!"
         }
       ];
       return q.invoke(Message, 'create', Messages);
@@ -180,15 +214,16 @@ var seedMessages = function(){
 connectToDb.then(function () {
     getCurrentUserData().then(function (users) {
       console.log('assuming users already exist with activity data!');
-    }).then(function(users) {
-        //console.log('before seedNonProfit');
-        return seedEvents().then(function() {
+    }).then(function() {
           //console.log('before seedAPI');
-          return seedMessages().then(function () {
-            console.log(chalk.green('Seed successful!'));
-            process.kill(0);
-          });
-        });
+                return seedEvents().then(function() {
+                  //console.log('before seedAPI');
+                  return seedMessages().then(function () {
+                    console.log(chalk.green('Seed successful!'));
+                    process.kill(0);
+                  });
+          })
+
     }).catch(function (err) {
         console.error(err);
         process.kill(1);

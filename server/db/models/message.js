@@ -56,7 +56,7 @@ schema.statics.messageSponsors = function (event, sender, title, content, cb){
 };
 schema.statics.eventSuccess = function (event, cb){
   var that = this;
-  User.findOne({email: 'admin@admin.com'}, function(err, foundUser) {
+  User.findOne({email: 'admin@impactmission.io'}, function(err, foundUser) {
     //console.log('found admin in eventSuccess', foundUser);
     var sender = foundUser._id;
     var title = 'The event goals you sponsored have been reached!';

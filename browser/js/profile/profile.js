@@ -34,12 +34,18 @@ app.controller('ProfileController', function(logs, $scope, AuthService, UserFact
     $scope.showDate = false;
     $scope.user_log = logs;
     $scope.currentMetric = 'distance';
-    console.log($scope.currentMetric)
     AuthService.getLoggedInUser().then(function(user){
         $scope.user = user;
         //$scope.link_devices = _.difference(UserFactory.availableDevices, user.active);
         $scope.link_devices = UserFactory.availableDevices;
-        $scope.currentUserLogs = UserFactory.currentUserLogs;
+        var userLog = UserFactory.currentUserLogs(logs.logData);
+        for(var metric in userLog){
+            userLog[metric] = UserFactory.sortArrayByDate(userLog[metric])
+            userLog[metric].forEach(function(each) {
+                each.date = each.date.toString().slice(4, 10);
+            });
+        };
+        $scope.currentUserLogs = UserFactory.aggregateUserLogByCategory(userLog);
         $scope.linkDevice = function(provider) {
             UserFactory
             .linkDevice(provider, user._id)

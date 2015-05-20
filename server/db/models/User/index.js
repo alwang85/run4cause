@@ -30,7 +30,9 @@ var schema = new mongoose.Schema({
     },
     friends: [{
       type: mongoose.Schema.Types.ObjectId, ref: 'User'
-    }]
+    }],
+    profile : String,
+    username: String
 });
 
 // generateSalt, encryptPassword and the pre 'save' and 'correctPassword' operations
