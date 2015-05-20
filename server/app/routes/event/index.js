@@ -24,6 +24,8 @@ router.post('/', function (req,res,next){
 
 router.get('/', function (req,res,next){
     Event.find({}).deepPopulate('creator challengers.user nonProfit sponsors.user').exec(function(err, events){
+        if (err) return next(err);
+
         var promises = events.map(function(eachEvent){
             return new Promise(function(resolve,reject) {
                 resolve(eachEvent.calculateProgress());
