@@ -16,6 +16,12 @@
             margin-bottom: 25px;
             list-style: none;
 
+            .event-item-wrapper {
+                width: 100%;
+                position: relative;
+                @include clearfix();
+            }
+
             .event-item {
                 background: #ecf0f1;
                 border-radius: 5px 5px 0 0;
@@ -174,16 +180,123 @@
                         }
                         display: block;
                         text-align: left;
-                        font-size: 17px;
+                        font-size: 15px;
                         line-height: 125%;
                     }
                 } // end of event-detail
 
                 .event-statistics {
-                    background:#000;
-                    height: 0px;
+                    opacity: 0;
                     transform: translate3d(0,0,0);
                     transition: all 0.6s ease-in-out;
+
+                    .money-raised {
+                        margin: 16px auto;
+                        width: 120px;
+                        height: 120px;
+                        background: $blue-color;
+                        color:#FFF;
+                        display:table;
+                        vertical-align: middle;
+                        border-radius:60px;
+                        text-align: center;
+                        span {
+                            display: table-cell;
+                            vertical-align: middle;
+                            font-size: 22px;
+                            line-height: 125%;
+                        }
+                    }
+
+                    .list-buttons {
+                        width: 100%;
+                        text-align: center;
+                        button {
+                            width: 100%;
+                            margin: 4px 0;
+                            border: 0;
+                            background: $green-color;
+                            transform: translate3d(0,0,0);
+                            transition: background 0.2s linear;
+
+                            &:hover {
+                                background: darken($green-color, 10%);
+                            }
+                        }
+                    }
+                }
+
+                .event-modal {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    width: 0%;
+                    height: 0%;
+                    background: rgba(0,0,0,0.95);
+                    z-index : 5;
+                    border-radius: 5px 5px 0 0;
+                    overflow: auto;
+
+                    transform: translate3d(0,0,0);
+                    transition: all 0.2s linear;
+
+                    .event-close {
+                        position: absolute;
+                        top: 10px;
+                        right: 10px;
+                        i {
+                            color: #FFF;
+                            font-size: 20px;
+                        }
+                    }
+
+                    ul {
+                        margin:0;
+                        padding: 0;
+                        li {
+                            @include clearfix();
+                            overflow: hidden;
+                            margin: 0;
+                            padding: 0;
+                            list-style: none;
+                            width: 100%;
+                            text-align: left;
+                            margin-bottom: 8px;
+
+                            img {
+                                display: inline-block;
+                                width: 65px;
+                                height: 65px;
+                                border-radius: 40px;
+                                margin-bottom: 8px;
+                                float: left;
+                                margin-right: 16px;
+                            }
+
+                            h4 {
+                                display: block;
+                                float:left;
+                                clear: right;
+                                line-height: 100%;
+                                color: #FFF;
+                                position: relative;
+                                top: 12px;
+                                span {
+                                    font-family: "Open Sans", sans-serif;
+                                    font-weight: 400;
+                                    font-size: 16px;
+                                }
+                            }
+                        }
+                    }
+
+                    &.enabled {
+                        top: 0%;
+                        left: 0%;
+                        width: 100%;
+                        height: 100%;
+                        padding: 20px;
+                    }
                 }
 
                 &:hover, .event-active {
@@ -204,6 +317,10 @@
                     .goals {
                         height: 0px;
                         opacity: 0;
+                    }
+
+                    .event-statistics {
+                        opacity: 1;
                     }
                 }
             } // end of event-item
@@ -245,6 +362,12 @@
                     button {
                         border-radius: 0 0 5px 5px;
                     }
+                }
+
+                .item-footer {
+                    padding: 16px;
+                    background: #424242;
+                    border-radius: 0 0 5px 5px;
                 }
             } // end of creatorFunctionalities
         } // end of event-item-container
