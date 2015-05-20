@@ -46,8 +46,6 @@ app.factory('UserFactory', function($http, $q, $auth) {
             calories: 0,
             sleep: 0
         };
-
-        if (userLog.length > 0) {
             for(var metric in userLog){
                 objToReturn.startDate = userLog[metric][0].date;
                 objToReturn.endDate = userLog[metric][userLog[metric].length-1].date;
@@ -56,7 +54,6 @@ app.factory('UserFactory', function($http, $q, $auth) {
                     else objToReturn[metric] += +eachDay.qty;
                 });
             }
-        }
         return objToReturn;
     };
 
