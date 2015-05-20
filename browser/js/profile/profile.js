@@ -36,6 +36,7 @@ app.controller('ProfileController', function(logs, $scope, AuthService, UserFact
     $scope.currentMetric = 'distance';
     AuthService.getLoggedInUser().then(function(user){
         $scope.user = user;
+        console.log(user);
         //$scope.link_devices = _.difference(UserFactory.availableDevices, user.active);
         $scope.link_devices = UserFactory.availableDevices;
         var userLog = UserFactory.currentUserLogs(logs.logData);
@@ -54,7 +55,10 @@ app.controller('ProfileController', function(logs, $scope, AuthService, UserFact
             UserFactory
             .linkDevice(provider, user._id)
             .then(function(user) {
-                LoadService.initLoad(user);
+                if(user._id){
+                    $scope.user = user;
+                    LoadService.initLoad(user);
+                }
             });
         };
 
@@ -63,7 +67,9 @@ app.controller('ProfileController', function(logs, $scope, AuthService, UserFact
             .disconnectDevice(provider)
             .then(function(user) {
                     console.log(user);
-                $scope.user = user;
+                if(user._id){
+                    $scope.user = user;
+                }
             });
         };
 

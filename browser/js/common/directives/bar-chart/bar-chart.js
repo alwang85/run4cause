@@ -44,6 +44,7 @@ app.directive('barChart', function($timeout, UserFactory){
 
 
            $timeout(function() {
+
                var myBarChart = new Chart(context).Line(data,option);
            });
 
