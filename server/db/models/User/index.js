@@ -1,13 +1,14 @@
 'use strict';
 var crypto = require('crypto');
 var mongoose = require('mongoose');
+var Promise = require('bluebird');
 
 var schema = new mongoose.Schema({
     active : {type: [String], default: []},
     firstName : String,
     lastName  : String,
     joinedTime : { type: Date, default : Date.now }, // might be needed to get the initial batch of logs
-    lastLogUpdate : {type: Date, default : Date.now },
+    lastLogUpdate : {type: Date },
     email: {
         type: String
     },
@@ -70,5 +71,21 @@ schema.method('parseLogData', require('./parseLogData'));
 schema.method('updateUserLogs', require('./updateUserLogs'));
 schema.method('getUserLogs', require('./getUserLogs'));
 schema.method('getOrCreateUserLogs', require('./getOrCreateUserLogs'));
+
+schema.method('getUserEvents', function() {
+    var user = this;
+    return new Promise(function(resolve, reject) {
+        user.model('Event').find({
+            challengers : {
+                '$elemMatch' : { user : user._id }
+            },
+            status : 'Active'
+        }).select('creator').exec(function(err, events) {
+            if (err) return reject(err);
+
+            resolve(events);
+        });
+    });
+});
 
 mongoose.model('User', schema);

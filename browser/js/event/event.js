@@ -13,7 +13,9 @@ app.config(function($stateProvider){
    });
 });
 
-app.controller('EventController', function(UserFactory, user, $modal, $state, $scope, Event, Message){
+
+app.controller('EventController', function(user, $modal, $state, $scope, Event, Message, SocketFactory, UserFactory){
+
     Event.getAllEvents().then(function (allEvents) {
         return allEvents;
     }).then(function (allEvents) {
@@ -31,10 +33,12 @@ app.controller('EventController', function(UserFactory, user, $modal, $state, $s
 
         });
     };
+
     $scope.editEvent = function(eventId) {
         Event.editing.id = eventId;
         $state.go('editEvent');
     };
+
     $scope.currentEventMetrics = function(event){
         var metrics = [];
         event.goals.forEach(function(goal){
@@ -42,6 +46,7 @@ app.controller('EventController', function(UserFactory, user, $modal, $state, $s
         });
         return metrics;
     };
+
     $scope.checkParticipation = function(event){
         var participating = false;
         event.challengers.forEach(function(challenger){
@@ -49,6 +54,7 @@ app.controller('EventController', function(UserFactory, user, $modal, $state, $s
         });
         return participating
     };
+
     $scope.deleteEvent = function(event){
         Event.deleteEvent(event._id).then(function(status){
            $scope.events = $scope.events.filter(function(eachEvent){
@@ -58,6 +64,7 @@ app.controller('EventController', function(UserFactory, user, $modal, $state, $s
             console.log(err);
         });
     };
+
     $scope.joinEvent = function(event){
         Event.joinEvent(event._id).then(function(savedEvents){
             return savedEvents;
@@ -87,6 +94,7 @@ app.controller('EventController', function(UserFactory, user, $modal, $state, $s
             });
         });
     };
+
     $scope.sponsorEvent = function(event){
         var modalInstance = $modal.open({
             templateUrl: '/js/sponsor/sponsor.html',
@@ -96,7 +104,11 @@ app.controller('EventController', function(UserFactory, user, $modal, $state, $s
         });
 
         Event.editing.id = event._id;
-
     };
 
+    var socket = SocketFactory.getSocket();
+
+    socket.on('eventsChange', function(events) {
+        console.log(events);
+    });
 });
