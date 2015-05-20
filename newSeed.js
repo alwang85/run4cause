@@ -95,7 +95,7 @@ var seedEvents = function(){
         description: "Dennis is a student in Kenya. His family struggled to education him so that he could help them in the future, however a past injury prevents Dennis from walking without pain.",
         name: "Walking for Dennis"
       },
-      {
+        {
           group: true,
           contest: false,
           progress: 0,
@@ -104,20 +104,20 @@ var seedEvents = function(){
             token: '38453c4bb6a2'
           },
           goals:[{  metrics: {
-                  measurement: 'distance',
-                  target: 300,
-                  progress: 0
-              },
-              category: 'total'
+            measurement: 'distance',
+            target: 300,
+            progress: 0
           },
-          {
+            category: 'total'
+          },
+            {
               metrics: {
-                  measurement: 'steps',
-                  target: 5000,
-                  progress: 0
+                measurement: 'steps',
+                target: 5000,
+                progress: 0
               },
               category: 'total'
-          }],
+            }],
           creator: users[3],
           sponsors: [{
             user: users[1],
@@ -136,11 +136,11 @@ var seedEvents = function(){
             user: users[1],
             individualProgress: 0
           },{
-              user: users[2],
-              individualProgress: 0
+            user: users[2],
+            individualProgress: 0
           },{
-              user: users[3],
-              individualProgress: 0
+            user: users[3],
+            individualProgress: 0
           },{
             user: users[4],
             individualProgress: 0
@@ -149,7 +149,117 @@ var seedEvents = function(){
           endDate: new Date('2015-06-18'),
           description: "Yoon is a 12 year old girl from Burma, and has lacked in energy and appetite for her entire life due to a damaged heart valve. Her symptoms because so severe that she eventually had to drop out of 4th Grade. We strive to give her better options",
           name: "Walking for Yoon."
-      }
+        },
+        {
+          group: true,
+          contest: false,
+          progress: 0,
+          patient: {
+            name: "John",
+            token: '8948bccfeec2'
+          },
+          goals:[{  metrics: {
+            measurement: 'distance',
+            target: 200,
+            progress: 0
+          },
+            category: 'total'
+          },
+            {
+              metrics: {
+                measurement: 'steps',
+                target: 3500,
+                progress: 0
+              },
+              category: 'total'
+            }],
+          creator: users[4],
+          sponsors: [{
+            user: users[1],
+            details: {
+              '0': 50,
+              '25': 40,
+              '50': 30,
+              '75': 20,
+              '100': 10
+            }
+          }],
+          challengers: [{
+            user: users[0],
+            individualProgress: 0
+          },{
+            user: users[1],
+            individualProgress: 0
+          },{
+            user: users[2],
+            individualProgress: 0
+          },{
+            user: users[3],
+            individualProgress: 0
+          },{
+            user: users[4],
+            individualProgress: 0
+          }],
+          startDate: new Date('2015-03-11'),
+          endDate: new Date('2015-06-18'),
+          description: "John is a husband and father living in Kenya. He was ambushed while traveling between work-sites, and has since been unable to work without support and has been in severe pain. Help John to avoid possible severe infection, and get back on his feet to work.",
+          name: "Run for John."
+        },
+        {
+          group: true,
+          contest: false,
+          progress: 0,
+          patient: {
+            name: "Djeneba",
+            token: 'a3e99f5854e1'
+          },
+          goals:[{  metrics: {
+            measurement: 'distance',
+            target: 500,
+            progress: 0
+          },
+            category: 'total'
+          },
+            {
+              metrics: {
+                measurement: 'steps',
+                target: 5000,
+                progress: 0
+              },
+              category: 'total'
+            }],
+          creator: users[1],
+          sponsors: [{
+            user: users[4],
+            details: {
+              '0': 50,
+              '25': 40,
+              '50': 30,
+              '75': 20,
+              '100': 10
+            }
+          }],
+          challengers: [{
+            user: users[0],
+            individualProgress: 0
+          },{
+            user: users[1],
+            individualProgress: 0
+          },{
+            user: users[2],
+            individualProgress: 0
+          },{
+            user: users[3],
+            individualProgress: 0
+          },{
+            user: users[4],
+            individualProgress: 0
+          }],
+          startDate: new Date('2015-03-11'),
+          endDate: new Date('2015-06-18'),
+          description: "Dejeneba is a mother of three living in Mali. A growing infected ulcer worsened to a severe state with the various mixtures from a traditional healer  failing as a remedy. Help Dejeneba receive lowr extremity ulcer care and allow her to continue with her daily life.",
+          name: "Help Dejeneba work again"
+        }
       ];
       return q.invoke(Event, 'create', Events);
     });
@@ -188,13 +298,6 @@ var seedMessages = function(){
         {
           timestamp: new Date,
           sender: users[3],
-          recipient: users[3],
-          title: "Thanks for helping Yoon!",
-          content: "I'd just like to say thank you for joining this event. It is heart breaking to hear how a child of just 12 years has dropped from 4th grade due to a heart disease. We thank you for joining in physically to accomplish the challenge!"
-        },
-        {
-          timestamp: new Date,
-          sender: users[3],
           recipient: users[4],
           title: "Thanks for helping Yoon!",
           content: "I'd just like to say thank you for joining this event. It is heart breaking to hear how a child of just 12 years has dropped from 4th grade due to a heart disease. We thank you for joining in physically to accomplish the challenge!"
@@ -205,6 +308,59 @@ var seedMessages = function(){
           recipient: users[1],
           title: "Thanks for helping Yoon!",
           content: "I'd just like to say thank you for sponsoring this event. It is heart breaking to hear how a child of just 12 years has dropped from 4th grade due to a heart disease. We thank you for sponsoring the other challenges for this event!"
+        },{
+          timestamp: new Date,
+          sender: users[4],
+          recipient: users[2],
+          title: "Thanks for helping John!",
+          content: "I'd just like to say thank you for joining this event. Your efforts could help John get back on his feet and help prevent potential amputation. We thank you for joining in physically to accomplish the challenge!"
+        },
+        {
+          timestamp: new Date,
+          sender: users[4],
+          recipient: users[3],
+          title: "Thanks for helping John!",
+          content: "I'd just like to say thank you for joining this event. Your efforts could help John get back on his feet and help prevent potential amputation. We thank you for joining in physically to accomplish the challenge!"
+        },
+        {
+          timestamp: new Date,
+          sender: users[4],
+          recipient: users[1],
+          title: "Thanks for helping John!",
+          content: "I'd just like to say thank you for joining this event. Your efforts could help John get back on his feet and help prevent potential amputation. We thank you for joining in physically to accomplish the challenge!"
+        },{
+          timestamp: new Date,
+          sender: users[4],
+          recipient: users[1],
+          title: "Thanks for helping John!!",
+          content: "I'd just like to say thank you for sponsoring this event. Your efforts could help John get back on his feet and help prevent potential amputation. We thank you for sponsoring the other challenges for this event!"
+        },
+        {
+          timestamp: new Date,
+          sender: users[1],
+          recipient: users[2],
+          title: "Thanks for helping Dejeneba!",
+          content: "I'd just like to say thank you for joining this event. Your efforts could help Dejeneba get back on her feet and help prevent potential amputation. We thank you for joining in physically to accomplish the challenge!"
+        },
+        {
+          timestamp: new Date,
+          sender: users[1],
+          recipient: users[3],
+          title: "Thanks for helping Dejeneba!",
+          content: "I'd just like to say thank you for joining this event. Your efforts could help Dejeneba get back on her feet and help prevent potential amputation. We thank you for joining in physically to accomplish the challenge!"
+        },
+        {
+          timestamp: new Date,
+          sender: users[1],
+          recipient: users[4],
+          title: "Thanks for helping Dejeneba!",
+          content: "I'd just like to say thank you for joining this event. Your efforts could help Dejeneba get back on her feet and help prevent potential amputation. We thank you for joining in physically to accomplish the challenge!"
+        },{
+          timestamp: new Date,
+          sender: users[1],
+          recipient: users[4],
+          title: "Thanks for helping Dejeneba!!",
+          content: "I'd just like to say thank you for sponsoring this event. Your efforts could help Dejeneba get back on her feet and help prevent potential amputation. We thank you for sponsoring the other challenges for this event!"
         }
       ];
       return q.invoke(Message, 'create', Messages);
