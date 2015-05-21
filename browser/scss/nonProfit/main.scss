@@ -7,13 +7,15 @@
 
   }
   .patient-container {
+    border-radius: 5px;
     background: #ecf0f1;
     margin-bottom: 15%;
     padding: 0%;
   }
   img {
     width: 100%;
-    padding-bottom: 3%;
+    border-radius: 5px 5px 0 0;
+    border-bottom: 1px solid #DCDCDC;
   }
   p {
     font-size:1.25em;
@@ -23,6 +25,7 @@
 }
 
 .patientInfo {
+  margin-top: 3%;
 
   p {
     font-size: 1.15em;
@@ -32,7 +35,7 @@
 
   button {
     margin-left: 2%;
-    margin-bottom: 2%;
+    margin-bottom: 3%;
 
   }
 
