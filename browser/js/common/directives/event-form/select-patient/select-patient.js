@@ -27,7 +27,9 @@ app.directive('selectPatient', function(NonProfitFactory) {
             };
 
             scope.selectPatient = function(index) {
-                scope.selectedPatient = scope.patients[index].data;
+                console.log(scope.patients)
+                scope.selectedPatient = scope.patients[index];
+                console.log(scope.selectedPatient);
 
                 scope.eventForm.patient = {
                     name : scope.selectedPatient.name,
