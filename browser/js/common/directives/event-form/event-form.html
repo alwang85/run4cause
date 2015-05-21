@@ -27,7 +27,12 @@
                 <duration-input event-form="eventFormData" on-change="updateDuration()"></duration-input>
             </h2>
             <h2>STARTING <date-input event-form="eventFormData"></date-input></h2>
-            <h2>TO SUPPORT <select-patient event-form="eventFormData"></select-patient></h2>
+            <h2>TO SUPPORT <select-patient
+                    event-form="eventFormData"
+            ></select-patient></h2>
+            <h3>IMPACT DESCRIPTION:</h3>
+            <textarea ng-model="eventFormData.description">
+            </textarea>
             <button type="submit" class="btn btn-primary impact-submit">I COMMIT</button>
         </form>
     </div>

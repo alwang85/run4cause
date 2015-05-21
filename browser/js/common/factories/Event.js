@@ -44,8 +44,10 @@ app.factory("Event", function($http, NonProfitFactory){
             return $http.get('/api/event/' + eventId).then(function (res) {
                 return res.data
             }).then(function(event) {
-                event.startDate = new Date(event.startDate);
-                event.endDate = new Date(event.endDate);
+                if (event) {
+                    event.startDate = new Date(event.startDate);
+                    event.endDate = new Date(event.endDate);
+                }
                 return event;
             }).catch(function (err) {
                 console.log(err);
