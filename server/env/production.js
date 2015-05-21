@@ -40,5 +40,10 @@ module.exports = {
     "tokenURL": 'https://jawbone.com/auth/oauth2/token',
     "refreshTokenURL" : "https://jawbone.com/auth/oauth2/token",
     "callbackURL": '/auth/jawbone/callback'
+  },
+  "MEMCACHEDCLOUD": {
+    "SERVERS": process.env.MEMCACHEDCLOUD_SERVERS,
+    "USERNAME": process.env.MEMCACHEDCLOUD_USERNAME,
+    "PASSWORD": process.env.MEMCACHEDCLOUD_PASSWORD
   }
 };

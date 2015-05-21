@@ -7,6 +7,17 @@ var Event = require('mongoose').model('Event');
 var mongoose = require('mongoose');
 var User = mongoose.model("User");
 var deepPopulate = require('mongoose-deep-populate');
+var memjs = require('memjs');
+
+var client = memjs.Client.create(process.env.MEMCACHEDCLOUD_SERVERS, {
+  username: process.env.MEMCACHEDCLOUD_USERNAME,
+  password: process.env.MEMCACHEDCLOUD_PASSWORD
+});
+var broadcastChanges = function() {
+  var io = require('../../../io')();
+
+  io.sockets.emit('eventsChange');
+};
 
 router.post('/', function (req,res,next){
     var body = req.body;
@@ -17,25 +28,32 @@ router.post('/', function (req,res,next){
         savedEvent.creator = req.user;
         savedEvent.challengers.push({user:req.user, individualProgress: 0});
         savedEvent.save(function(err,saved){
+            broadcastChanges();
             res.json(saved);
         });
     })
 });
 
 router.get('/', function (req,res,next){
-    Event.find({}).deepPopulate('creator challengers.user sponsors.user').exec(function(err, events){
-        if (err) return next(err);
-
-        var promises = events.map(function(eachEvent){
-            return new Promise(function(resolve,reject) {
-                resolve(eachEvent.calculateProgress());
-            });
-        });
-
-        return Promise.all(promises).then(function(){
-            res.send(events);
-        }).catch(next);
-    });
+   client.get('AllEvents', function (err, value, key) {
+     if (value != null) {
+       if(err) console.log(err);
+       console.log('using memcached');
+       res.send(JSON.parse(value.toString()));
+     } else {
+       Event.calculateProgressAll(function(err, events){
+         if (err) return next(err);
+         client.set('AllEvents', JSON.stringify(events), function (err, val) {
+           if (err) {
+             console.log('failed to store', err);
+             next(err);
+           }
+           console.log('stored val: ', val);
+         });
+         res.send(events);
+       })
+     };
+   });
 });
 
 router.get('/:eventId', function (req,res,next){
@@ -83,7 +101,19 @@ router.post('/:eventId/join', function(req,res,next){
            });
            event.save(function(err,saved){
                if(err) return next(err);
-               res.json(saved);
+               Event.calculateProgressAll(function(err, events){
+                   if (err) return next(err);
+                   client.replace('AllEvents', JSON.stringify(events), function (err, val) {
+                       if (err) {
+                         console.log('failed to store', err);
+                          next(err);
+                       }
+                     console.log('cache replaced');
+                     //console.log('stored val: ', val);
+                 });
+                 res.json(saved);
+               })
+
            });
        } else {
            res.sendStatus('409');
@@ -103,7 +133,18 @@ router.delete('/:eventId/leave', function(req,res,next){
             event.challengers = filtered;
             event.save(function(err,saved){
                 if (err) return next(err);
-                res.json(saved);
+                Event.calculateProgressAll(function(err, events){
+                    if (err) return next(err);
+                    client.replace('AllEvents', JSON.stringify(events), function (err, val) {
+                        if (err) {
+                          console.log('failed to store', err);
+                            next(err);
+                        }
+                      console.log('cache replaced');
+                      //console.log('stored val: ', val);
+                    });
+                    res.json(saved);
+                })
             });
         } else {
             res.sendStatus('409');
@@ -112,7 +153,7 @@ router.delete('/:eventId/leave', function(req,res,next){
     });
 });
 
-router.put('/:eventId/sponsor', function(req,res,next){
+router.put('/:eventId/sponsor', function(req,res,next){//TODO delete cache + replace
     if (!req.user) return next(new Error('Forbidden: You Must Be Logged In'));
 
     Event.findById(req.params.eventId, function(err,event){
@@ -130,12 +171,28 @@ router.put('/:eventId/sponsor', function(req,res,next){
           });
           event.save(function(err,saved){
               if (err) return next(err);
-              console.log('saved', saved.sponsors);
-              res.send(saved);
+              Event.calculateProgressAll(function(err, events){
+                  if (err) return next(err);
+                  client.replace('AllEvents', JSON.stringify(events), function (err, val) {
+                    if (err) {
+                        console.log('failed to store', err);
+                        next(err);
+                    }
+                    console.log('cache replaced');
+                    //console.log('stored val: ', val);
+                  });
+                   broadcastChanges();
+                  res.json(saved);
+              });
           });
       } else {
           console.log('already sponsored');
           res.sendStatus('409'); //You already sponsored!
       }
     });
+});
+
+router.get('/clearCache', function(req,res,next){
+  client.delete('AllEvents');
+  console.log('cache cleared');
 });

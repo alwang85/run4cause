@@ -97,6 +97,7 @@ app.controller('EventController', function(user, $modal, $state, $scope, Event, 
         });
     };
 
+    var socket = SocketFactory.getSocket();
     $scope.sponsorEvent = function(event){
         var modalInstance = $modal.open({
             templateUrl: '/js/sponsor/sponsor.html',
@@ -108,7 +109,7 @@ app.controller('EventController', function(user, $modal, $state, $scope, Event, 
         Event.editing.id = event._id;
     };
 
-    var socket = SocketFactory.getSocket();
+
 
     socket.on('eventsChange', function(events) {
       $scope.getEvents();

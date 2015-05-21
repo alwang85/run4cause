@@ -112,4 +112,22 @@ schema.methods.calculateProgress = function() {
       });//ends Promise.all
 };
 
+schema.statics.calculateProgressAll = function(cb){
+  var that = this;
+  that.find({}).deepPopulate('creator challengers.user nonProfit sponsors.user').exec(function (err, events) {
+         if (err) return next(err);
+         var promises = events.map(function (eachEvent) {
+           return new Promise(function (resolve, reject) {
+             resolve(eachEvent.calculateProgress());
+           });
+         });
+
+         return Promise.all(promises).then(function () {
+           cb(null, events);
+         }).catch(function(err){
+           console.log('err in calcAll', err);
+         })
+     });
+}
+
 mongoose.model('Event', schema);
