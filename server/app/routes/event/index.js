@@ -35,25 +35,30 @@ router.post('/', function (req,res,next){
 });
 
 router.get('/', function (req,res,next){
-   client.get('AllEvents', function (err, value, key) {
-     if (value != null) {
-       if(err) console.log(err);
-       console.log('using memcached');
-       res.send(JSON.parse(value.toString()));
-     } else {
+   //client.get('AllEvents', function (err, value, key) {
+   //  if (value != null) {
+   //    if(err) console.log(err);
+   //    console.log('using memcached');
+   //    res.send(JSON.parse(value.toString()));
+   //  } else {
        Event.calculateProgressAll(function(err, events){
          if (err) return next(err);
-         client.set('AllEvents', JSON.stringify(events), function (err, val) {
-           if (err) {
-             console.log('failed to store', err);
-             next(err);
-           }
-           console.log('stored val: ', val);
-         });
+         //client.set('AllEvents', JSON.stringify(events), function (err, val) {
+         //  if (err) {
+         //    console.log('failed to store', err);
+         //    next(err);
+         //  }
+         //  console.log('stored val: ', val);
+         //});
          res.send(events);
        })
-     };
-   });
+     //};
+   //});
+});
+
+router.get('/clearCache', function(req,res,next){
+  client.delete('AllEvents');
+  console.log('cache cleared');
 });
 
 router.get('/:eventId', function (req,res,next){
@@ -104,14 +109,6 @@ router.post('/:eventId/join', function(req,res,next){
                if(err) return next(err);
                Event.calculateProgressAll(function(err, events){
                    if (err) return next(err);
-                 //  client.replace('AllEvents', JSON.stringify(events), function (err, val) {
-                 //      if (err) {
-                 //        console.log('failed to store', err);
-                 //         next(err);
-                 //      }
-                 //    console.log('cache replaced');
-                 //    //console.log('stored val: ', val);
-                 //});
                  var index = _.findIndex(events, function(event) {
                      return event._id.toString() === eventID;
                  });
@@ -150,7 +147,7 @@ router.delete('/:eventId/leave', function(req,res,next){
                         return event._id.toString() === eventID;
                     });
                     res.json(events[index]);
-                })
+                });
             });
         } else {
             res.sendStatus('409');
@@ -198,7 +195,3 @@ router.put('/:eventId/sponsor', function(req,res,next){//TODO delete cache + rep
     });
 });
 
-router.get('/clearCache', function(req,res,next){
-  client.delete('AllEvents');
-  console.log('cache cleared');
-});
