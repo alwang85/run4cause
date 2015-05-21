@@ -22,6 +22,7 @@ app.controller('EventController', function(user, $modal, $state, $scope, Event, 
       }).then(function (allEvents) {
         return Event.getMoreInfoForNonProfits(allEvents).then(function (events) {
           $scope.events = events;
+            console.log($scope.events);
         });
       });
     };
@@ -81,9 +82,11 @@ app.controller('EventController', function(user, $modal, $state, $scope, Event, 
 
     $scope.leaveEvent = function(event){
         Event.leaveEvent(event._id).then(function(savedEvents){
+            console.log('savedEvents',savedEvents)
             return savedEvents;
         }).then(function() {
             return Event.getAllEvents().then(function(allEvents){
+                console.log('callbackEvents',allEvents)
                 return allEvents;
             });
         }).then(function(allEvents) {

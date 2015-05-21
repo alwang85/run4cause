@@ -62,7 +62,8 @@ schema.methods.calculateProgress = function() {
                             _.forEach(that.goals, function(goal){
                                 if(goal.metrics.measurement === eachMetric.measurement){
                                     if(!progressObj[goal.metrics.measurement]) progressObj[goal.metrics.measurement] = 0;
-                                    progressObj[goal.metrics.measurement] += (eachMetric.qty/(goal.metrics.target*1609.34));
+                                    if(goal.metrics.measurement === 'distance') progressObj[goal.metrics.measurement] += (eachMetric.qty/(goal.metrics.target*1609.34));
+                                    else progressObj[goal.metrics.measurement] += (eachMetric.qty/goal.metrics.target);
                                 }
                             })
                         })
@@ -77,20 +78,31 @@ schema.methods.calculateProgress = function() {
                 }
 
                 resolve(challenger);
-         });
+         }).catch(function(err){
+                reject(err);
+            });
      });
     });
       return Promise.all(promises).then(function () {
+          console.log('totlaprogressobj',totalProgressObj);
         var totalProgress = 0;
-        _.map(that.goals, function (eachGoal) {
-          for (var key in totalProgressObj) {
-            if (key === eachGoal.metrics.measurement) {
-              eachGoal.metrics.progress = totalProgressObj[key];
-              totalProgress += (eachGoal.metrics.progress) / (Object.keys(totalProgressObj).length)
+        var updatedGoals = _.map(that.goals, function (eachGoal) {
+            if(Object.keys(totalProgressObj).length){
+                for (var key in totalProgressObj) {
+                    if (key === eachGoal.metrics.measurement) {
+                        eachGoal.metrics.progress = totalProgressObj[key];
+                        totalProgress += (eachGoal.metrics.progress) / (Object.keys(totalProgressObj).length);
+                    }
+                }
+                return eachGoal;
+            } else {
+                eachGoal.metrics.progress = 0;
+                return eachGoal;
             }
-          }
-          return eachGoal;
+
         });
+          console.log('updated goals', updatedGoals)
+        that.goals = updatedGoals;
         that.progress = totalProgress;
         that.save(function(err, savedEvent){
           Message.eventSuccess(savedEvent, function(err, emailedEvent){

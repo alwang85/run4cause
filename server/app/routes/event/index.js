@@ -41,10 +41,9 @@ router.get('/', function (req,res,next){
 router.get('/:eventId', function (req,res,next){
     Event.findById(req.params.eventId).deepPopulate('creator challengers.user nonProfit sponsors.user').exec(function(err, foundEvent){
         if (err) return next(err);
-        res.json(foundEvent);
-        //foundEvent.calculateProgress().then(function(result){
-        //    res.json(result);
-        //}).catch(next);
+        foundEvent.calculateProgress().then(function(result){
+            res.json(result);
+        }).catch(next);
     });
 });
 
@@ -131,7 +130,7 @@ router.put('/:eventId/sponsor', function(req,res,next){
           });
           event.save(function(err,saved){
               if (err) return next(err);
-              console.log('saved', saved.sponsor[0]);
+              console.log('saved', saved.sponsors);
               res.send(saved);
           });
       } else {

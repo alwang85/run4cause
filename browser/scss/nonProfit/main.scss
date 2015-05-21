@@ -6,27 +6,40 @@
     color:$blue-color;
 
   }
+  .patient-container {
+    border-radius: 5px;
+    background: #ecf0f1;
+    margin-bottom: 15%;
+    padding: 0%;
+  }
   img {
-    width: 95%;
-    padding-bottom: 3%;
+    width: 100%;
+    border-radius: 5px 5px 0 0;
+    border-bottom: 1px solid #DCDCDC;
   }
   p {
     font-size:1.25em;
     font-weight: lighter;
   }
 
-  .sponsorPatient-btn {
-    margin-bottom: 15%;
-  }
 }
 
 .patientInfo {
-  padding-left: 0%;
+  margin-top: 3%;
 
   p {
     font-size: 1.15em;
     line-height: 110%;
+    margin-left: 2%;
   }
+
+  button {
+    margin-left: 2%;
+    margin-bottom: 3%;
+
+  }
+
+
 }
 
 .patientDetail {
