@@ -191,3 +191,8 @@ router.put('/:eventId/sponsor', function(req,res,next){//TODO delete cache + rep
       }
     });
 });
+
+router.get('/clearCache', function(req,res,next){
+  client.delete('AllEvents');
+  console.log('cache cleared');
+});
