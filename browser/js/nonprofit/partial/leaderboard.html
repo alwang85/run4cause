@@ -1,19 +1,22 @@
 <div class="header-padding nonProfit container" ng-if="nonprofits.length">
     <h1>LIST OF PATIENTS</h1><br/>
-    <div class="info col-md-4" ng-repeat="nonprofit in nonprofits">
-        <a ng-click="getPatient(nonprofit.token)" class="clickable">
-            <img alt={{nonprofit.name}} ng-src={{nonprofit.profile_url}}>
-        </a>
-        <div class="patientInfo">
-            <p>Name: {{nonprofit.name}}</p>
-            <p>Country: {{nonprofit.country}}</p>
-            <a ng-click="getPatient(nonprofit.token)">
-                <p class="link">Read More</p>
+    <div class="col-lg-4 col-md-6 col-sm-12" ng-repeat="nonprofit in nonprofits">
+        <div class="patient-container">
+            <a ng-click="getPatient(nonprofit.token)" class="clickable">
+                <img alt={{nonprofit.name}} ng-src={{nonprofit.profile_url}}>
             </a>
-            <button class="btn btn-primary sponsorPatient-btn"
-                    ui-sref="impactForm.create">
-                Sponsor {{nonprofit.name}}
-            </button>
+            <div class="patientInfo">
+                <p>Name: {{nonprofit.name}}</p>
+                <p>Country: {{nonprofit.country}}</p>
+                <a ng-click="getPatient(nonprofit.token)">
+                    <p class="link">Read More</p>
+                </a>
+                <button class="btn btn-primary sponsorPatient-btn"
+                        ui-sref="impactForm.create">
+                    Sponsor {{nonprofit.name}}
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
