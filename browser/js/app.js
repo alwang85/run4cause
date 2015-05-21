@@ -110,3 +110,36 @@ app.run(function ($rootScope, AuthService, $state) {
     });
 
 });
+
+app.animation(".fadein", function () {
+    return {
+        leave: function (element, done) {
+            TweenMax.to(element, 1, {opacity:0}).onComplete(done);
+        },
+        enter: function (element, done) {
+            TweenMax.from(element, 1, {opacity:0}).onComplete(done);
+        }
+    };
+});
+
+//app.animation(".fadein", function () {
+//    return {
+//        leave: function (element, done) {
+//            TweenMax.to(element, 1, {opacity:0}).onComplete(done);
+//        },
+//        enter: function (element, done) {
+//            TweenMax.from(element, 1, {opacity:0}).onComplete(done);
+//        }
+//    };
+//});
+//
+//app.animation(".fadeout", function () {
+//    return {
+//        leave: function (element, done) {
+//            TweenMax.to(element, 0, {opacity:1}).onComplete(done);
+//        },
+//        enter: function (element, done) {
+//            TweenMax.from(element, 0, {opacity:1}).onComplete(done);
+//        }
+//    };
+//});
