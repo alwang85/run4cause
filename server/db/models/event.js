@@ -112,8 +112,10 @@ schema.statics.calculateProgressAll = function(cb){
 
          return Promise.all(promises).then(function () {
            cb(null, events);
-         });
-         }).catch(next);
+         }).catch(function(err){
+           console.log('err in calcAll', err);
+         })
+     });
 }
 
 mongoose.model('Event', schema);
