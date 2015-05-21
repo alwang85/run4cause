@@ -26,6 +26,7 @@ app.controller('EventController', function(user, $modal, $state, $scope, Event, 
       });
     };
     $scope.getEvents();
+
     $scope.currentUser = user;
     $scope.sendMessage = function(creatorEmail){
         Message.currentRecipient.email = creatorEmail;
@@ -35,11 +36,6 @@ app.controller('EventController', function(user, $modal, $state, $scope, Event, 
             size:'md'
 
         });
-    };
-
-    $scope.editEvent = function(eventId) {
-        Event.editing.id = eventId;
-        $state.go('editEvent');
     };
 
     $scope.currentEventMetrics = function(event){
@@ -56,6 +52,11 @@ app.controller('EventController', function(user, $modal, $state, $scope, Event, 
             if($scope.currentUser && challenger.user._id === $scope.currentUser._id) participating = true;
         });
         return participating
+    };
+
+    $scope.editEvent = function(eventId) {
+        Event.editing.id = eventId;
+        $state.go('editEvent');
     };
 
     $scope.deleteEvent = function(event){

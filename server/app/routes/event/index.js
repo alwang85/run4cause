@@ -26,16 +26,15 @@ router.get('/', function (req,res,next){
     Event.find({}).deepPopulate('creator challengers.user sponsors.user').exec(function(err, events){
         if (err) return next(err);
 
-        res.json(events);
-        //var promises = events.map(function(eachEvent){
-        //    return new Promise(function(resolve,reject) {
-        //        resolve(eachEvent.calculateProgress());
-        //    });
-        //});
-        //
-        //return Promise.all(promises).then(function(){
-        //    res.send(events);
-        //}).catch(next);
+        var promises = events.map(function(eachEvent){
+            return new Promise(function(resolve,reject) {
+                resolve(eachEvent.calculateProgress());
+            });
+        });
+
+        return Promise.all(promises).then(function(){
+            res.send(events);
+        }).catch(next);
     });
 });
 

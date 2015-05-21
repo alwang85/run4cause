@@ -1,6 +1,10 @@
 <div class="progress-container">
     <h3>Progress</h3>
     <div class="progress-bar">
-        <span class="progress-fill"></span>
+        <span
+            ng-repeat="goal in goals"
+            class="progress-fill {{goal.metrics.measurement}}"
+            ng-style="goal.style"
+        ></span>
     </div>
 </div>

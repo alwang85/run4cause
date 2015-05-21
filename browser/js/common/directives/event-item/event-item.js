@@ -12,8 +12,17 @@ app.directive('eventItem', function () {
             scope.modalToggle = false;
             scope.modalList = false;
 
+            var unit = {
+                'distance' : 'miles',
+                'calories' : 'cals',
+                'steps'    : 'steps'
+            };
+
+            _.forEach(scope.event.goals, function(goal) {
+                goal.metrics.unit = unit[goal.metrics.measurement];
+            });
+
             scope.displayInnerModal = function(list) {
-                console.log("here");
                 scope.modalToggle = scope.modalToggle ? false : true;
                 scope.modalList = list;
             };

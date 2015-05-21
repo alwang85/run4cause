@@ -1,7 +1,34 @@
 <div id="event" class="header-padding full-width-container">
     <ul class="event-listing">
         <li ng-repeat="event in events" class="event-item-container col-md-4 col-lg-4 col-sm-6 col-xs-12">
-            <event-item event="event" currentUser="currentUser"></event-item>
+            <event-item event="event" current-user="currentUser"></event-item>
+            <div class="creatorFunctionalities">
+                <div class="btn-group btn-group-justified col-xs-12" ng-if="currentUser">
+                    <div class="btn-group" ng-if="event.creator._id===currentUser._id" role="group">
+                        <button class='btn btn-default' ui-sref="impactForm.edit({ eventID : event._id })">edit</button>
+                    </div>
+                    <div class="btn-group"  ng-if="event.creator._id===currentUser._id" role="group">
+                        <button class='btn btn-default' ng-click="deleteEvent(event)">delete</button>
+                    </div>
+                    <div class="btn-group"  ng-if="!checkParticipation(event)" role="group">
+                        <button class='btn btn-default' ng-click="joinEvent(event)">join</button>
+                    </div>
+                    <div class="btn-group"  ng-if="checkParticipation(event)" role="group">
+                        <button class='btn btn-default' ng-click="leaveEvent(event)">leave</button>
+                    </div>
+                    <div class="btn-group"  role="group">
+                        <button class='btn btn-default' ng-click="sponsorEvent(event)">sponsor</button>
+                    </div>
+                </div>
+                <div class="threeRow btn-group btn-group-justified col-xs-12" ng-if="currentUser">
+                    <div class="btn-group" role="group">
+                        <button ng-click="sendMessage(event.creator.email)" class='messageCreator btn btn-default'>
+                            Send Message to Event Creator
+                        </button>
+                    </div>
+                </div>
+                <div class="item-footer" ng-if="!currentUser"></div>
+            </div>
         </li>
     </ul>
     <!--<h1 class="impactTitle">IMPACT MISSIONS</h1>-->
