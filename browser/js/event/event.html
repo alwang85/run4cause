@@ -17,7 +17,7 @@
                     <div class="btn-group"  ng-if="checkParticipation(event)" role="group">
                         <button class='btn btn-default' ng-click="leaveEvent(event)">leave</button>
                     </div>
-                    <div class="btn-group"  role="group">
+                    <div class="btn-group"  role="group" ng-if="!checkSponsoring(event)">
                         <button class='btn btn-default' ng-click="sponsorEvent(event)">sponsor</button>
                     </div>
                 </div>
