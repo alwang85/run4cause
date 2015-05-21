@@ -18,7 +18,7 @@
                     <img src="{{challenger.user.profile}}">
                 </div>
                 <div class="col-xs-7">
-                    <h5 class="challengerEmail">{{challenger.user.email}}</h5>
+                    <h5 class="challengerEmail">{{challenger.user.username}}</h5>
                     <h5 class="participantsTitle">{{(challenger.individualProgress*100).toFixed(1)}}%</h5>
                 </div>
             </div>
@@ -29,7 +29,7 @@
                     <img src="{{sponsor.user.profile}}">
                 </div>
                 <div class="col-xs-6">
-                    <h5 class="challengerEmail">{{sponsor.user.email}}</h5>
+                    <h5 class="challengerEmail">{{sponsor.user.username}}</h5>
                     <h5 class="participantsTitle">{{(sponsor.details['100']) | currency}}</h5>
                 </div>
             </div>

@@ -29,6 +29,7 @@ app.controller('EventController', function(user, $modal, $state, $scope, Event, 
     $scope.getEvents();
 
     $scope.currentUser = user;
+    console.log($scope.currentUser._id)
     $scope.sendMessage = function(creatorEmail){
         Message.currentRecipient.email = creatorEmail;
         var modalInstance = $modal.open({
@@ -53,6 +54,14 @@ app.controller('EventController', function(user, $modal, $state, $scope, Event, 
             if($scope.currentUser && challenger.user._id === $scope.currentUser._id) participating = true;
         });
         return participating
+    };
+
+    $scope.checkSponsoring = function(event){
+        var sponsoring = false;
+        event.sponsors.forEach(function(sponsor){
+            if($scope.currentUser && sponsor.user._id === $scope.currentUser._id) sponsoring = true;
+        });
+        return sponsoring;
     };
 
     $scope.deleteEvent = function(event){

@@ -62,8 +62,8 @@ schema.methods.calculateProgress = function() {
                             _.forEach(that.goals, function(goal){
                                 if(goal.metrics.measurement === eachMetric.measurement){
                                     if(!progressObj[goal.metrics.measurement]) progressObj[goal.metrics.measurement] = 0;
-                                    if(goal.metrics.measurement === 'distance') progressObj[goal.metrics.measurement] += (eachMetric.qty/(goal.metrics.target*1609.34));
-                                    else progressObj[goal.metrics.measurement] += (eachMetric.qty/goal.metrics.target);
+                                    if(goal.metrics.measurement === 'distance') progressObj[goal.metrics.measurement] += Math.min.call(null, eachMetric.qty/(goal.metrics.target*1609.34), 1);
+                                    else progressObj[goal.metrics.measurement] += Math.min.call(null, eachMetric.qty/goal.metrics.target, 1)
                                 }
                             })
                         })
@@ -90,7 +90,7 @@ schema.methods.calculateProgress = function() {
             if(Object.keys(totalProgressObj).length){
                 for (var key in totalProgressObj) {
                     if (key === eachGoal.metrics.measurement) {
-                        eachGoal.metrics.progress = totalProgressObj[key];
+                        eachGoal.metrics.progress = Math.min.call(null, totalProgressObj[key], 1);
                         totalProgress += (eachGoal.metrics.progress) / (Object.keys(totalProgressObj).length);
                     }
                 }
