@@ -116,6 +116,7 @@ router.post('/:eventId/join', function(req,res,next){
                    //  console.log('cache replaced');
                    //  //console.log('stored val: ', val);
                    //});
+                 broadcastChanges();
                  res.json(saved);
                })
 
@@ -148,6 +149,8 @@ router.delete('/:eventId/leave', function(req,res,next){
                     //  console.log('cache replaced');
                     //  //console.log('stored val: ', val);
                     //});
+                    broadcastChanges();
+
                     res.json(saved);
                 })
             });
@@ -178,14 +181,14 @@ router.put('/:eventId/sponsor', function(req,res,next){//TODO delete cache + rep
               if (err) return next(err);
               Event.calculateProgressAll(function(err, events){
                   if (err) return next(err);
-                  client.replace('AllEvents', JSON.stringify(events), function (err, val) {
-                    if (err) {
-                        console.log('failed to store', err);
-                        next(err);
-                    }
-                    console.log('cache replaced');
-                    //console.log('stored val: ', val);
-                  });
+                  //client.replace('AllEvents', JSON.stringify(events), function (err, val) {
+                  //  if (err) {
+                  //      console.log('failed to store', err);
+                  //      next(err);
+                  //  }
+                  //  console.log('cache replaced');
+                  //  //console.log('stored val: ', val);
+                  //});
                    broadcastChanges();
                   res.json(saved);
               });
