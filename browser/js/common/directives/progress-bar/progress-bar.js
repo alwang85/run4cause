@@ -9,9 +9,9 @@ app.directive('progressBar', function ($timeout) {
         link: function(scope, element, attr) {
             $timeout(function() {
                 _.forEach(scope.goals, function(goal) {
-                    var percentage = goal.metrics.progress / scope.goals.length * 100;
+                    var percentage = goal.metrics.progress * 100;
                     percentage = percentage > 100 ? 100 : percentage;
-                    goal.style = { width : percentage.toFixed(2) + "%"};
+                    goal.style = { width : (percentage / scope.goals.length ).toFixed(2) + "%"};
                 });
             }, 10);
         }
