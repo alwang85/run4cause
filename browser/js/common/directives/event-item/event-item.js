@@ -32,7 +32,8 @@ app.directive('eventItem', function () {
             };
 
             scope.totalRaised = _.reduce(scope.event.sponsors, function(totalRaised, sponsor) {
-                return totalRaised + sponsor.details['100'] * scope.event.progress;
+                var progress = scope.event.progress > 1 ? 1 : scope.event.progress;
+                return totalRaised + sponsor.details['100'] * progress;
             }, 0.0);
         }
     };

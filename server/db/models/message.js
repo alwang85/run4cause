@@ -60,7 +60,7 @@ schema.statics.eventSuccess = function (event, cb){
     //console.log('found admin in eventSuccess', foundUser);
     var sender = foundUser._id;
     var title = 'The event goals you sponsored have been reached!';
-    var content = 'the event you sponsored has ended! Please click %3Ca%20href%3D%22https%3A//watsi.org/profile/REPLACETOKEN%22%20%3Ehere%3C/a%3E to view the details on event, and then proceed to the patients page to fulfill your promise of $REPLACEAMOUNT for the cause!';
+    var content = 'the event you sponsored has ended! Please click %3Ca%20href%3D%22https%3A//watsi.org/profile/REPLACETOKEN%22%20%3Ehere%3C/a%3E to proceed to the patients page to fulfill your promise of $REPLACEAMOUNT for the cause!';
     that.messageSponsors(event, sender, title, content, cb);
   });
 };
