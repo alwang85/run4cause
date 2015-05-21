@@ -18,7 +18,6 @@
     "angular" : true,
     "app": true,
     "io": true,
-    "_": true,
-    "TweenMax" : true
+    "_": true
   }
 }
