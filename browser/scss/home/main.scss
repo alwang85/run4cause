@@ -155,3 +155,40 @@
         }
     }
 }
+
+.overall-status {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 295px;
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    border: 4px solid darken($green-color, 25%);
+    background: $green-color;
+    color: darken($green-color, 25%);
+    line-height: 100%;
+    text-align: center;
+    transform: translate3d(0,0,0);
+    transition: opacity 0.4s linear;
+    opacity: 1;
+
+    &.ng-hide {
+        opacity: 0;
+    }
+
+    p {
+        line-height: 115%;
+        margin: 0;
+        padding: 0;
+    }
+
+    &.error {
+        border-color: darken($pink-color, 25%);
+        background: $pink-color;
+        color: darken($pink-color, 25%);
+    }
+}

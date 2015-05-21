@@ -84,6 +84,7 @@ router.put('/:eventId', function(req,res,next){
 });
 
 router.post('/:eventId/join', function(req,res,next){
+    var eventID = req.params.eventId;
     if (!req.user) return next(new Error('Forbidden: You Must Be Logged In'));
 
     Event.findById(req.params.eventId, function(err,event){
@@ -103,17 +104,19 @@ router.post('/:eventId/join', function(req,res,next){
                if(err) return next(err);
                Event.calculateProgressAll(function(err, events){
                    if (err) return next(err);
-                   client.replace('AllEvents', JSON.stringify(events), function (err, val) {
-                       if (err) {
-                         console.log('failed to store', err);
-                          next(err);
-                       }
-                     console.log('cache replaced');
-                     //console.log('stored val: ', val);
+                 //  client.replace('AllEvents', JSON.stringify(events), function (err, val) {
+                 //      if (err) {
+                 //        console.log('failed to store', err);
+                 //         next(err);
+                 //      }
+                 //    console.log('cache replaced');
+                 //    //console.log('stored val: ', val);
+                 //});
+                 var index = _.findIndex(events, function(event) {
+                     return event._id.toString() === eventID;
                  });
-                 res.json(saved);
-               })
-
+                 res.json(events[index]);
+               });
            });
        } else {
            res.sendStatus('409');
@@ -124,7 +127,7 @@ router.post('/:eventId/join', function(req,res,next){
 
 router.delete('/:eventId/leave', function(req,res,next){
     if (!req.user) return next(new Error('Forbidden: You Must Be Logged In'));
-
+    var eventID = req.params.eventId;
     Event.findById(req.params.eventId, function(err,event){
         var filtered = _.filter(event.challengers, function(challenger){
             return challenger.user.toString()!==req.user._id.toString()
@@ -135,15 +138,18 @@ router.delete('/:eventId/leave', function(req,res,next){
                 if (err) return next(err);
                 Event.calculateProgressAll(function(err, events){
                     if (err) return next(err);
-                    client.replace('AllEvents', JSON.stringify(events), function (err, val) {
-                        if (err) {
-                          console.log('failed to store', err);
-                            next(err);
-                        }
-                      console.log('cache replaced');
-                      //console.log('stored val: ', val);
+                    //client.replace('AllEvents', JSON.stringify(events), function (err, val) {
+                    //    if (err) {
+                    //      console.log('failed to store', err);
+                    //        next(err);
+                    //    }
+                    //  console.log('cache replaced');
+                    //  //console.log('stored val: ', val);
+                    //});
+                    var index = _.findIndex(events, function(event) {
+                        return event._id.toString() === eventID;
                     });
-                    res.json(saved);
+                    res.json(events[index]);
                 })
             });
         } else {

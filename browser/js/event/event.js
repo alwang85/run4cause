@@ -14,29 +14,26 @@ app.config(function($stateProvider){
 });
 
 
-app.controller('EventController', function(user, $modal, $state, $scope, Event, Message, SocketFactory, UserFactory){
+app.controller('EventController', function(user, $modal, $state, $scope, Event, Message, SocketFactory, NotifyService){
 
     $scope.getEvents = function(){
       Event.getAllEvents().then(function (allEvents) {
         return allEvents;
       }).then(function (allEvents) {
         return Event.getMoreInfoForNonProfits(allEvents).then(function (events) {
-          $scope.events = events;
-            console.log($scope.events);
+          $scope.events = events;;
         });
       });
     };
     $scope.getEvents();
 
     $scope.currentUser = user;
-    console.log($scope.currentUser._id)
     $scope.sendMessage = function(creatorEmail){
         Message.currentRecipient.email = creatorEmail;
         var modalInstance = $modal.open({
             templateUrl: '/js/message/sendMessage.html',
             controller: 'MessageComposeController',
             size:'md'
-
         });
     };
 
@@ -74,35 +71,25 @@ app.controller('EventController', function(user, $modal, $state, $scope, Event, 
         });
     };
 
-    $scope.joinEvent = function(event){
-        Event.joinEvent(event._id).then(function(savedEvents){
-            return savedEvents;
-        }).then(function() {
-            return Event.getAllEvents().then(function(allEvents){
-                return allEvents;
+    $scope.joinEvent = function(index){
+        Event.joinEvent($scope.events[index]._id).then(function(savedEvent){
+            NotifyService.notify({
+                message : "Joined Impact!"
             });
-        }).then(function(allEvents) {
-            console.log(allEvents);
-            Event.getMoreInfoForNonProfits(allEvents).then(function(eventsWithInfo) {
-                $scope.events = eventsWithInfo;
-            });
+            var patient = angular.copy($scope.events[index].patient);
+            savedEvent.patient = patient;
+            $scope.events[index] = savedEvent;
         });
     };
 
-    $scope.leaveEvent = function(event){
-        Event.leaveEvent(event._id).then(function(savedEvents){
-            console.log('savedEvents',savedEvents)
-            return savedEvents;
-        }).then(function() {
-            return Event.getAllEvents().then(function(allEvents){
-                console.log('callbackEvents',allEvents)
-                return allEvents;
+    $scope.leaveEvent = function(index){
+        Event.leaveEvent($scope.events[index]._id).then(function(savedEvent){
+            NotifyService.notify({
+                message : "Left Impact!"
             });
-        }).then(function(allEvents) {
-            console.log(allEvents);
-            Event.getMoreInfoForNonProfits(allEvents).then(function (eventsWithInfo) {
-                $scope.events = eventsWithInfo;
-            });
+            var patient = angular.copy($scope.events[index].patient);
+            savedEvent.patient = patient;
+            $scope.events[index] = savedEvent;
         });
     };
 
