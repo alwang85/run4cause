@@ -71,8 +71,8 @@
         <div class="deviceAction">
             <a ng-repeat="device in link_devices" ng-if="!user.active.length" ng-click="linkDevice(device)" class="btn btn-default">
                 <!--{{device}}-->
-                <img ng-if="device==='jawbone'" src="./images/jawbone.jpg">
-                <img ng-if="device==='fitbit'" src="./images/fitbit.png">
+                <h4 ng-if="device==='jawbone'">Link Jawbone</h4>
+                <h4 ng-if="device==='fitbit'">Link Fitbit</h4>
             </a>
             <a ng-repeat="device in link_devices" ng-if="user.active.length && device===user.active[0]" ng-click="disconnectDevice(device)" class="btn btn-default">Disconnect {{device}}</a>
 

@@ -1,6 +1,7 @@
 .profile {
   @include clearfix;
   background: white;
+  margin: 0 10px 0 60px;
   .statusContainer {
     color: $black-color;
     height: 200px;
@@ -69,14 +70,15 @@
     }
   }
   .right {
+    background: #F5F5F5;
     color: $blue-color;
-    //margin:20px;
-    padding: 0;
+    margin:20px;
+    padding: 0 25px 25px 25px;
     width:20%;
     .profileName {
       padding-top: 10px;
-      padding-right: 40px;
       text-align: center;
+      padding-left: 30px;
     }
     .currentDevice{
       margin-bottom: 15px;
