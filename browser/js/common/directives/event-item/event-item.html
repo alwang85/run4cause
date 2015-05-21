@@ -1,0 +1,76 @@
+<div class="event-item-wrapper">
+    <div class="event-item">
+                    <span ng-if="event.sponsors.length > 0" class="sponsored">
+                        Sponsored!
+                    </span>
+                    <span class="patient-thumbnail">
+                        <img ng-src="{{event.patient.profilePic}}" />
+                    </span>
+        <div class="creatorBox">
+            <i>
+                <img ng-src="{{event.creator.profile}}">
+            </i>
+            <div class="creator-info">
+                <strong>Impact Starter:</strong> {{ event.creator.username }}<br>
+                <strong>Start Date:</strong> {{event.startDate.slice(0,10)}}<br>
+                <strong>End Date:</strong> {{event.endDate.slice(0,10)}}
+            </div>
+        </div>
+        <div class="event-detail">
+            <div class="goals">
+                <h2>Goals For {{event.patient.name}}</h2>
+                <ul>
+                    <li ng-repeat="goal in event.goals" class="{{goal.metrics.measurement}}">
+                        <div class="center-container">
+                            <span class="center-content">{{goal.metrics.target}}<br>{{ goal.metrics.unit }}</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <progress-bar goals="event.goals"></progress-bar>
+
+            <div class="event-description">
+                <h3>Mission Detail</h3>
+                {{ event.description }}
+            </div>
+
+            <div class="event-statistics">
+                <div class="money-raised">
+                    <span>
+                        Raised<br>
+                        {{ totalRaised.toFixed(2) | currency }}
+                    </span>
+                </div>
+                <div class="list-buttons">
+                    <button
+                        ng-if="event.challengers.length > 0"
+                        class="btn btn-primary"
+                        ng-click="displayInnerModal(event.challengers)"
+                    >View Challengers</button>
+                    <button
+                        ng-if="event.sponsors.length > 0"
+                        class="btn btn-primary"
+                        ng-click="displayInnerModal(event.sponsors)"
+                    >View Sponsors</button>
+                </div>
+            </div>
+        </div>
+        <div class="event-modal" ng-class="{enabled : modalToggle}">
+            <a class="event-close" ng-click="hideModal()">
+                <font-awesome font="times"></font-awesome>
+            </a>
+            <ul ng-if="modalList">
+                <li ng-repeat="list in modalList">
+                    <img ng-src="{{list.user.profile}}">
+                    <h4>
+                        {{list.user.username}}<br>
+                        <span>{{ list.individualProgress >= 0 ?
+                            "Contributed Progress: " + (list.individualProgress * 100 | number:2) + "%" :
+                            "Pledged Amount" + list.details['100']}}</span>
+                    </h4>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

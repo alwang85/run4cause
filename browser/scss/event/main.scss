@@ -1,162 +1,414 @@
 #event {
-  background: #36465d;
-  display: inline-block;
-  .eventList {
-    padding: 0 40px;
-  }
-  .creatorBox {
-    width:70px;
-    height:70px;
-    position: absolute;
-    top:0;
-    left:-90px;
-    img{
-      height:100%;
-      width:100%;
-      border-radius: 5px;
-    }
-  }
-  .showBox {
-    display:block;
-  }
+    display: block;
+    min-height: 100vh;
 
-  .hideBox {
-    display:none;
-  }
-  .participantsBox {
-    width:220px;
-    position: absolute;
-    top:0;
-    right:-210px;
-    @include forceGpu();
-    transition: all 0.2s linear;
-    .eachParticipant {
-      margin-bottom: 15px;
-      color: white;
-      margin-right: 20px;
-    }
-    .participantsTitle {
-      color: white;
-      font-size: 15px;
-    }
-    img{
-      height:70px;
-      width:100%;
-      border-radius: 5px;
-    }
-  }
-  .impactTitle {
-    text-align: center;
-    color: skyblue;
-    margin: 30px 0;
-  }
-  .eachEvent {
-    @include clearfix;
-    background: white;
-    border: 1px solid $blue-color;
-    margin-bottom: 30px;
-    position: relative;
-  }
-  .eventInfo {
-    font-style: italic;
-    margin: 20px auto;
-    display: table-cell;
-    vertical-align: middle;
-    float: none;
-    .quote{
-      color: #a1a1a1;
-      font-size: 20px;
-      margin: 0 10px;
-    }
-    .creatorEmail{
-      margin-top: 10px;
-    }
-  }
-  .mission{
-    text-align: center;
-    span {
-      font-weight: bold;
-    }
-    .missionTitle{
-      text-align: center;
-      color: $off-grey-color;
-      margin: 10px 0;
-    }
-    .missionStatement{
-      color: navy;
-    }
-    img {
-      width: 100px;
-      height: 100px;
-      margin-bottom: 10px;
-    }
-  }
-  .info{
-    text-align: center;
-    padding: 0;
-    position: relative;
-    img {
-      width: 100%;
-      height: 35vh;
-    }
-    .infoContainer{
-      display: table;
-      position: absolute;
-      width:100%;
-      height: 35vh;
-      &:hover{
-        .seeStoryBtn{
-          opacity:1;
+    h1 {
+        margin: 0 0 8px 15px;
+
+        a.btn {
+            border: 0;
+            background: $blue-color;
+            color: #FFF;
+            transform: translate3d(0,0,0);
+            transition: all 0.2s linear;
+
+            &:hover {
+                background: darken($blue-color, 10%);
+            }
         }
-      }
-      .seeStoryBtn{
-        @include forceGpu();
-        transition: all 0.4s linear;
-        display: table-cell;
-        vertical-align: middle;
-        opacity: 0;
-      }
     }
 
-  }
-  .oneRow{
-    padding: 0;
-    border-bottom: 1px solid skyblue;
-    .patientInfo{
-      text-align: center;
-      color: $off-grey-color;
-      padding: 15px 0;
-      border-bottom: 1px solid skyblue;
-      font-size: 18px;
-    }
-  }
-  .twoRow{
-    display: table;
-  }
+    .event-listing {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        @include  clearfix();
 
-  .eventProgress {
-    margin: 10px auto;
-    text-align: right;
-    width: 30%;
-    border: none;
-  }
-  .creatorFunctionalities {
-    float:left;
-    width:100%;
-    text-align: center;
-    margin : 0;
-    padding: 0;
-    .messageCreator {
-      border: 1px solid skyblue;
-    }
-    button{
-      @include forceGpu();
-      transition: all 0.2s linear;
-      &:hover {
-        color:white;
-        background: lighten($blue-color, 10%);
-        border-color: lighten($blue-color, 10%);
-      }
-    }
-  }
-}
+        .event-item-container {
+            display: block;
+            padding: 0 16px;
+            //width: 90%;
+            //max-width: 600px;
+            margin-bottom: 25px;
+            list-style: none;
+
+            .event-item-wrapper {
+                width: 100%;
+                position: relative;
+                @include clearfix();
+            }
+
+            .event-item {
+                background: #ecf0f1;
+                border-radius: 5px 5px 0 0;
+                overflow: hidden;
+                position: relative;
+                height: 530px;
+
+                .sponsored {
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    padding: 4px;
+                    background: rgba(0,0,0,0.8);
+                    color:#FFF;
+                    border-radius: 0 5px 0 5px;
+                    z-index: 1;
+                }
+
+                .patient-thumbnail {
+                    width: 100%;
+                    opacity: 1;
+                    position: relative;
+                    left: 0;
+                    display: block;
+                    border-radius: 5px 5px 0 0;
+                    transform: translate3d(0,0%,0);
+                    transition: all 0.3s ease-in-out;
+                    overflow: hidden;
+
+                    img {
+                        display: block;
+                        width: 100%;
+                        border-radius: 5px 5px 0 0;
+                        border-bottom: 1px solid #DCDCDC;
+                    }
+                }
+
+                $createBoxSize: 80px;
+                $createBoxSizeBorder: 5px;
+                .creatorBox {
+                    width: $createBoxSize;
+                    height: $createBoxSize;
+                    overflow: visible;
+                    margin: 0 auto;
+                    position: relative;
+                    margin-top: (-1 * ($createBoxSize / 2) - 15px);
+                    transform: translate3d(0,0,0);
+                    transition: all 0.4s ease-in-out;
+                    left: -35%;
+
+                    i {
+                        display: block;
+                        width: 100%;
+                        height: 100%;
+                        border: $createBoxSizeBorder solid #FFF;
+                        border-radius: $createBoxSize;
+                        overflow: hidden;
+                        img {
+                            display: block;
+                            width: 100%;
+                        }
+                    }
+
+                    .creator-info {
+                        position: absolute;
+                        left: ($createBoxSize + 8px);
+                        top: 15px;
+                        width: 200px;
+                        opacity: 0;
+                        transform: translate3d(0,0,0);
+                        transition: opacity 0.6s ease-in-out;
+                    }
+                }
+
+                $goal-circle: $createBoxSize - 15px;
+                .event-detail {
+                    padding: 3px 20px 20px 20px;
+
+                    h3 {
+                        font-family: "Open Sans", sans-serif;
+                        text-align: left;
+                        font-weight: 400;
+                        font-size: 22px;
+                        line-height: 100%;
+                        margin-top: 12px;
+                        margin-bottom: 6px;
+                    }
+
+                    .goals {
+                        text-align: center;
+                        min-height: 105px;
+                        opacity: 1;
+                        overflow: hidden;
+                        transform: translate3d(0,0,0);
+                        transition: all 0.4s ease-in-out;
+
+                        h2 {
+                            line-height: 100%;
+                            margin-bottom: 5px;
+                        }
+                        ul {
+                            margin: 0;
+                            padding: 0;
+                            width: 100%;
+                            li {
+                                display: inline-block;
+                                list-style: none;
+                                margin: 0 4px;
+
+                                color: #FFF;
+                                width: $goal-circle;
+                                height: $goal-circle;
+                                overflow: hidden;
+                                border-radius: $goal-circle;
+
+                                span {
+                                    line-height: 125%;
+                                }
+
+                                &.distance {
+                                    background: $blue-color;
+                                }
+
+                                &.calories {
+                                    background: $orange-color;
+                                }
+
+                                &.steps {
+                                    background: darken($green-color, 15%);
+                                }
+                            }
+                        }
+                    } // end of goals
+
+                    .progress-container {
+                        width: 100%;
+                        @include clearfix();
+
+                        .progress-bar {
+                            overflow: hidden;
+                            height: 22px;
+                            background-color: darken(#ecf0f1, 5%);
+                            border-radius: 3px;
+                            box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+                            width: 100%;
+                            overflow: hidden;
+
+                            .progress-fill {
+                                &:first-child {
+                                    border-radius: 3px 0 0px 3px;
+                                }
+                                float:left;
+                                width: 0%;
+                                height: 100%;
+                                background: darken($green-color, 5%);
+                                display: block;
+                                transform: translate3d(0,0,0);
+                                transition: all 0.6s ease-in-out;
+
+                                &.distance {
+                                    background: $blue-color;
+                                }
+
+                                &.calories {
+                                    background: $orange-color;
+                                }
+
+                                &.steps {
+                                    background: darken($green-color, 15%);
+                                }
+                            }
+                        }
+                    }
+
+                    .event-description {
+                        h3 {
+                            margin-bottom: 0px;
+                        }
+                        display: block;
+                        text-align: left;
+                        font-size: 15px;
+                        line-height: 125%;
+                    }
+                } // end of event-detail
+
+                .event-statistics {
+                    opacity: 0;
+                    transform: translate3d(0,0,0);
+                    transition: all 0.6s ease-in-out;
+
+                    .money-raised {
+                        margin: 16px auto;
+                        width: 120px;
+                        height: 120px;
+                        background: $blue-color;
+                        color:#FFF;
+                        display:table;
+                        vertical-align: middle;
+                        border-radius:60px;
+                        text-align: center;
+                        span {
+                            display: table-cell;
+                            vertical-align: middle;
+                            font-size: 22px;
+                            line-height: 125%;
+                        }
+                    }
+
+                    .list-buttons {
+                        width: 100%;
+                        text-align: center;
+                        button {
+                            width: 100%;
+                            margin: 4px 0;
+                            border: 0;
+                            background: $green-color;
+                            transform: translate3d(0,0,0);
+                            transition: background 0.2s linear;
+
+                            &:hover {
+                                background: darken($green-color, 10%);
+                            }
+                        }
+                    }
+                }
+
+                .event-modal {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    width: 0%;
+                    height: 0%;
+                    background: rgba(0,0,0,0.95);
+                    z-index : 5;
+                    border-radius: 5px 5px 0 0;
+                    overflow: auto;
+
+                    transform: translate3d(0,0,0);
+                    transition: all 0.2s linear;
+
+                    .event-close {
+                        position: absolute;
+                        top: 10px;
+                        right: 10px;
+                        i {
+                            color: #FFF;
+                            font-size: 20px;
+                        }
+                    }
+
+                    ul {
+                        margin:0;
+                        padding: 0;
+                        li {
+                            @include clearfix();
+                            overflow: hidden;
+                            margin: 0;
+                            padding: 0;
+                            list-style: none;
+                            width: 100%;
+                            text-align: left;
+                            margin-bottom: 8px;
+
+                            img {
+                                display: inline-block;
+                                width: 65px;
+                                height: 65px;
+                                border-radius: 40px;
+                                margin-bottom: 8px;
+                                float: left;
+                                margin-right: 16px;
+                            }
+
+                            h4 {
+                                display: block;
+                                float:left;
+                                clear: right;
+                                line-height: 100%;
+                                color: #FFF;
+                                position: relative;
+                                top: 12px;
+                                span {
+                                    font-family: "Open Sans", sans-serif;
+                                    font-weight: 400;
+                                    font-size: 16px;
+                                }
+                            }
+                        }
+                    }
+
+                    &.enabled {
+                        top: 0%;
+                        left: 0%;
+                        width: 100%;
+                        height: 100%;
+                        padding: 20px;
+                    }
+                }
+
+                &:hover, .event-active {
+                    .patient-thumbnail {
+                        width: 0%;
+                        opacity: 0;
+                        left: 50%;
+                    }
+
+                    .creatorBox {
+                        margin-top: 20px;
+
+                        .creator-info {
+                            opacity: 1;
+                        }
+                    }
+
+                    .goals {
+                        height: 0px;
+                        min-height: 0;
+                        opacity: 0;
+                    }
+
+                    .event-statistics {
+                        opacity: 1;
+                    }
+                }
+            } // end of event-item
+
+            .creatorFunctionalities {
+                @include clearfix();
+                width: 100%;
+                padding: 0;
+                overflow: hidden;
+                border-radius: 0 0 5px 5px;
+                //box-shadow: 0px 7px 2px -5px rgba(0, 0, 0, 0.5);
+
+                .btn-group {
+                    padding: 0;
+                    border: 0;
+
+                    button {
+                        background: #999;
+                        border: 0;
+                        border-top: 0;
+                        border-radius: 0;
+                        border-left: 1px solid #FFF;
+                        color: #FFF;
+                        font-weight: 400;
+                        border-top: 1px solid #FFF;
+
+                        transform: translate3d(0,0,0);
+                        transition: all 0.2s linear;
+                        outline: none;
+
+                        &:hover {
+                            background: $blue-color;
+                            color: #FFF;
+                        }
+                    }
+                }
+
+                .threeRow {
+                    button {
+                        border-radius: 0 0 5px 5px;
+                    }
+                }
+
+                .item-footer {
+                    padding: 16px;
+                    background: #999;
+                    border-radius: 0 0 5px 5px;
+                }
+            } // end of creatorFunctionalities
+        } // end of event-item-container
+    } // end of event-listing
+} // end of #event

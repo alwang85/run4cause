@@ -171,7 +171,6 @@ router.put('/:eventId/sponsor', function(req,res,next){//TODO delete cache + rep
           });
           event.save(function(err,saved){
               if (err) return next(err);
-              console.log('saved', saved.sponsor[0]);
               Event.calculateProgressAll(function(err, events){
                   if (err) return next(err);
                   client.replace('AllEvents', JSON.stringify(events), function (err, val) {

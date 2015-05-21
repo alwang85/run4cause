@@ -2,7 +2,7 @@
 
 app.config(function($stateProvider){
    $stateProvider.state('event', {
-       url: '/event',
+       url: '/impacts',
        templateUrl: 'js/event/event.html',
        controller: 'EventController',
        resolve: {
@@ -22,10 +22,12 @@ app.controller('EventController', function(user, $modal, $state, $scope, Event, 
       }).then(function (allEvents) {
         return Event.getMoreInfoForNonProfits(allEvents).then(function (events) {
           $scope.events = events;
+            console.log($scope.events);
         });
       });
     };
     $scope.getEvents();
+
     $scope.currentUser = user;
     $scope.sendMessage = function(creatorEmail){
         Message.currentRecipient.email = creatorEmail;
@@ -35,11 +37,6 @@ app.controller('EventController', function(user, $modal, $state, $scope, Event, 
             size:'md'
 
         });
-    };
-
-    $scope.editEvent = function(eventId) {
-        Event.editing.id = eventId;
-        $state.go('editEvent');
     };
 
     $scope.currentEventMetrics = function(event){
@@ -85,9 +82,11 @@ app.controller('EventController', function(user, $modal, $state, $scope, Event, 
 
     $scope.leaveEvent = function(event){
         Event.leaveEvent(event._id).then(function(savedEvents){
+            console.log('savedEvents',savedEvents)
             return savedEvents;
         }).then(function() {
             return Event.getAllEvents().then(function(allEvents){
+                console.log('callbackEvents',allEvents)
                 return allEvents;
             });
         }).then(function(allEvents) {

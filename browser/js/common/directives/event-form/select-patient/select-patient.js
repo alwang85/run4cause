@@ -13,11 +13,8 @@ app.directive('selectPatient', function(NonProfitFactory) {
             var gettingPatients = false;
 
             if (scope.eventForm.patient && scope.eventForm.patient.name) {
-                scope.selectedPatient = _.find(scope.patients, function(patient) {
-                    return patient.name === scope.eventForm.patient.name;
-                });
-
-                scope.placeholder = scope.selectedPatient.name;
+                scope.selectedPatient = scope.eventForm.patient;
+                scope.placeholder = scope.eventForm.patient.name;
             }
 
             scope.togglePatientWindow = function() {
@@ -30,7 +27,9 @@ app.directive('selectPatient', function(NonProfitFactory) {
             };
 
             scope.selectPatient = function(index) {
+                console.log(scope.patients)
                 scope.selectedPatient = scope.patients[index];
+                console.log(scope.selectedPatient);
 
                 scope.eventForm.patient = {
                     name : scope.selectedPatient.name,
