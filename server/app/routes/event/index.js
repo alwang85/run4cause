@@ -52,12 +52,17 @@ router.get('/', function (req,res,next){
          });
 
          return Promise.all(promises).then(function () {
+           client.set('AllEvents', JSON.stringify(events), function (err, val) {
+             if (err) {
+               console.log('failed to store', err);
+               next(err);
+             }
+             console.log('stored val: ', val);
+           });
            res.send(events);
          }).catch(next);
 
-         client.set('AllEvents', JSON.stringify(events), function (err, val) {
-           console.log('stored val: ', val);
-         });
+
          //console.log(sortedHeroes.slice(0, 2).order);
          res.send(events);
        });
