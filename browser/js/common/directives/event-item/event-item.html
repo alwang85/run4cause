@@ -38,7 +38,7 @@
             <div class="event-statistics">
                 <div class="money-raised">
                     <span>
-                        Raised<br>
+                        Pledged<br>
                         {{ totalRaised.toFixed(2) | currency }}
                     </span>
                 </div>
@@ -67,7 +67,7 @@
                         {{list.user.username}}<br>
                         <span>{{ list.individualProgress >= 0 ?
                             "Contributed Progress: " + (list.individualProgress * 100 | number:2) + "%" :
-                            "Pledged Amount" + list.details['100']}}</span>
+                            "Pledged Amount: " + (list.details['100'] | currency)}}</span>
                     </h4>
                 </li>
             </ul>
