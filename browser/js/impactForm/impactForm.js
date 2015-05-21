@@ -19,8 +19,6 @@ app.config(function ($stateProvider) {
 
                 if (eventID)
                     return Event.getEvent(eventID);
-                else
-                    return;
             }
         },
         controller: function($scope, event) {

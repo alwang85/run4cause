@@ -2,7 +2,7 @@
 
 app.config(function($stateProvider){
    $stateProvider.state('event', {
-       url: '/event',
+       url: '/impacts',
        templateUrl: 'js/event/event.html',
        controller: 'EventController',
        resolve: {
@@ -52,11 +52,6 @@ app.controller('EventController', function(user, $modal, $state, $scope, Event, 
             if($scope.currentUser && challenger.user._id === $scope.currentUser._id) participating = true;
         });
         return participating
-    };
-
-    $scope.editEvent = function(eventId) {
-        Event.editing.id = eventId;
-        $state.go('editEvent');
     };
 
     $scope.deleteEvent = function(event){
