@@ -39,33 +39,19 @@ router.get('/', function (req,res,next){
      if (value != null) {
        if(err) console.log(err);
        console.log('using memcached');
-       //console.log(value.toString());
        res.send(JSON.parse(value.toString()));
      } else {
-       Event.find({}).deepPopulate('creator challengers.user nonProfit sponsors.user').exec(function (err, events) {
+       Event.calculateProgressAll(function(err, events){
          if (err) return next(err);
-         console.log('not using memcached');
-         var promises = events.map(function (eachEvent) {
-           return new Promise(function (resolve, reject) {
-             resolve(eachEvent.calculateProgress());
-           });
+         client.set('AllEvents', JSON.stringify(events), function (err, val) {
+           if (err) {
+             console.log('failed to store', err);
+             next(err);
+           }
+           console.log('stored val: ', val);
          });
-
-         return Promise.all(promises).then(function () {
-           client.set('AllEvents', JSON.stringify(events), function (err, val) {
-             if (err) {
-               console.log('failed to store', err);
-               next(err);
-             }
-             console.log('stored val: ', val);
-           });
-           res.send(events);
-         }).catch(next);
-
-
-         //console.log(sortedHeroes.slice(0, 2).order);
          res.send(events);
-       });
+       })
      };
    });
 });
