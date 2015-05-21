@@ -38,3 +38,13 @@ app.directive('eventItem', function () {
         }
     };
 });
+
+app.filter('targetformat', function () {
+    return function (target) {
+        console.log(target);
+        if (target >= 10000) {
+            target = (target/1000).toFixed(1) + 'K';
+        }
+        return target;
+    };
+});

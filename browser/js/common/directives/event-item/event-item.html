@@ -22,7 +22,9 @@
                 <ul>
                     <li ng-repeat="goal in event.goals" class="{{goal.metrics.measurement}}">
                         <div class="center-container">
-                            <span class="center-content">{{goal.metrics.target}}<br>{{ goal.metrics.unit }}</span>
+                            <span class="center-content">
+                                {{goal.metrics.target | targetformat}}<br>
+                                {{ goal.metrics.unit }}</span>
                         </div>
                     </li>
                 </ul>
