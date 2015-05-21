@@ -2,6 +2,22 @@
     display: block;
     min-height: 100vh;
 
+    h1 {
+        margin: 0 0 8px 15px;
+
+        a.btn {
+            border: 0;
+            background: $blue-color;
+            color: #FFF;
+            transform: translate3d(0,0,0);
+            transition: all 0.2s linear;
+
+            &:hover {
+                background: darken($blue-color, 10%);
+            }
+        }
+    }
+
     .event-listing {
         width: 100%;
         margin: 0;
@@ -36,7 +52,7 @@
                     padding: 4px;
                     background: rgba(0,0,0,0.8);
                     color:#FFF;
-                    border-radius: 0 0 0 5px;
+                    border-radius: 0 5px 0 5px;
                     z-index: 1;
                 }
 
@@ -46,12 +62,15 @@
                     position: relative;
                     left: 0;
                     display: block;
+                    border-radius: 5px 5px 0 0;
                     transform: translate3d(0,0%,0);
                     transition: all 0.3s ease-in-out;
+                    overflow: hidden;
 
                     img {
                         display: block;
                         width: 100%;
+                        border-radius: 5px 5px 0 0;
                         border-bottom: 1px solid #DCDCDC;
                     }
                 }
@@ -109,7 +128,7 @@
 
                     .goals {
                         text-align: center;
-                        height: 105px;
+                        min-height: 105px;
                         opacity: 1;
                         overflow: hidden;
                         transform: translate3d(0,0,0);
@@ -335,6 +354,7 @@
 
                     .goals {
                         height: 0px;
+                        min-height: 0;
                         opacity: 0;
                     }
 
@@ -350,7 +370,7 @@
                 padding: 0;
                 overflow: hidden;
                 border-radius: 0 0 5px 5px;
-                box-shadow: 0px 7px 2px -5px rgba(0, 0, 0, 0.5);
+                //box-shadow: 0px 7px 2px -5px rgba(0, 0, 0, 0.5);
 
                 .btn-group {
                     padding: 0;
@@ -394,184 +414,12 @@
 } // end of #event
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//
-//
-//.eventList {
-//  padding: 0 40px;
-//}
-//.creatorBox {
-//  display: none;
-//  width:70px;
-//  height:70px;
-//  position: absolute;
-//  top:0;
-//  left:-90px;
-//  img{
-//    height:100%;
-//    width:100%;
-//    border-radius: 5px;
-//  }
-//}
-//.showBox {
-//  display:block;
-//}
-//
-//.hideBox {
-//  display:none;
-//}
-//.participantsBox {
-//  width:220px;
-//  position: absolute;
-//  top:0;
-//  right:-210px;
-//  @include forceGpu();
-//  transition: all 0.2s linear;
-//  .eachParticipant {
-//    margin-bottom: 15px;
-//    color: white;
-//    margin-right: 20px;
-//  }
-//  .participantsTitle {
-//    color: white;
-//    font-size: 15px;
-//  }
-//  img{
-//    height:70px;
-//    width:100%;
-//    border-radius: 5px;
-//  }
-//}
-//.impactTitle {
-//  text-align: center;
-//  color: skyblue;
-//  margin: 30px 0;
-//}
-//.eachEvent {
-//  @include clearfix;
-//  background: white;
-//  border: 1px solid $blue-color;
-//  margin-bottom: 30px;
-//  position: relative;
-//}
-//.eventInfo {
-//  font-style: italic;
-//  margin: 20px auto;
-//  display: table-cell;
-//  vertical-align: middle;
-//  float: none;
-//  .quote{
-//    color: #a1a1a1;
-//    font-size: 20px;
-//    margin: 0 10px;
-//  }
-//  .creatorEmail{
-//    margin-top: 10px;
-//  }
-//}
-//.mission{
-//  text-align: center;
-//  span {
-//    font-weight: bold;
-//  }
-//  .missionTitle{
-//    text-align: center;
-//    color: $off-grey-color;
-//    margin: 10px 0;
-//  }
-//  .missionStatement{
-//    color: navy;
-//  }
-//  img {
-//    width: 100px;
-//    height: 100px;
-//    margin-bottom: 10px;
-//  }
-//}
-//.info{
-//  text-align: center;
-//  padding: 0;
-//  position: relative;
-//  img {
-//    width: 100%;
-//    height: 35vh;
-//  }
-//  .infoContainer{
-//    display: table;
-//    position: absolute;
-//    width:100%;
-//    height: 35vh;
-//    &:hover{
-//      .seeStoryBtn{
-//        opacity:1;
-//      }
-//    }
-//    .seeStoryBtn{
-//      @include forceGpu();
-//      transition: all 0.4s linear;
-//      display: table-cell;
-//      vertical-align: middle;
-//      opacity: 0;
-//    }
-//  }
-//
-//}
-//.oneRow{
-//  padding: 0;
-//  border-bottom: 1px solid skyblue;
-//  .patientInfo{
-//    text-align: center;
-//    color: $off-grey-color;
-//    padding: 15px 0;
-//    border-bottom: 1px solid skyblue;
-//    font-size: 18px;
-//  }
-//}
-//.twoRow{
-//  display: table;
-//}
-//
-//.eventProgress {
-//  margin: 10px auto;
-//  text-align: right;
-//  width: 30%;
-//  border: none;
-//}
-//.creatorFunctionalities {
-//  float:left;
-//  width:100%;
-//  text-align: center;
-//  margin : 0;
-//  padding: 0;
-//  .messageCreator {
-//    border: 1px solid skyblue;
-//  }
-//  button{
-//    @include forceGpu();
-//    transition: all 0.2s linear;
-//    &:hover {
-//      color:white;
-//      background: lighten($blue-color, 10%);
-//      border-color: lighten($blue-color, 10%);
-//    }
-//  }
-//}
+.event-load-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 5;
+    background:#FFF;
+}

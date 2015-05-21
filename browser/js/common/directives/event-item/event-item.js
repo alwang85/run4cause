@@ -30,6 +30,10 @@ app.directive('eventItem', function () {
             scope.hideModal = function() {
                 scope.modalToggle = false;
             };
+
+            scope.totalRaised = _.reduce(scope.event.sponsors, function(totalRaised, sponsor) {
+                return totalRaised + sponsor.details['100'] * scope.event.progress;
+            }, 0.0);
         }
     };
 });
