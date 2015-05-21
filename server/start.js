@@ -13,4 +13,4 @@
 */
 
 require('babel/register');
-require('./main');
+require('./app/routes/event/main');
