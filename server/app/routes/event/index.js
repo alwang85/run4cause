@@ -83,7 +83,7 @@ router.put('/:eventId', function(req,res,next){
     });
 });
 
-router.post('/:eventId/join', function(req,res,next){ //TODO delete cache + replace
+router.post('/:eventId/join', function(req,res,next){
     if (!req.user) return next(new Error('Forbidden: You Must Be Logged In'));
 
     Event.findById(req.params.eventId, function(err,event){
@@ -101,7 +101,19 @@ router.post('/:eventId/join', function(req,res,next){ //TODO delete cache + repl
            });
            event.save(function(err,saved){
                if(err) return next(err);
-               res.json(saved);
+               Event.calculateProgressAll(function(err, events){
+                   if (err) return next(err);
+                   client.replace('AllEvents', JSON.stringify(events), function (err, val) {
+                       if (err) {
+                         console.log('failed to store', err);
+                          next(err);
+                       }
+                     console.log('cache replaced');
+                     //console.log('stored val: ', val);
+                 });
+                 res.json(saved);
+               })
+
            });
        } else {
            res.sendStatus('409');
@@ -110,7 +122,7 @@ router.post('/:eventId/join', function(req,res,next){ //TODO delete cache + repl
     });
 });
 
-router.delete('/:eventId/leave', function(req,res,next){//TODO delete cache + replace
+router.delete('/:eventId/leave', function(req,res,next){
     if (!req.user) return next(new Error('Forbidden: You Must Be Logged In'));
 
     Event.findById(req.params.eventId, function(err,event){
@@ -121,7 +133,18 @@ router.delete('/:eventId/leave', function(req,res,next){//TODO delete cache + re
             event.challengers = filtered;
             event.save(function(err,saved){
                 if (err) return next(err);
-                res.json(saved);
+                Event.calculateProgressAll(function(err, events){
+                    if (err) return next(err);
+                    client.replace('AllEvents', JSON.stringify(events), function (err, val) {
+                        if (err) {
+                          console.log('failed to store', err);
+                            next(err);
+                        }
+                      console.log('cache replaced');
+                      //console.log('stored val: ', val);
+                    });
+                    res.json(saved);
+                })
             });
         } else {
             res.sendStatus('409');
@@ -149,8 +172,19 @@ router.put('/:eventId/sponsor', function(req,res,next){//TODO delete cache + rep
           event.save(function(err,saved){
               if (err) return next(err);
               console.log('saved', saved.sponsor[0]);
-            broadcastChanges();
-              res.send(saved);
+              Event.calculateProgressAll(function(err, events){
+                  if (err) return next(err);
+                  client.replace('AllEvents', JSON.stringify(events), function (err, val) {
+                    if (err) {
+                        console.log('failed to store', err);
+                        next(err);
+                    }
+                    console.log('cache replaced');
+                    //console.log('stored val: ', val);
+                  });
+                   broadcastChanges();
+                  res.json(saved);
+              });
           });
       } else {
           console.log('already sponsored');
