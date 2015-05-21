@@ -7,6 +7,9 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('HomeController', function($scope, AuthService){
+app.controller('HomeController', function($scope, $location, anchorSmoothScroll){
+    $scope.scrollToNext = function(eID) {
 
+        anchorSmoothScroll.scrollTo(eID);
+    }
 });
