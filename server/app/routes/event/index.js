@@ -7,6 +7,12 @@ var Event = require('mongoose').model('Event');
 var mongoose = require('mongoose');
 var User = mongoose.model("User");
 var deepPopulate = require('mongoose-deep-populate');
+var memjs = require('memjs');
+
+var client = memjs.Client.create(process.env.MEMCACHEDCLOUD_SERVERS, {
+  username: process.env.MEMCACHEDCLOUD_USERNAME,
+  password: process.env.MEMCACHEDCLOUD_PASSWORD
+});
 var broadcastChanges = function() {
   var io = require('../../../io')();
 
@@ -29,19 +35,33 @@ router.post('/', function (req,res,next){
 });
 
 router.get('/', function (req,res,next){
-    Event.find({}).deepPopulate('creator challengers.user nonProfit sponsors.user').exec(function(err, events){
-        if (err) return next(err);
+   client.get('AllEvents', function (err, value, key) {
+     if (value != null) {
+       console.log('using memcached');
+       //console.log(value.toString());
+       res.send(JSON.parse(value.toString()));
+     } else {
+       Event.find({}).deepPopulate('creator challengers.user nonProfit sponsors.user').exec(function (err, events) {
+         if (err) return next(err);
 
-        var promises = events.map(function(eachEvent){
-            return new Promise(function(resolve,reject) {
-                resolve(eachEvent.calculateProgress());
-            });
-        });
+         var promises = events.map(function (eachEvent) {
+           return new Promise(function (resolve, reject) {
+             resolve(eachEvent.calculateProgress());
+           });
+         });
 
-        return Promise.all(promises).then(function(){
-            res.send(events);
-        }).catch(next);
-    });
+         return Promise.all(promises).then(function () {
+           res.send(events);
+         }).catch(next);
+
+         client.set('AllEvents', JSON.stringify(events), function (err, val) {
+           console.log('stored val: ', val);
+         });
+         //console.log(sortedHeroes.slice(0, 2).order);
+         res.send(events);
+       });
+     };
+   });
 });
 
 router.get('/:eventId', function (req,res,next){
@@ -71,7 +91,7 @@ router.put('/:eventId', function(req,res,next){
     });
 });
 
-router.post('/:eventId/join', function(req,res,next){
+router.post('/:eventId/join', function(req,res,next){ //TODO delete cache + replace
     if (!req.user) return next(new Error('Forbidden: You Must Be Logged In'));
 
     Event.findById(req.params.eventId, function(err,event){
@@ -98,7 +118,7 @@ router.post('/:eventId/join', function(req,res,next){
     });
 });
 
-router.delete('/:eventId/leave', function(req,res,next){
+router.delete('/:eventId/leave', function(req,res,next){//TODO delete cache + replace
     if (!req.user) return next(new Error('Forbidden: You Must Be Logged In'));
 
     Event.findById(req.params.eventId, function(err,event){
@@ -118,7 +138,7 @@ router.delete('/:eventId/leave', function(req,res,next){
     });
 });
 
-router.put('/:eventId/sponsor', function(req,res,next){
+router.put('/:eventId/sponsor', function(req,res,next){//TODO delete cache + replace
     if (!req.user) return next(new Error('Forbidden: You Must Be Logged In'));
 
     Event.findById(req.params.eventId, function(err,event){
