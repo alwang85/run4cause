@@ -2,7 +2,7 @@
 
 app.config(function($stateProvider){
    $stateProvider.state('event', {
-       url: '/event',
+       url: '/impacts',
        templateUrl: 'js/event/event.html',
        controller: 'EventController',
        resolve: {
@@ -26,6 +26,7 @@ app.controller('EventController', function(user, $modal, $state, $scope, Event, 
       });
     };
     $scope.getEvents();
+
     $scope.currentUser = user;
     $scope.sendMessage = function(creatorEmail){
         Message.currentRecipient.email = creatorEmail;
@@ -35,11 +36,6 @@ app.controller('EventController', function(user, $modal, $state, $scope, Event, 
             size:'md'
 
         });
-    };
-
-    $scope.editEvent = function(eventId) {
-        Event.editing.id = eventId;
-        $state.go('editEvent');
     };
 
     $scope.currentEventMetrics = function(event){

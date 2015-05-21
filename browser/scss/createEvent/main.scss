@@ -1,4 +1,5 @@
 .event-form-container {
+    background: #FAFAFA;
     .event-form {
         text-align: center;
         form {
@@ -7,10 +8,12 @@
 
         h1 {
             font-size: ($h1-font-size * 2);
+            color: $blue-color;
         }
 
         h2 {
             font-size: ($h2-font-size * 1.5);
+            color: $orange-color;
         }
 
         .goal-form {
@@ -36,6 +39,7 @@
                     vertical-align: middle;
                     float: right;
                     margin-left: 5px;
+                    color: $black-color;
 
                     &.add {
                         color: green;
@@ -60,6 +64,7 @@
                     font-size: 36px;
                     padding: 8px;
                     text-align: center;
+                    color: $black-color;
 
                     @include placeholder {
                         font-size: 36px;
@@ -89,6 +94,7 @@
                     padding: 0px 8px;
                     border-left: 0;
                     font-size: 24px;
+                    color: $black-color;
                 }
 
                 .patient-cta {
@@ -184,12 +190,32 @@
             } // end goal-quantity
         } // end goal-form
 
-        .impact-submit {
+        h3 {
+            display: block;
+            resize: none;
+            width: 90%;
+            max-width: 700px;
+            text-align:left;
             margin: 8px auto;
+        }
+
+        textarea {
+            display: block;
+            resize: none;
+            width: 90%;
+            max-width: 700px;
+            height: 100px;
+            margin: 0 auto 25px auto;
+            border: 2px solid #000;
+        }
+
+        .impact-submit {
+            margin: 8px auto 30px auto;
             width: 50%;
             min-width: 300px;
             padding: 16px;
             font-size: 24px;
+            background: $blue-color;
         }
     } // end event-form
 } // event-form-container

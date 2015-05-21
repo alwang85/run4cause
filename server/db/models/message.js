@@ -33,7 +33,7 @@ schema.statics.messageSponsors = function (event, sender, title, content, cb){
           message.sender = sender;
           message.title = title;
           message.content = 'Hello ' + foundSponsor.email + ', ' + content;
-          message.content = message.content.replace('REPLACETOKEN', event.patient.token);
+          message.content = message.content.replace('REPLACETOKEN', event.patient.token).replace('REPLACEAMOUNT', sponsor.details['100']);
           message.date = new Date;
           message.save(function(err, saved){
             done();
@@ -60,7 +60,7 @@ schema.statics.eventSuccess = function (event, cb){
     //console.log('found admin in eventSuccess', foundUser);
     var sender = foundUser._id;
     var title = 'The event goals you sponsored have been reached!';
-    var content = 'the event you sponsored has ended! Please click %3Ca%20href%3D%22https%3A//watsi.org/profile/REPLACETOKEN%22%20%3Ehere%3C/a%3E to view the details on event, and then proceed to the patients page to fulfill your promise!';
+    var content = 'the event you sponsored has ended! Please click %3Ca%20href%3D%22https%3A//watsi.org/profile/REPLACETOKEN%22%20%3Ehere%3C/a%3E to view the details on event, and then proceed to the patients page to fulfill your promise of $REPLACEAMOUNT for the cause!';
     that.messageSponsors(event, sender, title, content, cb);
   });
 };

@@ -1,5 +1,5 @@
 'use strict';
-app.directive('eventForm', function (Event, NonProfitFactory) {
+app.directive('eventForm', function (Event, NonProfitFactory, $state) {
     return {
         restrict: 'E',
         scope: {
@@ -76,11 +76,11 @@ app.directive('eventForm', function (Event, NonProfitFactory) {
             scope.submitEvent = function(impactData) {
                 if (scope.event) {
                     Event.editEvent(impactData, scope.event._id).then(function(savedEvent){
-                        console.log(savedEvent);
+                        $state.go('event');
                     });
                 } else {
                     Event.addEvent(impactData).then(function(savedEvent){
-                        console.log(savedEvent);
+                        $state.go('event');
                     });
                 }
             };
