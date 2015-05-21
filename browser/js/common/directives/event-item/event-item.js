@@ -22,6 +22,11 @@ app.directive('eventItem', function () {
                 goal.metrics.unit = unit[goal.metrics.measurement];
             });
 
+            scope.totalRaised = _.reduce(scope.event.sponsors, function(totalRaised, sponsor) {
+                var progress = scope.event.progress > 1 ? 1 : scope.event.progress;
+                return totalRaised + sponsor.details['100'] * progress;
+            }, 0.0);
+
             scope.displayInnerModal = function(list) {
                 scope.modalToggle = scope.modalToggle ? false : true;
                 scope.modalList = list;
@@ -30,18 +35,12 @@ app.directive('eventItem', function () {
             scope.hideModal = function() {
                 scope.modalToggle = false;
             };
-
-            scope.totalRaised = _.reduce(scope.event.sponsors, function(totalRaised, sponsor) {
-                var progress = scope.event.progress > 1 ? 1 : scope.event.progress;
-                return totalRaised + sponsor.details['100'] * progress;
-            }, 0.0);
         }
     };
 });
 
 app.filter('targetformat', function () {
     return function (target) {
-        console.log(target);
         if (target >= 10000) {
             target = (target/1000).toFixed(1) + 'K';
         }
