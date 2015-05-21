@@ -7,6 +7,11 @@ var Event = require('mongoose').model('Event');
 var mongoose = require('mongoose');
 var User = mongoose.model("User");
 var deepPopulate = require('mongoose-deep-populate');
+var broadcastChanges = function() {
+  var io = require('../../../io')();
+
+  io.sockets.emit('eventsChange');
+};
 
 router.post('/', function (req,res,next){
     var body = req.body;
@@ -17,6 +22,7 @@ router.post('/', function (req,res,next){
         savedEvent.creator = req.user;
         savedEvent.challengers.push({user:req.user, individualProgress: 0});
         savedEvent.save(function(err,saved){
+            broadcastChanges();
             res.json(saved);
         });
     })
@@ -131,6 +137,7 @@ router.put('/:eventId/sponsor', function(req,res,next){
           event.save(function(err,saved){
               if (err) return next(err);
               console.log('saved', saved.sponsor[0]);
+            broadcastChanges();
               res.send(saved);
           });
       } else {
