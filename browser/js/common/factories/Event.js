@@ -27,9 +27,10 @@ app.factory("Event", function($http, NonProfitFactory){
         },
         editing: {},
         addEvent: function (event) {
-            NonProfitFactory.getNonprofit(event.patient.token).then(function(foundPatient){
+            return NonProfitFactory.getNonprofit(event.patient.token).then(function(foundPatient){
                 event.patient.profilePic = foundPatient.profile_url;
                 return $http.post('/api/event', event).then(function (res) {
+                  console.log('event', event);
                   return res.data;
                 }).catch(function (err) {
                   console.log(err);
