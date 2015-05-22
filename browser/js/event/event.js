@@ -74,7 +74,7 @@ app.controller('EventController', function(user, $modal, $state, $scope, Event, 
     $scope.joinEvent = function(index){
         Event.joinEvent($scope.events[index]._id).then(function(savedEvent){
             NotifyService.notify({
-                message : "Joined Impact!"
+                message : "Joined Impact For " + $scope.events[index].patient.name + "!"
             });
             var patient = angular.copy($scope.events[index].patient);
             savedEvent.patient = patient;
@@ -85,7 +85,7 @@ app.controller('EventController', function(user, $modal, $state, $scope, Event, 
     $scope.leaveEvent = function(index){
         Event.leaveEvent($scope.events[index]._id).then(function(savedEvent){
             NotifyService.notify({
-                message : "Left Impact!"
+                message : "Left Impact?!<br>Don't Leave For " + $scope.events[index].patient.name + "!"
             });
             var patient = angular.copy($scope.events[index].patient);
             savedEvent.patient = patient;
