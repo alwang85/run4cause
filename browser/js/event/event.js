@@ -123,7 +123,7 @@ app.controller('EventController', function(user, $modal, $state, $scope, Event, 
                 }
             });
             console.log('arrIdx', arrIdx);
-            if (arrIdx >= -1){
+            if (arrIdx > -1){
               $scope.events[arrIdx] = updatedEvent;
             }
             else {
