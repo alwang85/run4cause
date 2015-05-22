@@ -1,5 +1,6 @@
 .event-form-container {
     background: #FAFAFA;
+    min-height: 100vh;
     .event-form {
         text-align: center;
         form {
@@ -32,7 +33,7 @@
                 .goal-button {
                     line-height: 100%;
                     border: 0;
-                    background: transparent;
+                    background: #FFF;
                     font-size: 20px;
                     padding: 0;
                     display: inline-block;
@@ -58,6 +59,7 @@
                     display: inline-block;
                     vertical-align: bottom;
                     height: 45px;
+                    background: #FFF;
                     width: 180px;
                     border: 2px solid $black-color;
                     border-radius: 0;
@@ -95,6 +97,7 @@
                     border-left: 0;
                     font-size: 24px;
                     color: $black-color;
+                    background: #FFF;
                 }
 
                 .patient-cta {
@@ -121,6 +124,7 @@
                         top: auto;
                         right: 0;
                         left: auto;
+                        background: #FFF;
                         display: block;
                         max-width: 0;
                         width: auto;
@@ -232,7 +236,7 @@
     button.dropdown-toggle {
         display: inline-block;
         vertical-align: bottom;
-        background: transparent;
+        background: #FFF;
         border: 2px solid $black-color;
         border-radius: 0;
         margin: 0;
@@ -248,13 +252,13 @@
         text-transform: uppercase;
 
         &:hover, &:active, .active {
-            background-color: transparent;
+            background-color: #FFF;
             border-color: $black-color;
             outline: none;
         }
 
         &.dropdown-toggle.btn-default {
-            background-color: transparent;
+            background-color: #FFF;
             border-color: $black-color;
         }
 

@@ -34,7 +34,7 @@ app.directive('selectPatient', function(NonProfitFactory) {
                 scope.eventForm.patient = {
                     name : scope.selectedPatient.name,
                     token : scope.selectedPatient.token,
-                    profile
+                    profilePic : scope.selectedPatient.profilePic
                 };
                 scope.placeholder = scope.selectedPatient.name;
 
