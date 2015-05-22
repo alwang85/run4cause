@@ -11,7 +11,11 @@ var schema = new mongoose.Schema({
     startDate: Date,
     endDate: Date,
     progress: Number,
-    patient: {},
+    patient: {
+      name: String,
+      token: String,
+      profilePic: String
+    },
     group: Boolean,
     status: {
       type: String,

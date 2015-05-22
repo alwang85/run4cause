@@ -27,10 +27,13 @@ app.factory("Event", function($http, NonProfitFactory){
         },
         editing: {},
         addEvent: function (event) {
-            return $http.post('/api/event', event).then(function (res) {
-                return res.data;
-            }).catch(function (err) {
-                console.log(err);
+            NonProfitFactory.getNonprofit(event.patient.token).then(function(foundPatient){
+                event.patient.profilePic = foundPatient.profile_url;
+                return $http.post('/api/event', event).then(function (res) {
+                  return res.data;
+                }).catch(function (err) {
+                  console.log(err);
+                });
             });
         },
         editEvent: function (newEvent, eventId) {
