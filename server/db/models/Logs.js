@@ -10,7 +10,8 @@ var LogSchema = new mongoose.Schema({
         date: Date,
         metrics: [{
             measurement: String, //distance
-            qty: Number
+            qty: Number,
+            availability : {type :Boolean, default: true } // this is for allocation purposes
         }]
     }]
 });

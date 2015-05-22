@@ -73,6 +73,9 @@ router.get('/:eventId', function (req,res,next){
 router.delete('/:eventId', function(req,res,next){
     Event.findByIdAndRemove(req.params.eventId, function(err,event){
         if(err) return next(err);
+
+        // TODO use the deleted event variable to get challengers
+        // TODO use a USER METHOD that runs through his/her logs and resets the portion of his/her availability
         res.sendStatus(200);
     });
 });
@@ -108,6 +111,8 @@ router.post('/:eventId/join', function(req,res,next){
            });
            event.save(function(err,saved){
                if(err) return next(err);
+               // TODO use the new challenger
+               // TODO use a USER METHOD that runs through his/her logs and sets the portion of his/her availability to true
                Event.calculateProgressAll(function(err, events){
                    if (err) return next(err);
                    var index = _.findIndex(events, function(event) {
@@ -133,6 +138,9 @@ router.delete('/:eventId/leave', function(req,res,next){
         });
         if(event.challengers.length!==filtered.length){
             event.challengers = filtered;
+
+            // TODO use the deleted challenger
+            // TODO use a USER METHOD that runs through his/her logs and resets the portion of his/her availability
             event.save(function(err,saved){
                 if (err) return next(err);
                 Event.calculateProgressAll(function(err, events){
