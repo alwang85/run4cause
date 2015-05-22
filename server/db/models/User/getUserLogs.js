@@ -24,7 +24,7 @@ module.exports = function(startDate, endDate) {
                         range.by('days', function(moment) {
                             var inRangeLogData = _.find(log.logData, function(logData) {
                                 if (logData)
-                                    return moment.isSame(logData.date);
+                                    return moment.isSame(logData.date, 'day');
                             });
 
                             if (inRangeLogData) {

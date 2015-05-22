@@ -21,7 +21,7 @@ app.controller('EventController', function(user, $modal, $state, $scope, Event, 
         return allEvents;
       }).then(function (allEvents) {
         return Event.getMoreInfoForNonProfits(allEvents).then(function (events) {
-          $scope.events = events;;
+          $scope.events = events;
         });
       });
     };
