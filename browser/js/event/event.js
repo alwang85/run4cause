@@ -85,7 +85,7 @@ app.controller('EventController', function(user, $modal, $state, $scope, Event, 
     $scope.leaveEvent = function(index){
         Event.leaveEvent($scope.events[index]._id).then(function(savedEvent){
             NotifyService.notify({
-                message : "Left Impact?!<br>Don't Leave For " + $scope.events[index].patient.name + "!"
+                message : "Left Impact?! Don't Leave For " + $scope.events[index].patient.name + "!"
             });
             var patient = angular.copy($scope.events[index].patient);
             savedEvent.patient = patient;

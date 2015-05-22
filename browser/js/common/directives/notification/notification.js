@@ -12,7 +12,6 @@ app.directive('notification', function(NotifyService, $timeout, $sce) {
                  scope.status = notifyOpt.status ? notifyOpt.status : scope.status;
                  scope.message = notifyOpt.message ? notifyOpt.message : scope.message;
 
-                 scope.message = $sce.trustAsHtml(scope.message);
                  scope.notificationToggle = true;
 
                  $timeout(function() {
