@@ -88,4 +88,6 @@ schema.method('getUserEvents', function() {
     });
 });
 
+//TODO make a user method that will take in start and end date of logs and set them to either false or true
+
 mongoose.model('User', schema);

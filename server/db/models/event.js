@@ -54,15 +54,24 @@ schema.plugin(deepPopulate);
 schema.methods.calculateProgress = function() {
     var that = this;
     var totalProgressObj = {};
+
+    // mapping through each challengers
     var promises = _.map(that.challengers, function(challenger){
         return new Promise(function(resolve,reject){
-            var results = [];
+            var results = []
+
+            // getting user logs for each challenger
             challenger.user.getUserLogs(that.startDate, that.endDate).then(function(logs){
                 if (logs) {
                     results = logs.logData;
                     var progressObj = {};
+                    // for each log data
                     _.forEach(results, function(eachDayLog) {
+                        // for each metrics array
                         _.forEach(eachDayLog.metrics, function (eachMetric) {
+                            // for each event's goals, match metric array
+                            // TODO use eachMetric.availability to set/check the availability of this metric
+                            // TODO availability should depend on whether this challenger has joined and allocated his/her data already
                             _.forEach(that.goals, function(goal){
                                 if(goal.metrics.measurement === eachMetric.measurement){
                                     if(!progressObj[goal.metrics.measurement]) progressObj[goal.metrics.measurement] = 0;
