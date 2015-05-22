@@ -1,17 +1,11 @@
-'use strict'
-
-app.config(function($stateProvider){
-  $stateProvider.state('sponsor', {
-    url: '/sponsor',
-    templateUrl: 'js/sponsor/sponsor.html',
-    controller: 'SponsorController'
-  });
-});
-
-app.controller('SponsorController', function($modalInstance, $state, $scope, AuthService, Event){
-
+'use strict';
+app.controller('SponsorController', function($modalInstance, $scope, Event, eventData, NotifyService){
     $scope.sponsorEvent = function(sponsor) {
-        Event.sponsorEvent(Event.editing.id, sponsor.details).then(function(savedEvent){
+        Event.sponsorEvent(eventData._id, sponsor.details).then(function(newSponsor){
+            eventData.sponsors.push(newSponsor);
+            NotifyService.notify({
+                message : "Sponsored " + eventData.patient.name + "!"
+            });
             $modalInstance.close();
         });
     };
