@@ -178,22 +178,36 @@ router.put('/:eventId/sponsor', function(req,res,next){
           });
           event.save(function(err,saved){
               if (err) return next(err);
-              Event.calculateProgressAll(function(err, events){
-                  if (err) return next(err);
-                  //client.replace('AllEvents', JSON.stringify(events), function (err, val) {
-                  //  if (err) {
-                  //      console.log('failed to store', err);
-                  //      next(err);
-                  //  }
-                  //  console.log('cache replaced');
-                  //  //console.log('stored val: ', val);
-                  //});
-                  var index = _.findIndex(events, function(event) {
-                      return event._id.toString() === saved._id;
-                  });
-                  //broadcastEventUpdate(events[index]._id);
-                  res.json(events[index]);
+
+              var eventObj = saved.toObject();
+
+              var currentSponsor = _.filter(eventObj.sponsors, function(sponsor) {
+                  return sponsor.user.toString() === req.user._id.toString();
               });
+              if (currentSponsor.length === 1) {
+                  currentSponsor[0].user = req.user;
+                  broadcastEventUpdate(saved._id);
+                  res.json(currentSponsor[0]);
+              } else {
+                  console.log('already sponsored');
+                  res.sendStatus('409'); //You already sponsored!
+              }
+              //Event.calculateProgressAll(function(err, events){
+              //    if (err) return next(err);
+              //    //client.replace('AllEvents', JSON.stringify(events), function (err, val) {
+              //    //  if (err) {
+              //    //      console.log('failed to store', err);
+              //    //      next(err);
+              //    //  }
+              //    //  console.log('cache replaced');
+              //    //  //console.log('stored val: ', val);
+              //    //});
+              //    var index = _.findIndex(events, function(event) {
+              //        return event._id.toString() === saved._id;
+              //    });
+              //    //broadcastEventUpdate(events[index]._id);
+              //    res.json(events[index]);
+              //});
           });
       } else {
           console.log('already sponsored');

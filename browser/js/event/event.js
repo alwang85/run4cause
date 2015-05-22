@@ -98,8 +98,15 @@ app.controller('EventController', function(user, $modal, $state, $scope, Event, 
         var modalInstance = $modal.open({
             templateUrl: '/js/sponsor/sponsor.html',
             controller: 'SponsorController',
-            size:'sm'
-
+            size:'sm',
+            resolve : {
+                eventData : function() {
+                    return event;
+                },
+                sponsorUser : function() {
+                    return $scope.currentUser;
+                }
+            }
         });
 
         Event.editing.id = event._id;
