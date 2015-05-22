@@ -1,4 +1,4 @@
-app.directive('notification', function(NotifyService, $timeout) {
+app.directive('notification', function(NotifyService, $timeout, $sce) {
      return {
          restrict    : 'E',
          scope       : {},
@@ -11,6 +11,7 @@ app.directive('notification', function(NotifyService, $timeout) {
              NotifyService.registerNotify(function(notifyOpt) {
                  scope.status = notifyOpt.status ? notifyOpt.status : scope.status;
                  scope.message = notifyOpt.message ? notifyOpt.message : scope.message;
+
                  scope.notificationToggle = true;
 
                  $timeout(function() {

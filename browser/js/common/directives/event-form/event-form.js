@@ -73,15 +73,22 @@ app.directive('eventForm', function (Event, NonProfitFactory, $state) {
                 }
             });
 
+            scope.submitted = false;
             scope.submitEvent = function(impactData) {
-                if (scope.event) {
-                    Event.editEvent(impactData, scope.event._id).then(function(savedEvent){
-                        $state.go('event');
-                    });
+                if (!scope.submitted) {
+                    if (scope.event) {
+                        Event.editEvent(impactData, scope.event._id).then(function(savedEvent){
+                            $state.go('event');
+                        });
+                    } else {
+                        Event.addEvent(impactData).then(function(savedEvent){
+                            $state.go('event');
+                        });
+                    }
+
+                    scope.submitted = true;
                 } else {
-                    Event.addEvent(impactData).then(function(savedEvent){
-                        $state.go('event');
-                    });
+                    $state.go('event');
                 }
             };
 
