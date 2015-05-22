@@ -118,7 +118,7 @@ schema.methods.calculateProgress = function() {
 
 schema.statics.calculateProgressAll = function(cb){
   var that = this;
-  that.find({}).deepPopulate('creator challengers.user nonProfit sponsors.user').exec(function (err, events) {
+  that.find({}).sort({startDate: -1}).deepPopulate('creator challengers.user nonProfit sponsors.user').exec(function (err, events) {
          if (err) return next(err);
          var promises = events.map(function (eachEvent) {
            return new Promise(function (resolve, reject) {
