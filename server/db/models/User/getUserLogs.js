@@ -20,7 +20,7 @@ module.exports = function(startDate, endDate) {
 
                         var range = moment().range(startDate, endDate);
                         var querylogs = [];
-                        console.log("didn't error", log);
+                        //console.log("didn't error", log);
                         range.by('days', function(moment) {
                             var inRangeLogData = _.find(log.logData, function(logData) {
                                 if (logData)

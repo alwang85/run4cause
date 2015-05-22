@@ -104,10 +104,33 @@ app.controller('EventController', function(user, $modal, $state, $scope, Event, 
 
         Event.editing.id = event._id;
     };
+    $scope.refreshEvent = function(eventId){
+        //console.log('refreshing event');
+        //console.log('eventId', eventId);
+        Event.getEvent(eventId).then(function(updatedEvent){
+            var arrIdx = -1;
+            $scope.events.map(function(el, idx){
+                //console.log('el', el);
+                if (el._id == updatedEvent._id) {
+                  arrIdx = idx;
+                }
+            });
+            console.log('arrIdx', arrIdx);
+            if (arrIdx >= -1){
+              $scope.events[arrIdx] = updatedEvent;
+            }
+            else {
+              $scope.events.unshift(updatedEvent);
+            }
+          //console.log('$scope.events', $scope.events);
+        });
+    };
 
-
-
+    socket.on('eventUpdate', function(eventId) {
+      //console.log('eventUpdateReqReceived', eventId);
+      $scope.refreshEvent(eventId); //user join updates many events
+    });
     socket.on('eventsChange', function(events) {
-      $scope.getEvents();
+      $scope.getEvents(); //user join updates many events
     });
 });

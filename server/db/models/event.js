@@ -84,7 +84,7 @@ schema.methods.calculateProgress = function() {
      });
     });
       return Promise.all(promises).then(function () {
-          console.log('totlaprogressobj',totalProgressObj);
+          //console.log('totlaprogressobj',totalProgressObj);
         var totalProgress = 0;
         var updatedGoals = _.map(that.goals, function (eachGoal) {
             if(Object.keys(totalProgressObj).length){
@@ -101,7 +101,7 @@ schema.methods.calculateProgress = function() {
             }
 
         });
-          console.log('updated goals', updatedGoals)
+          //console.log('updated goals', updatedGoals)
         that.goals = updatedGoals;
         that.progress = totalProgress;
         that.save(function(err, savedEvent){

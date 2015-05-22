@@ -13,11 +13,13 @@ var client = memjs.Client.create(process.env.MEMCACHEDCLOUD_SERVERS, {
   username: process.env.MEMCACHEDCLOUD_USERNAME,
   password: process.env.MEMCACHEDCLOUD_PASSWORD
 });
-var broadcastChanges = function() {
-  var io = require('../../../io')();
 
-  io.sockets.emit('eventsChange');
+var broadcastEventUpdate= function(eventId) {
+  var io = require('../../../io')();
+  //console.log('eventUpdated');
+  io.emit('eventUpdate', eventId);
 };
+
 
 router.post('/', function (req,res,next){
     var body = req.body;
@@ -28,7 +30,7 @@ router.post('/', function (req,res,next){
         savedEvent.creator = req.user;
         savedEvent.challengers.push({user:req.user, individualProgress: 0});
         savedEvent.save(function(err,saved){
-            broadcastChanges();
+          broadcastEventUpdate(saved._id);
             res.json(saved);
         });
     })
@@ -64,9 +66,7 @@ router.get('/clearCache', function(req,res,next){
 router.get('/:eventId', function (req,res,next){
     Event.findById(req.params.eventId).deepPopulate('creator challengers.user nonProfit sponsors.user').exec(function(err, foundEvent){
         if (err) return next(err);
-        foundEvent.calculateProgress().then(function(result){
-            res.json(result);
-        }).catch(next);
+        res.json(foundEvent);
     });
 });
 
@@ -83,6 +83,7 @@ router.put('/:eventId', function(req,res,next){
         _.extend(foundEvent, req.body);
         foundEvent.save(function(err,saved){
             if (err) return next(err);
+          broadcastEventUpdate(saved._id);
             res.send(saved);
         });
     });
@@ -112,7 +113,7 @@ router.post('/:eventId/join', function(req,res,next){
                    var index = _.findIndex(events, function(event) {
                        return event._id.toString() === eventID;
                    });
-                   broadcastChanges(events[index]._id);
+                 broadcastEventUpdate(events[index]._id);
                    res.json(events[index]);
                });
            });
@@ -148,7 +149,7 @@ router.delete('/:eventId/leave', function(req,res,next){
                     var index = _.findIndex(events, function(event) {
                         return event._id.toString() === eventID;
                     });
-                   broadcastChanges(events[index]._id);
+                    broadcastEventUpdate(events[index]._id);
                     res.json(events[index]);
                 });
             });
@@ -159,7 +160,7 @@ router.delete('/:eventId/leave', function(req,res,next){
     });
 });
 
-router.put('/:eventId/sponsor', function(req,res,next){//TODO delete cache + replace
+router.put('/:eventId/sponsor', function(req,res,next){
     if (!req.user) return next(new Error('Forbidden: You Must Be Logged In'));
 
     Event.findById(req.params.eventId, function(err,event){
@@ -188,9 +189,9 @@ router.put('/:eventId/sponsor', function(req,res,next){//TODO delete cache + rep
                   //  //console.log('stored val: ', val);
                   //});
                   var index = _.findIndex(events, function(event) {
-                      return event._id.toString() === eventID;
+                      return event._id.toString() === saved._id;
                   });
-                  broadcastChanges(events[index]._id);
+                  //broadcastEventUpdate(events[index]._id);
                   res.json(events[index]);
               });
           });
