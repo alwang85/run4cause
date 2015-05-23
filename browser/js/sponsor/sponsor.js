@@ -1,12 +1,15 @@
 'use strict';
-app.controller('SponsorController', function($modalInstance, $scope, Event, eventData, NotifyService){
+app.controller('SponsorController', function($modalInstance, $scope, EventFactory, eventData, NotifyService){
+  var Event = EventFactory.DS;
     $scope.sponsorEvent = function(sponsor) {
-        Event.sponsorEvent(eventData._id, sponsor.details).then(function(newSponsor){
-            eventData.sponsors.push(newSponsor);
-            NotifyService.notify({
-                message : "Sponsored " + eventData.patient.name + "!"
-            });
-            $modalInstance.close();
+        Event.update(eventData._id, sponsor, {
+          endpoint: 'event/sponsor'
+        }).then(function(newSponsor){
+          //eventData.sponsors.push(newSponsor);
+          NotifyService.notify({
+            message : "Sponsored " + eventData.patient.name + "!"
+          });
+          $modalInstance.close();
         });
     };
 

@@ -14,11 +14,11 @@ app.config(function ($stateProvider) {
         url: '/:eventID',
         template: '<event-form event="event"></event-form>',
         resolve : {
-            event : function(Event, $stateParams) {
+            event : function(EventFactory, $stateParams) {
                 var eventID = $stateParams.eventID;
-
+                var Event = EventFactory.DS;
                 if (eventID)
-                    return Event.getEvent(eventID);
+                    return Event.find(eventID);
             }
         },
         controller: function($scope, event) {

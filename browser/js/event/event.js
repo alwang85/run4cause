@@ -14,14 +14,26 @@ app.config(function($stateProvider){
 });
 
 
-app.controller('EventController', function(user, $modal, $state, $scope, Event, Message, SocketFactory, NotifyService){
+app.controller('EventController', function(user, $modal, $state, $scope, EventFactory, Message, SocketFactory, NotifyService){
+    var Event = EventFactory.DS;
 
+    Event.bindAll({}, $scope, 'events')
     $scope.getEvents = function(){
-      Event.getAllEvents().then(function (allEvents) {
-        $scope.events = allEvents;
+      Event.findAll().then(function (allEvents) {
+        console.log('getting all events', allEvents);
       });
     };
+
     $scope.getEvents();
+
+    $scope.refreshEvents = function() {
+      Event.findAll({}, {
+        bypassCache : true,
+        cacheResponse : true
+      }).then(function (allEvents) {
+        console.log('refreshing all events', allEvents);
+      });
+    };
 
     $scope.currentUser = user;
     $scope.sendMessage = function(creatorEmail){
@@ -31,14 +43,6 @@ app.controller('EventController', function(user, $modal, $state, $scope, Event, 
             controller: 'MessageComposeController',
             size:'md'
         });
-    };
-
-    $scope.currentEventMetrics = function(event){
-        var metrics = [];
-        event.goals.forEach(function(goal){
-            metrics.push(goal.metrics.measurement)
-        });
-        return metrics;
     };
 
     $scope.checkParticipation = function(event){
@@ -58,34 +62,31 @@ app.controller('EventController', function(user, $modal, $state, $scope, Event, 
     };
 
     $scope.deleteEvent = function(event){
-        Event.deleteEvent(event._id).then(function(status){
-           $scope.events = $scope.events.filter(function(eachEvent){
-               return eachEvent._id !== event._id;
-           })
+        Event.destroy(event._id).then(function(status){
+          console.log('delete success', status);
         }, function(err){
             console.log(err);
         });
     };
-
+    //
     $scope.joinEvent = function(index){
-        Event.joinEvent($scope.events[index]._id).then(function(savedEvent){
+        Event.update($scope.events[index]._id,{},
+          {
+            endpoint:'event/join'
+          }).then(function(event){
             NotifyService.notify({
-                message : "Joined Impact For " + $scope.events[index].patient.name + "!"
+            message : "Joined Impact For " + $scope.events[index].patient.name + "!"
             });
-            var patient = angular.copy($scope.events[index].patient);
-            savedEvent.patient = patient;
-            $scope.events[index] = savedEvent;
-        });
+          });
     };
 
     $scope.leaveEvent = function(index){
-        Event.leaveEvent($scope.events[index]._id).then(function(savedEvent){
+        Event.update($scope.events[index]._id,{},{
+          endpoint: 'event/leave'
+        }).then(function(savedEvent){
             NotifyService.notify({
                 message : "Left Impact?! Don't Leave For " + $scope.events[index].patient.name + "!"
             });
-            var patient = angular.copy($scope.events[index].patient);
-            savedEvent.patient = patient;
-            $scope.events[index] = savedEvent;
         });
     };
 
@@ -104,36 +105,20 @@ app.controller('EventController', function(user, $modal, $state, $scope, Event, 
                 }
             }
         });
-
-        Event.editing.id = event._id;
     };
-    $scope.refreshEvent = function(eventId){
-        //console.log('refreshing event');
-        //console.log('eventId', eventId);
-        Event.getEvent(eventId).then(function(updatedEvent){
-            var arrIdx = -1;
-            $scope.events.map(function(el, idx){
-                //console.log('el', el);
-                if (el._id == updatedEvent._id) {
-                  arrIdx = idx;
-                }
-            });
-            console.log('arrIdx', arrIdx);
-            if (arrIdx > -1){
-              $scope.events[arrIdx] = updatedEvent;
-            }
-            else {
-              $scope.events.unshift(updatedEvent);
-            }
-          //console.log('$scope.events', $scope.events);
+    $scope.refreshEventById = function(eventId){
+        Event.refresh(eventId, {
+            cacheResponse : true
+        }).then(function(updatedEvent){
+            console.log("attempting to refresh", updatedEvent);
         });
     };
 
     socket.on('eventUpdate', function(eventId) {
-      //console.log('eventUpdateReqReceived', eventId);
-      $scope.refreshEvent(eventId); //user join updates many events
+      $scope.refreshEventById(eventId); //user join updates many events
     });
+
     socket.on('eventsChange', function(events) {
-      $scope.getEvents(); //user join updates many events
+      $scope.refreshEvents(); //user join updates many events
     });
 });

@@ -1,4 +1,4 @@
-app.factory("Event", function($http, NonProfitFactory){
+app.factory("EventFactory", function($http, Patient, DS){
     var eventForm = {
         goals : [],
         group : true,
@@ -18,95 +18,110 @@ app.factory("Event", function($http, NonProfitFactory){
         {name : 'Burn', value : 'calories', unit : 'cal'}
     ];
 
+  var event = {
+    name: 'event',
+    idAttribute: '_id'
+  };
+
+
+
+
     return {
-        formInit : function(options) {
-            return _.merge({}, eventForm, options);
-        },
-        getActions : function() {
-            return actionList;
-        },
-        editing: {},
-        addEvent: function (event) {
-            return NonProfitFactory.getNonprofit(event.patient.token).then(function(foundPatient){
-                event.patient.profilePic = foundPatient.profile_url;
-                return $http.post('/api/event', event).then(function (res) {
-                  console.log('event', event);
-                  return res.data;
-                }).catch(function (err) {
-                  console.log(err);
-                });
-            });
-        },
-        editEvent: function (newEvent, eventId) {
-            return $http.put('/api/event/' + eventId, newEvent).then(function (res) {
-                return res.data;
-            }).catch(function (err) {
-                console.log(err);
-            });
-        },
-        getEvent: function (eventId) {
-            return $http.get('/api/event/' + eventId).then(function (res) {
-                return res.data
-            }).then(function(event) {
-                if (event) {
-                    event.startDate = new Date(event.startDate);
-                    event.endDate = new Date(event.endDate);
-                }
-                return event;
-            }).catch(function (err) {
-                console.log(err);
-            });
-        },
-        getAllEvents: function () {
-            return $http.get('/api/event').then(function (res) {
-                return res.data;
-            }).catch(function (err) {
-                console.log(err);
-            });
-        },
-        joinEvent: function (eventId) {
-            return $http.post('/api/event/' + eventId + '/join').then(function (res) {
-                return res.data;
-            }).catch(function (err) {
-                console.log(err);
-            });
-        },
-        deleteEvent: function (eventId) {
-            return $http.delete('/api/event/' + eventId).then(function (res) {
-                return res.data
-            }).catch(function (err) {
-                console.log(err);
-            });
-        },
-        leaveEvent: function (eventId) {
-            return $http.delete('/api/event/' + eventId + '/leave').then(function (res) {
-                return res.data;
-            }).catch(function (err) {
-                console.log(err);
-            });
-        },
-        sponsorEvent: function (eventId, sponsorDetails) {
-            return $http.put('/api/event/' + eventId + '/sponsor', { details: sponsorDetails })
-            .then(function (res) {
-                return res.data;
-            }).catch(function (err) {
-                console.log(err);
-            });
-        },
-        getMoreInfoForNonProfits: function (events){
-            return NonProfitFactory.getNonprofits().then(function(patients){
-                events.forEach(function(event){
-                    patients.forEach(function(patient){
-                        if(event.patient){
-                            if(event.patient.token === patient.token){
-                                event.patient.profilePic = patient.profile_url;
-                                event.patient.country = patient.country;
-                            }
-                        }
-                    });
-                });
-                return events;
-            });
-        }
+      DS: DS.defineResource(event),
+      formInit : function(options) {
+        return _.merge({}, eventForm, options);
+      },
+      getActions : function() {
+        return actionList;
+      }
     };
+
+
+
+
+    //
+    //
+    //
+    //addEvent: function (event) {
+    //    return NonProfitFactory.getNonprofit(event.patient.token).then(function(foundPatient){
+    //        event.patient.profilePic = foundPatient.profile_url;
+    //        return $http.post('/api/event', event).then(function (res) {
+    //          console.log('event', event);
+    //          return res.data;
+    //        }).catch(function (err) {
+    //          console.log(err);
+    //        });
+    //    });
+    //},
+    //editEvent: function (newEvent, eventId) {
+    //    return $http.put('/api/event/' + eventId, newEvent).then(function (res) {
+    //        return res.data;
+    //    }).catch(function (err) {
+    //        console.log(err);
+    //    });
+    //},
+    //getEvent: function (eventId) {
+    //    return $http.get('/api/event/' + eventId).then(function (res) {
+    //        return res.data
+    //    }).then(function(event) {
+    //        if (event) {
+    //            event.startDate = new Date(event.startDate);
+    //            event.endDate = new Date(event.endDate);
+    //        }
+    //        return event;
+    //    }).catch(function (err) {
+    //        console.log(err);
+    //    });
+    //},
+    //getAllEvents: function () {
+    //    return $http.get('/api/event').then(function (res) {
+    //        return res.data;
+    //    }).catch(function (err) {
+    //        console.log(err);
+    //    });
+    //},
+    //joinEvent: function (eventId) {
+    //    return $http.post('/api/event/' + eventId + '/join').then(function (res) {
+    //        return res.data;
+    //    }).catch(function (err) {
+    //        console.log(err);
+    //    });
+    //},
+    //deleteEvent: function (eventId) {
+    //    return $http.delete('/api/event/' + eventId).then(function (res) {
+    //        return res.data
+    //    }).catch(function (err) {
+    //        console.log(err);
+    //    });
+    //},
+    //leaveEvent: function (eventId) {
+    //    return $http.delete('/api/event/' + eventId + '/leave').then(function (res) {
+    //        return res.data;
+    //    }).catch(function (err) {
+    //        console.log(err);
+    //    });
+    //},
+    //sponsorEvent: function (eventId, sponsorDetails) {
+    //    return $http.put('/api/event/' + eventId + '/sponsor', { details: sponsorDetails })
+    //    .then(function (res) {
+    //        return res.data;
+    //    }).catch(function (err) {
+    //        console.log(err);
+    //    });
+    //},
+    //getMoreInfoForNonProfits: function (events){
+    //    return NonProfitFactory.getNonprofits().then(function(patients){
+    //        events.forEach(function(event){
+    //            patients.forEach(function(patient){
+    //                if(event.patient){
+    //                    if(event.patient.token === patient.token){
+    //                        event.patient.profilePic = patient.profile_url;
+    //                        event.patient.country = patient.country;
+    //                    }
+    //                }
+    //            });
+    //        });
+    //        return events;
+    //    });
+    //}
 });

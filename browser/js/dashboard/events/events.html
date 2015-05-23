@@ -3,7 +3,7 @@
         <h2>My Impact Missions</h2>
     </div>
 
-    <div ng-repeat="event in events">
+    <div ng-if="events" ng-repeat="event in events">
         <chart-box class="eachProfileEvent col-xs-12">
             <div class="eventInfo col-xs-12">
                 <h5>Patient: {{event.patient.name}}</h5>
@@ -15,7 +15,7 @@
         <div class="participantsBox animated" ng-class="{'showBox slideInLeft': event.showParticipants,'flipOutX hideBox': !event.showParticipants}">
             <div class="eachParticipant" ng-repeat="challenger in event.challengers | orderBy:'-individualProgress'" >
                 <div class="col-xs-5">
-                    <img src="{{challenger.user.profile}}">
+                    <img ng-src="{{challenger.user.profile}}">
                 </div>
                 <div class="col-xs-7">
                     <h5 class="challengerEmail">{{challenger.user.username}}</h5>
@@ -26,7 +26,7 @@
         <div class="participantsBox animated" ng-class="{'showBox slideInLeft': event.showSponsors,'flipOutX hideBox': !event.showSponsors}">
             <div class="eachParticipant col-xs-12" ng-repeat="sponsor in event.sponsors" >
                 <div class="col-xs-6">
-                    <img src="{{sponsor.user.profile}}">
+                    <img ng-src="{{sponsor.user.profile}}">
                 </div>
                 <div class="col-xs-6">
                     <h5 class="challengerEmail">{{sponsor.user.username}}</h5>

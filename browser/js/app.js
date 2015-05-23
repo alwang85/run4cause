@@ -1,5 +1,5 @@
 'use strict';
-var app = angular.module('FullstackGeneratedApp', ['ui.router', 'fsaPreBuilt', 'satellizer', 'ui.bootstrap', 'ngSanitize', 'ngAnimate']);
+var app = angular.module('FullstackGeneratedApp', ['ui.router', 'fsaPreBuilt', 'satellizer', 'ui.bootstrap', 'ngSanitize', 'ngAnimate', 'js-data']);
 
 // base url provider
 app.config(function ($urlRouterProvider, $locationProvider) {
@@ -7,6 +7,10 @@ app.config(function ($urlRouterProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
     // If we go to a URL that ui-router doesn't have registered, go to the "/" url.
     $urlRouterProvider.otherwise('/');
+});
+
+app.config(function (DSProvider) {
+  DSProvider.defaults.basePath = '/api';
 });
 
 app.constant("Client", {
@@ -62,6 +66,8 @@ app.config(function($authProvider, Client, Server) {
     $authProvider.loginRedirect = null;
     $authProvider.tokenName = 'user';
 });
+
+
 
 // This app.run is for controlling access to specific states.
 app.run(function ($rootScope, AuthService, $state) {
