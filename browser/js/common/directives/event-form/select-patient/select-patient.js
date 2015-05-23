@@ -1,4 +1,4 @@
-app.directive('selectPatient', function(NonProfitFactory) {
+app.directive('selectPatient', function(Patient) {
     return {
         restrict : 'E',
         replace : true,
@@ -20,7 +20,7 @@ app.directive('selectPatient', function(NonProfitFactory) {
             scope.togglePatientWindow = function() {
                 scope.patientSelectToggle = scope.patientSelectToggle ? false : true;
                 if (!gettingPatients && !scope.patients) {
-                    gettingPatients = NonProfitFactory.getNonprofits().then(function(patients) {
+                    gettingPatients = Patient.findAll().then(function(patients) {
                         scope.patients = patients;
                     });
                 }
@@ -34,7 +34,7 @@ app.directive('selectPatient', function(NonProfitFactory) {
                 scope.eventForm.patient = {
                     name : scope.selectedPatient.name,
                     token : scope.selectedPatient.token,
-                    profilePic : scope.selectedPatient.profilePic
+                    profilePic : scope.selectedPatient.profile_url
                 };
                 scope.placeholder = scope.selectedPatient.name;
 

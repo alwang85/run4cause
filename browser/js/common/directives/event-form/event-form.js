@@ -1,5 +1,5 @@
 'use strict';
-app.directive('eventForm', function (Event, NonProfitFactory, $state) {
+app.directive('eventForm', function (EventFactory, $state) {
     return {
         restrict: 'E',
         scope: {
@@ -8,11 +8,12 @@ app.directive('eventForm', function (Event, NonProfitFactory, $state) {
         },
         templateUrl : 'js/common/directives/event-form/event-form.html',
         link: function(scope, element, attr) {
+          var Event = EventFactory.DS;
             /*
                 TODO: Could have used ng-model for many of these custom directives
             */
             // get available action lists
-            scope.actionList = Event.getActions();
+            scope.actionList = EventFactory.getActions();
 
             var options = scope.event || {
                 goals : [{
@@ -25,7 +26,7 @@ app.directive('eventForm', function (Event, NonProfitFactory, $state) {
                 startDate : new Date()
             };
 
-            scope.eventFormData = Event.formInit(options);
+            scope.eventFormData = EventFactory.formInit(options);
 
             scope.selectActionFunc = function() {
                 return {
@@ -77,11 +78,13 @@ app.directive('eventForm', function (Event, NonProfitFactory, $state) {
             scope.submitEvent = function(impactData) {
                 if (!scope.submitted) {
                     if (scope.event) {
-                        Event.editEvent(impactData, scope.event._id).then(function(savedEvent){
+                        Event.update(scope.event._id, impactData).then(function(savedEvent){
                             $state.go('event');
+                        }).filter({
+                          orderBy: ['startDate', 'DESC']
                         });
                     } else {
-                        Event.addEvent(impactData).then(function(savedEvent){
+                        Event.create(impactData).then(function(savedEvent){
                             $state.go('event');
                         });
                     }

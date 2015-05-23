@@ -16,6 +16,8 @@ app.directive('durationInput', function() {
 
             var timeDiff,finder;
             if (scope.eventForm.endDate) {
+                scope.eventForm.endDate = new Date(scope.eventForm.endDate);
+                scope.eventForm.startDate = new Date(scope.eventForm.startDate);
                 timeDiff = scope.eventForm.endDate.getTime() - scope.eventForm.startDate.getTime();
 
                 finder = _.find(scope.durationList, function(listItem) {

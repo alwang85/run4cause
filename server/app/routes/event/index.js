@@ -22,18 +22,25 @@ var broadcastEventUpdate= function(eventId) {
 
 
 router.post('/', function (req,res,next){
-    var body = req.body;
+    var event = req.body;
     if (!req.user) return next(new Error('Forbidden: You Must Be Logged In'));
 
-    Event.create(body, function(err, savedEvent){
+
+    event.creator = req.user;
+    event.challengers = [];
+    event.challengers.push({user:req.user, individualProgress: 0});
+
+    Event.create(event, function(err, savedEvent){
         if (err) return next(err);
-        savedEvent.creator = req.user;
-        savedEvent.challengers.push({user:req.user, individualProgress: 0});
-        savedEvent.save(function(err,saved){
-          broadcastEventUpdate(saved._id);
-            res.json(saved);
-        });
-    })
+        var user = req.user.toObject();
+        var newEvent = savedEvent.toObject();
+        newEvent.creator = user;
+        newEvent.challengers = [{user:user, individualProgress: 0}];
+
+        broadcastEventUpdate(newEvent._id);
+        res.json(newEvent);
+
+    });
 });
 
 router.get('/', function (req,res,next){
@@ -92,7 +99,7 @@ router.put('/:eventId', function(req,res,next){
     });
 });
 
-router.post('/:eventId/join', function(req,res,next){
+router.put('/join/:eventId', function(req,res,next){
     var eventID = req.params.eventId;
     if (!req.user) return next(new Error('Forbidden: You Must Be Logged In'));
 
@@ -129,7 +136,7 @@ router.post('/:eventId/join', function(req,res,next){
     });
 });
 
-router.delete('/:eventId/leave', function(req,res,next){
+router.put('/leave/:eventId', function(req,res,next){
     if (!req.user) return next(new Error('Forbidden: You Must Be Logged In'));
     var eventID = req.params.eventId;
     Event.findById(req.params.eventId, function(err,event){
@@ -168,7 +175,7 @@ router.delete('/:eventId/leave', function(req,res,next){
     });
 });
 
-router.put('/:eventId/sponsor', function(req,res,next){
+router.put('/sponsor/:eventId', function(req,res,next){
     if (!req.user) return next(new Error('Forbidden: You Must Be Logged In'));
 
     Event.findById(req.params.eventId, function(err,event){
@@ -195,7 +202,7 @@ router.put('/:eventId/sponsor', function(req,res,next){
               if (currentSponsor.length === 1) {
                   currentSponsor[0].user = req.user;
                   broadcastEventUpdate(saved._id);
-                  res.json(currentSponsor[0]);
+                  res.json(saved);
               } else {
                   console.log('already sponsored');
                   res.sendStatus('409'); //You already sponsored!
