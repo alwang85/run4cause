@@ -17,7 +17,8 @@ app.config(function($stateProvider){
 app.controller('EventController', function(user, $modal, $state, $scope, EventFactory, Message, SocketFactory, NotifyService){
     var Event = EventFactory.DS;
 
-    Event.bindAll({}, $scope, 'events')
+    Event.bindAll({}, $scope, 'events');
+
     $scope.getEvents = function(){
       Event.findAll().then(function (allEvents) {
         console.log('getting all events', allEvents);

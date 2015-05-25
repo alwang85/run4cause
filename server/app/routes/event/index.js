@@ -8,6 +8,7 @@ var mongoose = require('mongoose');
 var User = mongoose.model("User");
 var deepPopulate = require('mongoose-deep-populate');
 var memjs = require('memjs');
+var util = require('util');
 
 var client = memjs.Client.create(process.env.MEMCACHEDCLOUD_SERVERS, {
   username: process.env.MEMCACHEDCLOUD_USERNAME,
@@ -31,15 +32,16 @@ router.post('/', function (req,res,next){
     event.challengers.push({user:req.user, individualProgress: 0});
 
     Event.create(event, function(err, savedEvent){
-        if (err) return next(err);
-        var user = req.user.toObject();
-        var newEvent = savedEvent.toObject();
-        newEvent.creator = user;
-        newEvent.challengers = [{user:user, individualProgress: 0}];
+        savedEvent.calculateProgress().then(function() {
+            if (err) return next(err);
+            var user = req.user.toObject();
+            var newEvent = savedEvent.toObject();
+            newEvent.creator = user;
+            newEvent.challengers = [{user:user, individualProgress: 0}];
 
-        broadcastEventUpdate(newEvent._id);
-        res.json(newEvent);
-
+            broadcastEventUpdate(newEvent._id);
+            res.json(newEvent);
+        }).catch(next);
     });
 });
 
@@ -78,12 +80,20 @@ router.get('/:eventId', function (req,res,next){
 });
 
 router.delete('/:eventId', function(req,res,next){
-    Event.findByIdAndRemove(req.params.eventId, function(err,event){
+    Event.findByIdAndRemove(req.params.eventId).deepPopulate('challengers.user').exec(function(err,event){
         if(err) return next(err);
-
         // TODO use the deleted event variable to get challengers
         // TODO use a USER METHOD that runs through his/her logs and resets the portion of his/her availability
-        res.sendStatus(200);
+        if (event.challengers.length > 0) {
+            Promise.map(event.challengers, function(challenger) {
+                return challenger.user.resetUserLogs(event._id.toString());
+            }).then(function(resets) {
+                console.log(util.inspect(resets));
+                res.sendStatus(200);
+            }).catch(next);
+        } else {
+            res.sendStatus(200);
+        }
     });
 });
 
@@ -139,40 +149,44 @@ router.put('/join/:eventId', function(req,res,next){
 router.put('/leave/:eventId', function(req,res,next){
     if (!req.user) return next(new Error('Forbidden: You Must Be Logged In'));
     var eventID = req.params.eventId;
-    Event.findById(req.params.eventId, function(err,event){
-        var filtered = _.filter(event.challengers, function(challenger){
-            return challenger.user.toString()!==req.user._id.toString()
-        });
-        if(event.challengers.length!==filtered.length){
-            event.challengers = filtered;
 
-            // TODO use the deleted challenger
-            // TODO use a USER METHOD that runs through his/her logs and resets the portion of his/her availability
-            event.save(function(err,saved){
-                if (err) return next(err);
-                Event.calculateProgressAll(function(err, events){
-                    if (err) return next(err);
-                    //client.replace('AllEvents', JSON.stringify(events), function (err, val) {
-                    //    if (err) {
-                    //      console.log('failed to store', err);
-                    //        next(err);
-                    //    }
-                    //  console.log('cache replaced');
-                    //  //console.log('stored val: ', val);
-                    //});
-
-                    var index = _.findIndex(events, function(event) {
-                        return event._id.toString() === eventID;
-                    });
-                    broadcastEventUpdate(events[index]._id);
-                    res.json(events[index]);
-                });
+    req.user.resetUserLogs(eventID)
+    .then(function() {
+        return Event.findById(req.params.eventId, function (err, event) {
+            var filtered = _.filter(event.challengers, function (challenger) {
+                return challenger.user.toString() !== req.user._id.toString()
             });
-        } else {
-            res.sendStatus('409');
-        }
+            if (event.challengers.length !== filtered.length) {
 
-    });
+                event.challengers = filtered;
+
+                // TODO use the deleted challenger
+                // TODO use a USER METHOD that runs through his/her logs and resets the portion of his/her availability
+                event.save(function (err, saved) {
+                    if (err) return next(err);
+                    Event.calculateProgressAll(function (err, events) {
+                        if (err) return next(err);
+                        //client.replace('AllEvents', JSON.stringify(events), function (err, val) {
+                        //    if (err) {
+                        //      console.log('failed to store', err);
+                        //        next(err);
+                        //    }
+                        //  console.log('cache replaced');
+                        //  //console.log('stored val: ', val);
+                        //});
+
+                        var index = _.findIndex(events, function (event) {
+                            return event._id.toString() === eventID;
+                        });
+                        broadcastEventUpdate(events[index]._id);
+                        res.json(events[index]);
+                    });
+                });
+            } else {
+                res.sendStatus('409');
+            }
+        });
+    }).catch(next);
 });
 
 router.put('/sponsor/:eventId', function(req,res,next){

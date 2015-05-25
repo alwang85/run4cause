@@ -72,25 +72,38 @@ schema.methods.calculateProgress = function() {
                             // for each event's goals, match metric array
                             // TODO use eachMetric.availability to set/check the availability of this metric
                             // TODO availability should depend on whether this challenger has joined and allocated his/her data already
-                            _.forEach(that.goals, function(goal){
-                                if(goal.metrics.measurement === eachMetric.measurement){
-                                    if(!progressObj[goal.metrics.measurement]) progressObj[goal.metrics.measurement] = 0;
-                                    if(goal.metrics.measurement === 'distance') progressObj[goal.metrics.measurement] += Math.min.call(null, eachMetric.qty/(goal.metrics.target*1609.34), 1);
-                                    else progressObj[goal.metrics.measurement] += Math.min.call(null, eachMetric.qty/goal.metrics.target, 1)
-                                }
-                            })
-                        })
+
+                            if (!eachMetric.availability || eachMetric.availability.toString() === that._id.toString()) {
+                                _.forEach(that.goals, function(goal){
+                                    if(goal.metrics.measurement === eachMetric.measurement){
+                                        if(!progressObj[goal.metrics.measurement])
+                                            progressObj[goal.metrics.measurement] = 0;
+                                        if(goal.metrics.measurement === 'distance')
+                                            progressObj[goal.metrics.measurement] += Math.min.call(null, eachMetric.qty/(goal.metrics.target*1609.34), 1);
+                                        else
+                                            progressObj[goal.metrics.measurement] += Math.min.call(null, eachMetric.qty/goal.metrics.target, 1)
+
+                                        eachMetric.availability = that._id;
+                                    }
+                                });
+                            }
+                        });
                     });
                     var total = 0;
+
                     for(var key in progressObj){
                         total += progressObj[key];
                         if(!totalProgressObj[key]) totalProgressObj[key] = 0;
                         totalProgressObj[key] += progressObj[key];
                     }
                     challenger.individualProgress = ((total/(Object.keys(progressObj).length)) || 0);
-                }
 
-                resolve(challenger);
+                    that.model('Logs').findByIdAndUpdate(logs._id, logs, function(err, savedLog) {
+                        resolve(challenger);
+                    });
+                } else {
+                    resolve(challenger);
+                }
          }).catch(function(err){
                 reject(err);
             });

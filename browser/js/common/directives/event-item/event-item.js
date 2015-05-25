@@ -18,8 +18,10 @@ app.directive('eventItem', function () {
                 'steps'    : 'steps'
             };
 
-            _.forEach(scope.event.goals, function(goal) {
-                goal.metrics.unit = unit[goal.metrics.measurement];
+            scope.$watch('event.goals', function() {
+                _.forEach(scope.event.goals, function(goal) {
+                    goal.metrics.unit = unit[goal.metrics.measurement];
+                });
             });
 
             scope.totalRaised = _.reduce(scope.event.sponsors, function(totalRaised, sponsor) {
