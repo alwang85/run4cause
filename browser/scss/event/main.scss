@@ -344,6 +344,7 @@
                 }
 
                 &:hover, .event-active {
+                    overflow: auto;
                     .patient-thumbnail {
                         width: 0%;
                         opacity: 0;

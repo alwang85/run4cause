@@ -20,7 +20,9 @@ app.controller('EventController', function(user, $modal, $state, $scope, EventFa
     Event.bindAll({}, $scope, 'events');
 
     $scope.getEvents = function(){
-      Event.findAll().then(function (allEvents) {
+      Event.findAll({
+          orderBy : ['startDate', 'DESC']
+      }).then(function (allEvents) {
         console.log('getting all events', allEvents);
       });
     };

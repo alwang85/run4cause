@@ -58,9 +58,11 @@ schema.methods.calculateProgress = function() {
     // mapping through each challengers
     var promises = _.map(that.challengers, function(challenger){
         return new Promise(function(resolve,reject){
-            var results = []
+            var results = [];
 
             // getting user logs for each challenger
+            if (!challenger.user.getUserLogs) return resolve(challenger);
+
             challenger.user.getUserLogs(that.startDate, that.endDate).then(function(logs){
                 if (logs) {
                     results = logs.logData;
