@@ -187,7 +187,13 @@
 
                             .progress-fill {
                                 &:first-child {
-                                    border-radius: 3px 0 0px 3px;
+                                    border-top-left-radius: 3px;
+                                    border-bottom-left-radius: 3px;
+                                }
+
+                                &:last-child {
+                                    border-top-right-radius: 3px;
+                                    border-bottom-right-radius: 3px;
                                 }
                                 float:left;
                                 width: 0%;
@@ -338,6 +344,7 @@
                 }
 
                 &:hover, .event-active {
+                    overflow: auto;
                     .patient-thumbnail {
                         width: 0%;
                         opacity: 0;

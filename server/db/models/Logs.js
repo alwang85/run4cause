@@ -11,7 +11,7 @@ var LogSchema = new mongoose.Schema({
         metrics: [{
             measurement: String, //distance
             qty: Number,
-            availability : {type :Boolean, default: true } // this is for allocation purposes
+            availability : {type: mongoose.Schema.Types.ObjectId, ref: 'Event'} // this is for allocation purposes
         }]
     }]
 });

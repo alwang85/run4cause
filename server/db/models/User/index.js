@@ -2,6 +2,7 @@
 var crypto = require('crypto');
 var mongoose = require('mongoose');
 var Promise = require('bluebird');
+var _ = require('lodash');
 
 var schema = new mongoose.Schema({
     active : {type: [String], default: []},
@@ -84,6 +85,29 @@ schema.method('getUserEvents', function() {
             if (err) return reject(err);
 
             resolve(events);
+        });
+    });
+});
+
+schema.method('resetUserLogs', function(eventID) {
+    var user = this;
+
+    return user.getUserLogs()
+    .then(function(logs) {
+
+        _.forEach(logs.logData, function(log) {
+            _.forEach(log.metrics, function(metric) {
+                if (metric.availability && metric.availability.toString() === eventID ) {
+                    metric.availability = null;
+                }
+            });
+        });
+
+        return new Promise(function(resolve, reject) {
+            logs.save(function(err, savedLog) {
+                if (err) return reject(err);
+                resolve(savedLog);
+            });
         });
     });
 });
