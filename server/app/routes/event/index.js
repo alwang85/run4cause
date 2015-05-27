@@ -38,7 +38,6 @@ router.post('/', function (req,res,next){
             var newEvent = savedEvent.toObject();
             newEvent.creator = user;
             newEvent.challengers = [{user:user, individualProgress: 0}];
-
             broadcastEventUpdate(newEvent._id);
             res.json(newEvent);
         }).catch(next);
@@ -73,10 +72,26 @@ router.get('/clearCache', function(req,res,next){
 });
 
 router.get('/:eventId', function (req,res,next){
-    Event.findById(req.params.eventId).deepPopulate('creator challengers.user nonProfit sponsors.user').exec(function(err, foundEvent){
-        if (err) return next(err);
-        res.json(foundEvent);
-    });
+    client.get(req.params.eventId, function(err, value, key){
+      if (value !== null) {
+        if(err) console.log(err);
+          console.log('using memcached');
+          res.send(JSON.parse(value.toString()));
+      } else {
+        Event.findById(req.params.eventId).deepPopulate('creator challengers.user nonProfit sponsors.user').exec(function(err, foundEvent){
+          if (err) return next(err);
+          client.set(req.params.eventId, JSON.stringify(foundEvent), function (err, val) {
+            if (err) {
+              console.log('failed to store', err);
+              next(err);
+            }
+            console.log('stored val: ', val);
+          }, 10);
+          res.json(foundEvent);
+        });
+      }
+    })
+
 });
 
 router.delete('/:eventId', function(req,res,next){
@@ -103,7 +118,14 @@ router.put('/:eventId', function(req,res,next){
         _.extend(foundEvent, req.body);
         foundEvent.save(function(err,saved){
             if (err) return next(err);
-          broadcastEventUpdate(saved._id);
+            client.set(req.params.eventId, JSON.stringify(foundEvent), function (err, val) {
+              if (err) {
+                console.log('failed to store', err);
+                next(err);
+              }
+              console.log('stored val: ', val);
+            }, 10);
+            broadcastEventUpdate(saved._id);
             res.send(saved);
         });
     });
@@ -135,7 +157,14 @@ router.put('/join/:eventId', function(req,res,next){
                    var index = _.findIndex(events, function(event) {
                        return event._id.toString() === eventID;
                    });
-                 broadcastEventUpdate(events[index]._id);
+                   client.set(req.params.eventId, JSON.stringify(events[index]), function (err, val) {
+                     if (err) {
+                       console.log('failed to store', err);
+                       next(err);
+                     }
+                     console.log('stored val: ', val);
+                   }, 10);
+                   broadcastEventUpdate(events[index]._id);
                    res.json(events[index]);
                });
            });
@@ -178,6 +207,13 @@ router.put('/leave/:eventId', function(req,res,next){
                         var index = _.findIndex(events, function (event) {
                             return event._id.toString() === eventID;
                         });
+                        client.set(req.params.eventId, JSON.stringify(events[index]), function (err, val) {
+                          if (err) {
+                            console.log('failed to store', err);
+                            next(err);
+                          }
+                          console.log('stored val: ', val);
+                        }, 10);
                         broadcastEventUpdate(events[index]._id);
                         res.json(events[index]);
                     });
@@ -215,6 +251,13 @@ router.put('/sponsor/:eventId', function(req,res,next){
               });
               if (currentSponsor.length === 1) {
                   currentSponsor[0].user = req.user;
+                  client.set(req.params.eventId, JSON.stringify(saved), function (err, val) {
+                    if (err) {
+                      console.log('failed to store', err);
+                      next(err);
+                    }
+                    console.log('stored val: ', val);
+                  }, 10);
                   broadcastEventUpdate(saved._id);
                   res.json(saved);
               } else {
