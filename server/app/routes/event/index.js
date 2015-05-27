@@ -118,7 +118,14 @@ router.put('/:eventId', function(req,res,next){
         _.extend(foundEvent, req.body);
         foundEvent.save(function(err,saved){
             if (err) return next(err);
-          broadcastEventUpdate(saved._id);
+            client.set(req.params.eventId, JSON.stringify(foundEvent), function (err, val) {
+              if (err) {
+                console.log('failed to store', err);
+                next(err);
+              }
+              console.log('stored val: ', val);
+            }, 10);
+            broadcastEventUpdate(saved._id);
             res.send(saved);
         });
     });
@@ -150,7 +157,14 @@ router.put('/join/:eventId', function(req,res,next){
                    var index = _.findIndex(events, function(event) {
                        return event._id.toString() === eventID;
                    });
-                 broadcastEventUpdate(events[index]._id);
+                   client.set(req.params.eventId, JSON.stringify(events[index]), function (err, val) {
+                     if (err) {
+                       console.log('failed to store', err);
+                       next(err);
+                     }
+                     console.log('stored val: ', val);
+                   }, 10);
+                   broadcastEventUpdate(events[index]._id);
                    res.json(events[index]);
                });
            });
@@ -193,6 +207,13 @@ router.put('/leave/:eventId', function(req,res,next){
                         var index = _.findIndex(events, function (event) {
                             return event._id.toString() === eventID;
                         });
+                        client.set(req.params.eventId, JSON.stringify(events[index]), function (err, val) {
+                          if (err) {
+                            console.log('failed to store', err);
+                            next(err);
+                          }
+                          console.log('stored val: ', val);
+                        }, 10);
                         broadcastEventUpdate(events[index]._id);
                         res.json(events[index]);
                     });
@@ -230,6 +251,13 @@ router.put('/sponsor/:eventId', function(req,res,next){
               });
               if (currentSponsor.length === 1) {
                   currentSponsor[0].user = req.user;
+                  client.set(req.params.eventId, JSON.stringify(saved), function (err, val) {
+                    if (err) {
+                      console.log('failed to store', err);
+                      next(err);
+                    }
+                    console.log('stored val: ', val);
+                  }, 10);
                   broadcastEventUpdate(saved._id);
                   res.json(saved);
               } else {
