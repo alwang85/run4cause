@@ -38,7 +38,6 @@ router.post('/', function (req,res,next){
             var newEvent = savedEvent.toObject();
             newEvent.creator = user;
             newEvent.challengers = [{user:user, individualProgress: 0}];
-
             broadcastEventUpdate(newEvent._id);
             res.json(newEvent);
         }).catch(next);
@@ -73,10 +72,26 @@ router.get('/clearCache', function(req,res,next){
 });
 
 router.get('/:eventId', function (req,res,next){
-    Event.findById(req.params.eventId).deepPopulate('creator challengers.user nonProfit sponsors.user').exec(function(err, foundEvent){
-        if (err) return next(err);
-        res.json(foundEvent);
-    });
+    client.get(req.params.eventId, function(err, value, key){
+      if (value !== null) {
+        if(err) console.log(err);
+          console.log('using memcached');
+          res.send(JSON.parse(value.toString()));
+      } else {
+        Event.findById(req.params.eventId).deepPopulate('creator challengers.user nonProfit sponsors.user').exec(function(err, foundEvent){
+          if (err) return next(err);
+          client.set(req.params.eventId, JSON.stringify(foundEvent), function (err, val) {
+            if (err) {
+              console.log('failed to store', err);
+              next(err);
+            }
+            console.log('stored val: ', val);
+          }, 10);
+          res.json(foundEvent);
+        });
+      }
+    })
+
 });
 
 router.delete('/:eventId', function(req,res,next){
