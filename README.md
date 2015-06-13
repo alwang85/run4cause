@@ -14,12 +14,18 @@ Mission Impact allows users to create and participate in events to increase awar
 
 # Technical Features:
 - Imports/standardized certain predefined metrics from FitBit and Jawbone trackers /w modular code [link](https://github.com/alwang85/run4cause/tree/master/server/db/models)
-- Charts showing individual and event progress for different metrics
+- Charts /w Charts.js showing individual and event progress for different metrics
 - Single page Angular app leveraging ui-router hosted on Heroku
 - Socket.io to allow real-time client-side chart updating
 - Memcached cloud to reduce database calls for single event real-time updates
 - JSData to refactor/reduce Angular factories and controllers by 50% +
 - Production and development Heroku servers
+
+# Nontechnical Features:
+- App was developed using the Agile methodology with bi-daily Scrum meetings and mostly pair programming during a timespan of 2.5 weeks.
+- Codebase refactored several times for modularity, readability, and expressive code
+- Waffle.io utilized for feature states, task assignments, and bug reporting
+
 
 # Other Libraries/Tools utilized:
 Async, bluebird, moment.js, mongoose, lodash, memjs, browserify, gulp, OAuth 2.0, chart.js, Angular ui-router, and the MEAN stack (MongoDB, ExpressJS, AngularJS, Node.js).
